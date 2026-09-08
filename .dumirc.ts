@@ -1,11 +1,12 @@
 import { defineConfig } from 'dumi';
 import * as path from 'path';
 
-const basePath = process.env.DOCS_BASE_PATH || '/';
+const rawBasePath = process.env.DOCS_BASE_PATH || '/';
+const normalizedBasePath = rawBasePath.endsWith('/') ? rawBasePath : `${rawBasePath}/`;
 
 export default defineConfig({
-  base: basePath,
-  publicPath: basePath,
+  base: normalizedBasePath,
+  publicPath: normalizedBasePath,
   // 按官方推荐方式启用 Vue 预设
   presets: ['@dumijs/preset-vue'],
   vue: {
