@@ -4,13 +4,38 @@ import assert from 'node:assert/strict';
 import { execFileSync } from 'node:child_process';
 import fs from 'node:fs';
 import path from 'node:path';
+import { createRequire } from 'node:module';
 import { fileURLToPath } from 'node:url';
 import { x as extractTarball } from 'tar';
 
 const ROOT_DIR = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const TEMP_PARENT = path.join(ROOT_DIR, 'tmp');
 const PNPM_COMMAND = process.platform === 'win32' ? 'pnpm.cmd' : 'pnpm';
-const VITE_CLI = path.join(ROOT_DIR, 'packages', 'components', 'node_modules', 'vite', 'bin', 'vite.js');
+
+/**
+ * 动态解析 Vite CLI 路径，兼顾 monorepo 本地和 CI 独立 pnpm 安装环境。
+ *
+ * @returns {string} Vite CLI 绝对路径。
+ */
+const resolveViteCli = () => {
+  const directPath = path.join(ROOT_DIR, 'packages', 'components', 'node_modules', 'vite', 'bin', 'vite.js');
+  if (fs.existsSync(directPath)) return directPath;
+  try {
+    const req = createRequire(path.join(ROOT_DIR, 'packages', 'components', 'package.json'));
+    const vitePkg = req.resolve('vite/package.json');
+    const pkg = JSON.parse(fs.readFileSync(vitePkg, 'utf8'));
+    const bin = typeof pkg.bin === 'string' ? pkg.bin : pkg.bin?.vite || 'bin/vite.js';
+    return path.resolve(path.dirname(vitePkg), bin);
+  } catch {
+    const rootReq = createRequire(path.join(ROOT_DIR, 'package.json'));
+    const vitePkg = rootReq.resolve('vite/package.json');
+    const pkg = JSON.parse(fs.readFileSync(vitePkg, 'utf8'));
+    const bin = typeof pkg.bin === 'string' ? pkg.bin : pkg.bin?.vite || 'bin/vite.js';
+    return path.resolve(path.dirname(vitePkg), bin);
+  }
+};
+
+const VITE_CLI = resolveViteCli();
 const PACKAGE_DIRECTORIES = ['utils', 'theme', 'hooks', 'components'];
 
 /**

@@ -2,17 +2,11 @@ import { ReactComponent as ArrowRightIcon } from '@ant-design/icons-svg/inline-s
 import { Link, useRouteMeta } from 'dumi';
 import React, { useEffect, useRef, type FC } from 'react';
 import { gsap, ScrollTrigger, SplitText, useGSAP } from '../../motion/gsap';
+import { toAssetUrl } from '../../utils';
 import './index.less';
 
-const getAssetUrl = (path: string) => {
-  const base = typeof process !== 'undefined' && process.env.DOCS_BASE_PATH ? process.env.DOCS_BASE_PATH : '/';
-  const cleanBase = base.endsWith('/') ? base : `${base}/`;
-  const cleanPath = path.startsWith('/') ? path.slice(1) : path;
-  return `${cleanBase}${cleanPath}`;
-};
-
 /** Hero 标题图走 public 静态资源并配合 head preload，保证 LCP 优先加载。 */
-const heroTitleImg = getAssetUrl('/branding/hero-title.webp');
+const heroTitleImg = toAssetUrl('/branding/hero-title.webp');
 
 /** 首页 Hero 行为入口配置。 */
 type HeroAction = {
