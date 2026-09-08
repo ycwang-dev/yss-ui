@@ -23,10 +23,49 @@ permissions:
   id-token: write
 
 jobs:
-  release:
-    name: Release Changed Packages
+  quality-gate:
+    name: Pre-release Quality Gate
     runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: 8.10.0
+          run_install: false
+
+      - name: Get pnpm store directory
+        shell: bash
+        run: |
+          echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
+
+      - name: Setup pnpm cache
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Run Quality Gate Checks
+        run: pnpm quality
+
+  release:
+    name: Publish Packages to npm
+    needs: quality-gate
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -72,9 +111,6 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Run Quality Gate Checks
-        run: pnpm quality
-
       - name: Execute Release Scripts
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
@@ -102,7 +138,7 @@ jobs:
         if: ${{ inputs.dry_run != true }}
         env:
           WECOM_WEBHOOK_KEY: ${{ secrets.WECOM_WEBHOOK_KEY }}
-          DOCS_BASE_URL: "https://yss-ui.github.io"
+          DOCS_BASE_URL: "https://iamyancong.github.io/yss-ui"
         run: |
           if [ -n "$WECOM_WEBHOOK_KEY" ]; then
             node scripts/wecom-notify.js || echo "Notification failed"
