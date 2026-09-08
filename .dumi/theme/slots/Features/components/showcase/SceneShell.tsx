@@ -1,6 +1,7 @@
 import React, { type ReactNode } from 'react';
 import { TONE_ACCENT_MAP, toRgb } from '../../constants';
 import type { FeatureCard } from '../../types';
+import { toAssetUrl } from '../../../../utils';
 import { SceneLink } from './SceneLink';
 
 /** 单个产品展厅组件的公共属性。 */
@@ -49,7 +50,9 @@ export const SceneShell = ({ card, index, active, children, sceneClassName, visu
         </div>
 
         <div className="yss-showcase-scene__identity">
-          {card.iconSrc ? <img src={card.iconSrc} alt="" aria-hidden="true" decoding="async" loading="eager" /> : null}
+          {card.iconSrc ? (
+            <img src={toAssetUrl(card.iconSrc)} alt="" aria-hidden="true" decoding="async" loading="eager" />
+          ) : null}
           <span>{card.eyebrow || 'Product Capability'}</span>
         </div>
 

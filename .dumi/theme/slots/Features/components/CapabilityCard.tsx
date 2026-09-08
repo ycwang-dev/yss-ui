@@ -3,6 +3,7 @@ import { Link } from 'dumi';
 import React, { forwardRef } from 'react';
 import { isExternalLink, TONE_ACCENT_MAP, toRgb } from '../constants';
 import type { AnchorPointerHandlers, FeatureCard, FeatureCardPreview, FeatureCardVariant } from '../types';
+import { toAssetUrl } from '../../../utils';
 import { CardPreview } from './Previews';
 
 /** 能力卡片组件属性。 */
@@ -45,7 +46,7 @@ export const CapabilityCard = forwardRef<HTMLElement, CapabilityCardProps>(
           {card.iconSrc ? (
             <img
               className="yss-workbench-card__icon"
-              src={card.iconSrc}
+              src={toAssetUrl(card.iconSrc)}
               alt=""
               aria-hidden="true"
               loading={variant === 'anchor' ? 'eager' : 'lazy'}

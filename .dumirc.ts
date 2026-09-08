@@ -26,21 +26,25 @@ export default defineConfig({
   live: false,
   // 开启静态导出，确保 GitHub Pages 或 Nginx 刷新页面不 404
   exportStatic: {},
+  // 注入全局环境，供客户端组件读取
+  define: {
+    'process.env.DOCS_BASE_PATH': JSON.stringify(normalizedBasePath),
+  },
   outputPath: 'dist-docs',
   // 设置 favicon
   favicons: [
-    '/favicon.svg', // 现代浏览器优先
+    `${normalizedBasePath}favicon.svg`, // 现代浏览器优先
   ],
   links: [
-    { rel: 'icon', href: '/favicon.svg', type: 'image/svg+xml' },
-    { rel: 'stylesheet', href: '/styles/yss-theme-vars.css' },
+    { rel: 'icon', href: `${normalizedBasePath}favicon.svg`, type: 'image/svg+xml' },
+    { rel: 'stylesheet', href: `${normalizedBasePath}styles/yss-theme-vars.css` },
     // 首页 Hero 标题图为 LCP 元素，提前预加载
-    { rel: 'preload', as: 'image', href: '/branding/hero-title.webp', type: 'image/webp' },
+    { rel: 'preload', as: 'image', href: `${normalizedBasePath}branding/hero-title.webp`, type: 'image/webp' },
   ],
   themeConfig: {
     // name: 'YSS UI',
-    logo: '/branding/yss-logo-mark-ai.webp',
-    logoDark: '/branding/yss-logo-mark-ai-dark.webp',
+    logo: `${normalizedBasePath}branding/yss-logo-mark-ai.webp`,
+    logoDark: `${normalizedBasePath}branding/yss-logo-mark-ai-dark.webp`,
     nav: [
       { title: '指南', link: '/guide', icon: 'compass', accent: 'sky' },
       { title: '组件', link: '/components', icon: 'grid', accent: 'violet' },
