@@ -1,0 +1,36 @@
+{
+  "skill": "file-export-download",
+  "purpose": "触发行为规约：文件导出/下载（blob、文件流、模板）的确定性词法路由。",
+  "cases": [
+    {
+      "id": "export-excel",
+      "prompt": "实现导出 Excel 报表",
+      "should_trigger": true,
+      "assert": "走 Orval binary 方法 + handleBlobResponse 的标准导出链路。"
+    },
+    {
+      "id": "download-template",
+      "prompt": "点击下载模板文件",
+      "should_trigger": true,
+      "assert": "模板下载含 Content-Disposition 文件名解析。"
+    },
+    {
+      "id": "blob-stream",
+      "prompt": "接口返回 blob 文件流怎么下载",
+      "should_trigger": true,
+      "assert": "responseType blob 兜底与错误响应（JSON in blob）处理。"
+    },
+    {
+      "id": "near-miss-query-api",
+      "prompt": "对接查询接口",
+      "should_trigger": false,
+      "assert": "普通接口集成归 api-integration，不触发本 skill。"
+    },
+    {
+      "id": "near-miss-upload",
+      "prompt": "上传附件",
+      "should_trigger": false,
+      "assert": "上传场景不归本 skill（file-import 组件用法另查文档）。"
+    }
+  ]
+}

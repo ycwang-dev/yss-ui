@@ -1,0 +1,95 @@
+.y-file-import {
+  width: 100%;
+}
+
+.y-file-import__uploader {
+  width: 100%;
+
+  /* stylelint-disable-next-line selector-pseudo-class-no-unknown */
+  :deep(.ant-upload.ant-upload-drag) {
+    background: var(--demo-bg-surface, #fafafa);
+    border-color: var(--demo-border, #d9d9d9);
+    transition:
+      border-color 0.2s,
+      background-color 0.2s;
+
+    &:hover {
+      border-color: var(--primary-color, #3371ff);
+    }
+  }
+}
+
+.y-file-import__dragger-inner {
+  width: 100%;
+  padding: 24px 0;
+  text-align: center;
+}
+
+.y-file-import__dragger-icon {
+  font-size: 56px;
+  margin-bottom: 12px;
+  color: var(--primary-color, var(--yss-color-primary-6, #3371ff));
+}
+
+.y-file-import__dragger-text {
+  color: var(--demo-text-primary, var(--text-color, rgb(0 0 0 / 88%)));
+  font-size: 14px;
+
+  em {
+    color: var(--primary-color, #3371ff);
+    font-style: normal;
+  }
+}
+
+.y-file-import__tip {
+  margin-top: 6px;
+  font-size: 12px;
+  color: var(--demo-text-secondary, var(--text-color-secondary, rgb(0 0 0 / 65%)));
+}
+
+.y-file-import__result {
+  font-size: 14px;
+  min-height: 100px;
+  color: var(--demo-text-primary, var(--text-color, rgb(0 0 0 / 88%)));
+}
+
+.y-file-import__footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.y-file-import__footer-right {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* --- 暗色模式适配 --- */
+[data-prefers-color="dark"],
+[data-theme="dark"] {
+  .y-file-import__uploader {
+    /* stylelint-disable-next-line selector-pseudo-class-no-unknown */
+    :deep(.ant-upload.ant-upload-drag) {
+      background: var(--demo-bg-surface, rgb(255 255 255 / 4%));
+      border-color: var(--demo-border, rgb(255 255 255 / 15%));
+
+      &:hover {
+        border-color: var(--primary-color, #3371ff);
+      }
+    }
+  }
+
+  .y-file-import__dragger-text {
+    color: var(--demo-text-primary, rgb(255 255 255 / 85%));
+  }
+
+  .y-file-import__tip {
+    color: var(--demo-text-secondary, rgb(255 255 255 / 65%));
+  }
+
+  .y-file-import__result {
+    color: var(--demo-text-primary, rgb(255 255 255 / 85%));
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "skill": "theme-token-usage",
+  "purpose": "触发行为规约：主题 Token 与换肤颜色规范的确定性词法路由。",
+  "cases": [
+    {
+      "id": "no-hardcode-color",
+      "prompt": "颜色不要硬编码,换成主题 token",
+      "should_trigger": true,
+      "assert": "用 CSS 变量/Ant Design Token 替换 #hex 硬编码。"
+    },
+    {
+      "id": "dark-mode-color",
+      "prompt": "暗色模式下这个颜色不对",
+      "should_trigger": true,
+      "assert": "改用可换肤 Token，验证暗色模式表现。"
+    },
+    {
+      "id": "hover-state-color",
+      "prompt": "hover 状态色该用哪个变量",
+      "should_trigger": true,
+      "assert": "给出 hover/active/selected 对应的 Token 选择。"
+    },
+    {
+      "id": "near-miss-layout",
+      "prompt": "页面布局间距怎么调",
+      "should_trigger": false,
+      "assert": "布局问题不归本 skill。"
+    },
+    {
+      "id": "near-miss-table-style",
+      "prompt": "表格斑马纹配置",
+      "should_trigger": false,
+      "assert": "表格自身配置归 ytable-usage，不触发本 skill。"
+    }
+  ]
+}

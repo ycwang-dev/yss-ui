@@ -1,0 +1,36 @@
+{
+  "skill": "page-skeleton",
+  "purpose": "触发行为规约：页面模块骨架（目录结构、职责拆分）的确定性词法路由。",
+  "cases": [
+    {
+      "id": "new-page-skeleton",
+      "prompt": "新建页面的目录骨架怎么组织",
+      "should_trigger": true,
+      "assert": "index.vue、constant.ts、style.less、hooks 与私有组件的标准骨架。"
+    },
+    {
+      "id": "split-large-component",
+      "prompt": "index.vue 太大了要拆 hooks 和私有组件",
+      "should_trigger": true,
+      "assert": "按职责拆分视图、逻辑与常量，保持 index.vue 精简。"
+    },
+    {
+      "id": "over-150-lines",
+      "prompt": "业务组件超过150行怎么拆分",
+      "should_trigger": true,
+      "assert": "按 150 行阈值拆分为 hooks 与私有子组件。"
+    },
+    {
+      "id": "near-miss-full-page",
+      "prompt": "生成完整 CRUD 页面",
+      "should_trigger": false,
+      "assert": "完整页面生成归 yss-ui-business-page-generation，不触发本 skill。"
+    },
+    {
+      "id": "near-miss-library-component",
+      "prompt": "在组件库源码里新建组件",
+      "should_trigger": false,
+      "assert": "组件库源码开发归 component-development，不触发本 skill。"
+    }
+  ]
+}

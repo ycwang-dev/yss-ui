@@ -1,0 +1,37 @@
+{
+  "skill": "use-tree-height",
+  "purpose": "触发行为规约：useTreeHeight 树区域自适应高度的确定性词法路由。",
+  "cases": [
+    {
+      "id": "tree-area-scroll",
+      "prompt": "左侧树区域高度不对要独立滚动",
+      "should_trigger": true,
+      "assert": "用 useTreeHeight 让树区域独立滚动，不随页面撑开。"
+    },
+    {
+      "id": "hook-usage",
+      "prompt": "useTreeHeight 计算树高度",
+      "should_trigger": true,
+      "assert": "给出 useTreeHeight 标准接入姿势。"
+    },
+    {
+      "id": "search-offset",
+      "prompt": "YTree 带搜索框时高度怎么扣除",
+      "should_trigger": true,
+      "accept_route_to": ["ytree-usage"],
+      "assert": "扣除 YTree 内置搜索高度的参数配置。"
+    },
+    {
+      "id": "near-miss-table-height",
+      "prompt": "表格底部空白双滚动条",
+      "should_trigger": false,
+      "assert": "表格高度归 use-table-height，不触发本 skill。"
+    },
+    {
+      "id": "near-miss-tree-actions",
+      "prompt": "树节点操作菜单",
+      "should_trigger": false,
+      "assert": "树节点交互归 ytree-usage，不触发本 skill。"
+    }
+  ]
+}

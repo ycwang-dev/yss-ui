@@ -1,0 +1,961 @@
+/*
+  YSS Docs Theme Variables
+  - 集中维护明暗两套颜色 Token，供站点/组件 demos 使用
+  - 仅包含 CSS 变量，不包含组件的结构样式，便于独立维护
+*/
+
+/* Light */
+:root {
+  /* Documentation typography */
+  --yss-doc-text-primary: rgb(31 41 55 / 96%);
+  --yss-doc-text-body: rgb(51 65 85 / 94%);
+  --yss-doc-text-secondary: rgb(71 85 105 / 90%);
+  --yss-doc-text-muted: rgb(71 85 105 / 82%);
+  --yss-doc-link: #2563eb;
+  --yss-doc-link-hover: #1e40af;
+  --yss-doc-code-text: #b4233a;
+  --yss-doc-code-bg: rgb(248 250 252 / 96%);
+  --yss-doc-border: rgb(226 232 240 / 86%);
+  --yss-doc-surface-muted: rgb(248 250 252 / 96%);
+
+  /* Header / Nav / Search / CTA */
+  --yss-header-bg: rgb(255 255 255 / 72%);
+  --yss-header-bg-static: rgb(255 255 255 / 84%);
+  --yss-header-border: rgb(148 163 184 / 22%);
+  --yss-header-icon: rgb(15 23 42 / 68%);
+  --yss-header-icon-hover: #2563eb;
+  --yss-header-shell-bg: rgb(255 255 255 / 74%);
+  --yss-header-shell-bg-static: rgb(255 255 255 / 92%);
+  --yss-header-shell-border: rgb(148 163 184 / 24%);
+  --yss-header-shell-shadow: 0 20px 45px -34px rgb(15 23 42 / 42%);
+  --yss-brand-shell-bg: linear-gradient(
+    145deg,
+    rgb(255 255 255 / 98%),
+    rgb(240 247 255 / 94%) 54%,
+    rgb(225 236 250 / 92%) 100%
+  );
+  --yss-brand-shell-border: rgb(148 163 184 / 24%);
+  --yss-brand-shell-shadow: 0 20px 36px -28px rgb(15 23 42 / 24%);
+  --yss-brand-text-main: #0f172a;
+  --yss-brand-text-accent: #3b82f6;
+  --yss-brand-chip-bg: linear-gradient(
+    145deg,
+    rgb(255 255 255 / 96%),
+    rgb(236 245 255 / 88%) 60%,
+    rgb(220 236 255 / 84%) 100%
+  );
+  --yss-brand-chip-border: rgb(59 130 246 / 20%);
+  --yss-brand-chip-text: #1d4ed8;
+  --yss-brand-caption: rgb(71 85 105 / 78%);
+  --yss-nav-pill-bg: rgb(59 130 246 / 12%);
+  --yss-nav-pill-border: rgb(59 130 246 / 20%);
+  --yss-nav-line: #3b82f6;
+  --yss-nav-rail-bg: linear-gradient(
+    180deg,
+    rgb(255 255 255 / 74%),
+    rgb(246 248 252 / 62%) 56%,
+    rgb(240 243 248 / 54%) 100%
+  );
+  --yss-nav-rail-border: rgb(148 163 184 / 16%);
+  --yss-nav-rail-shadow: 0 20px 40px -34px rgb(15 23 42 / 20%), inset 0 1px 0 rgb(255 255 255 / 62%);
+  --yss-nav-text: rgb(15 23 42 / 72%);
+  --yss-nav-text-hover: rgb(15 23 42 / 96%);
+  --yss-nav-text-active: rgb(2 8 23 / 96%);
+  --yss-nav-badge-bg: rgb(59 130 246 / 10%);
+  --yss-nav-badge-border: rgb(59 130 246 / 20%);
+  --yss-nav-badge-text: #2557d6;
+  --yss-nav-indicator-bg: linear-gradient(
+    145deg,
+    rgb(255 255 255 / 98%),
+    rgb(248 249 252 / 96%) 36%,
+    rgb(237 240 246 / 90%) 70%,
+    rgb(226 231 239 / 84%) 100%
+  );
+  --yss-nav-indicator-border: rgb(148 163 184 / 24%);
+  --yss-nav-c4d-edge-outer: rgb(187 195 213 / 72%);
+  --yss-nav-c4d-edge-inner: rgb(255 255 255 / 74%);
+  --yss-nav-c4d-edge-top: rgb(255 255 255 / 96%);
+  --yss-nav-c4d-edge-bottom: rgb(148 157 178 / 24%);
+  --yss-nav-c4d-gloss:
+    radial-gradient(circle at 24% 16%, rgb(255 255 255 / 98%), transparent 22%),
+    radial-gradient(circle at 70% 18%, rgb(255 255 255 / 48%), transparent 18%),
+    linear-gradient(180deg, rgb(255 255 255 / 34%), rgb(255 255 255 / 0%) 42%);
+  --yss-nav-c4d-rim-glow: 0 14px 24px -22px rgb(163 172 192 / 12%);
+  --yss-nav-c4d-body-shadow: 0 18px 26px -24px rgb(15 23 42 / 10%), 0 7px 16px -18px rgb(140 150 171 / 16%);
+  --yss-nav-c4d-tail-tint: rgb(198 206 221 / 28%);
+  --yss-nav-c4d-tail-glow: 0 0 10px -7px rgb(166 183 213 / 16%);
+  --yss-nav-light-active-bg: linear-gradient(
+    145deg,
+    rgb(255 255 255 / 99%),
+    rgb(248 250 253 / 96%) 34%,
+    rgb(239 242 247 / 90%) 68%,
+    rgb(231 236 243 / 84%) 100%
+  );
+  --yss-nav-light-active-edge: 0 18px 28px -26px rgb(15 23 42 / 11%), 0 8px 20px -18px rgb(168 177 195 / 14%);
+  --yss-nav-light-active-tail: rgb(197 204 218 / 26%);
+  --yss-nav-dropdown-bg: rgb(255 255 255 / 94%);
+  --yss-nav-dropdown-border: rgb(148 163 184 / 24%);
+  --yss-nav-dropdown-shadow: 0 24px 48px -28px rgb(15 23 42 / 36%);
+  --yss-utility-dock-bg: rgb(255 255 255 / 0%);
+  --yss-utility-dock-border: rgb(148 163 184 / 26%);
+  --yss-utility-dock-shadow: none;
+  --yss-utility-orb-size: 40px;
+  --yss-utility-orb-icon-size: 18px;
+  --yss-utility-orb-gap: 8px;
+  --yss-utility-orb-radius: 16px;
+  --yss-utility-orb-divider: transparent;
+  --yss-utility-orb-bg: linear-gradient(
+    145deg,
+    rgb(255 255 255 / 88%),
+    rgb(247 250 255 / 80%) 54%,
+    rgb(241 247 255 / 72%) 100%
+  );
+  --yss-utility-orb-border: rgb(147 197 253 / 34%);
+  --yss-utility-orb-shadow:
+    0 18px 32px -28px rgb(37 99 235 / 32%), inset 0 1px 0 rgb(255 255 255 / 84%), inset 0 -1px 0 rgb(59 130 246 / 8%);
+  --yss-utility-orb-text: rgb(37 99 235 / 82%);
+  --yss-utility-orb-hover: #2563eb;
+  --yss-theme-card-bg: rgb(255 255 255 / 94%);
+  --yss-theme-card-border: rgb(148 163 184 / 22%);
+  --yss-theme-card-shadow: 0 28px 56px -30px rgb(15 23 42 / 40%);
+  --yss-theme-card-title: rgb(2 8 23 / 90%);
+  --yss-theme-card-muted: rgb(71 85 105 / 78%);
+  --yss-search-focus-ring: rgb(59 130 246 / 32%);
+  --yss-cta-primary-start: #2563eb;
+  --yss-cta-primary-mid: #4f46e5;
+  --yss-cta-primary-end: #06b6d4;
+  --yss-cta-secondary-bg: rgb(255 255 255 / 76%);
+  --yss-cta-secondary-border: rgb(148 163 184 / 38%);
+  --yss-stage-max-width: 1540px;
+  --yss-home-stage-max-width: 1840px;
+  --yss-home-stage-gutter: 24px;
+  --yss-homepage-ambient-bg:
+    radial-gradient(ellipse at 8% 18%, rgb(79 124 255 / 11%), transparent 34%),
+    radial-gradient(ellipse at 92% 34%, rgb(117 104 255 / 9%), transparent 32%),
+    linear-gradient(180deg, #f7f9fd 0%, #edf2f8 58%, #f6f8fb 100%);
+  --yss-stage-gutter: 24px;
+  --yss-stage-gap: 24px;
+  --yss-stage-radius: 34px;
+  --yss-section-gap: 30px;
+  --yss-panel-inset: 28px;
+  --yss-stage-surface: rgb(246 248 252 / 88%);
+  --yss-stage-surface-strong: rgb(239 243 249 / 96%);
+  --yss-stage-left-glow: rgb(79 124 255 / 16%);
+  --yss-stage-right-glow: rgb(117 104 255 / 15%);
+  --yss-stage-center-glow: rgb(190 245 255 / 24%);
+  --yss-feature-panel-bg: linear-gradient(
+    180deg,
+    rgb(251 252 255 / 96%) 0%,
+    rgb(247 249 252 / 96%) 42%,
+    rgb(242 245 250 / 98%) 100%
+  );
+  --yss-feature-panel-aurora:
+    radial-gradient(32% 54% at 14% 10%, rgb(79 124 255 / 10%) 0%, transparent 76%),
+    radial-gradient(34% 60% at 50% 0%, rgb(190 245 255 / 11%) 0%, transparent 78%),
+    radial-gradient(32% 54% at 86% 12%, rgb(117 104 255 / 10%) 0%, transparent 76%);
+  --yss-feature-panel-border: rgb(255 255 255 / 66%);
+  --yss-feature-panel-highlight: rgb(255 255 255 / 82%);
+  --yss-feature-panel-shadow: 0 28px 72px -44px rgb(15 23 42 / 14%), 0 12px 28px -24px rgb(79 124 255 / 8%);
+
+  /* Product workbench */
+  --yss-workbench-shell-bg: linear-gradient(
+    145deg,
+    rgb(249 251 255 / 98%),
+    rgb(235 241 249 / 96%) 58%,
+    rgb(243 247 252 / 98%)
+  );
+  --yss-workbench-shell-border: rgb(148 163 184 / 26%);
+  --yss-workbench-shell-shadow: 0 46px 110px -64px rgb(15 23 42 / 42%), inset 0 1px 0 rgb(255 255 255 / 88%);
+  --yss-workbench-text: rgb(15 23 42 / 94%);
+  --yss-workbench-muted: rgb(71 85 105 / 78%);
+  --yss-workbench-kicker: rgb(79 124 255 / 76%);
+  --yss-workbench-card-bg: rgb(255 255 255 / 78%);
+  --yss-workbench-card-border: rgb(148 163 184 / 20%);
+  --yss-workbench-card-border-strong: rgb(79 124 255 / 34%);
+  --yss-workbench-card-shadow: 0 26px 56px -38px rgb(15 23 42 / 30%), inset 0 1px 0 rgb(255 255 255 / 82%);
+  --yss-workbench-preview-bg: rgb(247 249 253 / 82%);
+  --yss-workbench-preview-border: rgb(148 163 184 / 18%);
+  --yss-workbench-chip-bg: rgb(241 245 249 / 86%);
+  --yss-workbench-line: rgb(148 163 184 / 28%);
+  --yss-workbench-focus: rgb(79 124 255 / 34%);
+  --yss-workbench-success: #3ea778;
+  --yss-workbench-neutral: rgb(100 116 139 / 74%);
+
+  /* Footer */
+  --yss-footer-bg: #f7f8fa;
+  --yss-footer-text: rgb(0 0 0 / 88%);
+  --yss-footer-muted: rgb(0 0 0 / 45%);
+  --yss-footer-border: rgb(0 0 0 / 6%);
+  --yss-footer-link: rgb(0 0 0 / 88%);
+  --yss-footer-link-hover: rgb(0 0 0 / 100%);
+  --yss-footer-surface-top: color-mix(in oklab, var(--yss-footer-bg), var(--yss-footer-link) 6%);
+  --yss-footer-highlight: color-mix(in oklab, var(--yss-footer-link) 12%, transparent);
+  --yss-footer-card-bg: rgb(255 255 255 / 64%);
+  --yss-footer-card-border: rgb(255 255 255 / 56%);
+  --yss-footer-card-border-strong: rgb(79 124 255 / 20%);
+  --yss-footer-card-shadow: 0 22px 46px -30px rgb(15 23 42 / 18%), 0 6px 22px -20px rgb(59 130 246 / 12%);
+  --yss-footer-card-divider: rgb(148 163 184 / 18%);
+  --yss-footer-chip-bg: rgb(255 255 255 / 56%);
+  --yss-footer-chip-border: rgb(148 163 184 / 18%);
+  --yss-footer-kicker: rgb(15 23 42 / 44%);
+  --yss-footer-muted-strong: rgb(30 41 59 / 76%);
+  --yss-footer-highlight-soft: rgb(79 124 255 / 12%);
+  --yss-footer-focus-ring: rgb(79 124 255 / 30%);
+  --yss-footer-dot-start: #4f7cff;
+  --yss-footer-dot-end: #7568ff;
+  --yss-footer-glow-left: rgb(79 124 255 / 16%);
+  --yss-footer-glow-right: rgb(117 104 255 / 15%);
+  --yss-footer-bottom-haze: rgb(255 255 255 / 24%);
+  --yss-footer-bottom-border: rgb(148 163 184 / 16%);
+  --yss-footer-stage-border: rgb(255 255 255 / 46%);
+  --yss-footer-stage-shadow: 0 32px 72px -52px rgb(15 23 42 / 18%), 0 14px 28px -26px rgb(79 124 255 / 8%);
+  --yss-footer-panel-bg: linear-gradient(
+    180deg,
+    rgb(248 250 253 / 94%) 0%,
+    rgb(243 246 250 / 96%) 46%,
+    rgb(239 243 248 / 98%) 100%
+  );
+  --yss-footer-panel-aurora:
+    radial-gradient(30% 50% at 18% 18%, rgb(79 124 255 / 8%) 0%, transparent 74%),
+    radial-gradient(30% 50% at 82% 16%, rgb(117 104 255 / 8%) 0%, transparent 74%);
+  --yss-footer-panel-border: rgb(255 255 255 / 58%);
+  --yss-footer-panel-shadow: 0 24px 60px -42px rgb(15 23 42 / 12%), 0 8px 22px -18px rgb(79 124 255 / 7%);
+  --yss-footer-stage-plate: linear-gradient(
+    180deg,
+    rgb(251 252 255 / 42%) 0%,
+    rgb(247 249 252 / 78%) 18%,
+    rgb(241 244 249 / 96%) 100%
+  );
+  --yss-footer-stage-overlay: linear-gradient(180deg, rgb(255 255 255 / 46%), rgb(255 255 255 / 0%) 26%);
+  --yss-footer-stage-overlay-soft: rgb(242 246 251 / 72%);
+  --yss-footer-directory-bg: rgb(248 250 253 / 78%);
+  --yss-footer-directory-divider: rgb(148 163 184 / 18%);
+  --yss-footer-directory-row-hover: rgb(255 255 255 / 70%);
+  --yss-footer-connector-left: rgb(79 124 255 / 11%);
+  --yss-footer-connector-right: rgb(117 104 255 / 10%);
+  --yss-footer-connector-center: rgb(190 245 255 / 16%);
+  --yss-footer-scene-glow-left: rgb(79 124 255 / 12%);
+  --yss-footer-scene-glow-right: rgb(117 104 255 / 11%);
+  --yss-doc-footer-glass-bg: rgb(246 249 255 / 62%);
+  --yss-doc-footer-glass-aurora:
+    radial-gradient(50% 72% at 8% 4%, rgb(94 137 255 / 17%) 0%, transparent 72%),
+    radial-gradient(48% 68% at 94% 2%, rgb(123 104 255 / 16%) 0%, transparent 74%),
+    linear-gradient(180deg, rgb(255 255 255 / 42%), rgb(239 244 252 / 54%));
+  --yss-doc-footer-glass-border: rgb(255 255 255 / 74%);
+  --yss-doc-footer-glass-shadow: 0 32px 76px -48px rgb(30 64 175 / 24%), inset 0 1px 0 rgb(255 255 255 / 82%);
+  --yss-doc-footer-card-bg: rgb(255 255 255 / 54%);
+  --yss-doc-footer-card-border: rgb(255 255 255 / 70%);
+  --yss-doc-footer-card-shadow: 0 22px 46px -34px rgb(15 23 42 / 24%), 0 10px 26px -24px rgb(79 124 255 / 18%);
+  --yss-doc-footer-card-shadow-hover: 0 28px 54px -34px rgb(15 23 42 / 28%), 0 18px 34px -28px rgb(79 124 255 / 32%);
+  --yss-doc-footer-heading-bg: rgb(255 255 255 / 36%);
+  --yss-doc-footer-heading-border: rgb(255 255 255 / 58%);
+  --yss-doc-footer-row-bg: rgb(255 255 255 / 18%);
+  --yss-doc-footer-row-hover: rgb(255 255 255 / 62%);
+  --yss-doc-footer-icon-bg: rgb(255 255 255 / 64%);
+  --yss-doc-footer-kicker: rgb(61 96 214 / 72%);
+  --yss-doc-footer-shine: rgb(255 255 255 / 88%);
+  --yss-doc-footer-shine-soft: rgb(255 255 255 / 68%);
+  --yss-doc-footer-orb: radial-gradient(circle, rgb(124 109 255 / 22%) 0%, transparent 70%);
+  --yss-doc-footer-bottom-border: rgb(255 255 255 / 56%);
+  --yss-doc-footer-guides-rgb: 79 124 255;
+  --yss-doc-footer-dependencies-rgb: 43 184 200;
+  --yss-doc-footer-network-rgb: 117 104 255;
+
+  /* Homepage Footer Finale（首页终章：亮色 = 晨雾纸面上的极光，与页面环境底色同族过渡） */
+  --yss-home-footer-canvas:
+    radial-gradient(52% 30% at 18% 12%, rgb(79 124 255 / 10%), transparent 62%),
+    radial-gradient(46% 28% at 84% 16%, rgb(117 104 255 / 9%), transparent 60%),
+    radial-gradient(40% 24% at 50% 100%, rgb(43 184 200 / 9%), transparent 66%),
+    linear-gradient(
+      180deg,
+      rgb(237 242 249 / 0%) 0%,
+      rgb(235 241 249 / 62%) 6%,
+      rgb(232 239 248 / 96%) 12%,
+      #e8eef7 20%,
+      #dde6f2 100%
+    );
+  --yss-home-footer-text: rgb(15 23 42 / 94%);
+  --yss-home-footer-muted: rgb(71 85 105 / 72%);
+  --yss-home-footer-muted-strong: rgb(51 65 85 / 86%);
+  --yss-home-footer-link: rgb(30 41 59 / 88%);
+  --yss-home-footer-link-hover: rgb(2 8 23 / 98%);
+  --yss-home-footer-kicker: rgb(37 99 235 / 78%);
+  --yss-home-footer-kicker-line: linear-gradient(90deg, #4f7cff, #7c5cf5);
+  --yss-home-footer-divider: rgb(100 116 139 / 22%);
+  --yss-home-footer-row-hover: rgb(255 255 255 / 72%);
+  --yss-home-footer-chip-border: rgb(79 124 255 / 26%);
+  --yss-home-footer-chip-bg: rgb(79 124 255 / 9%);
+  --yss-home-footer-focus-ring: rgb(59 130 246 / 34%);
+  --yss-home-footer-dot: #3f6ceb;
+  --yss-home-footer-accent-guides-rgb: 63 108 235;
+  --yss-home-footer-accent-deps-rgb: 22 141 96;
+  --yss-home-footer-accent-network-rgb: 118 84 240;
+  --yss-home-footer-marquee-dot: rgb(51 65 85 / 30%);
+  --yss-home-footer-marquee-blue: #3f6ceb;
+  --yss-home-footer-marquee-cyan: #0d94ad;
+  --yss-home-footer-marquee-green: #1e9c6c;
+  --yss-home-footer-marquee-purple: #7a58f0;
+  --yss-home-footer-marquee-glow: 14%;
+  --yss-home-footer-title-gradient: linear-gradient(96deg, #3f6ceb 0%, #7a58f0 52%, #0d94ad 100%);
+  --yss-home-footer-card-bg: rgb(255 255 255 / 62%);
+  --yss-home-footer-card-border: rgb(255 255 255 / 78%);
+  --yss-home-footer-card-shine: rgb(255 255 255 / 85%);
+  --yss-home-footer-card-shadow: 0 24px 48px -32px rgb(15 23 42 / 22%), 0 10px 26px -22px rgb(79 124 255 / 16%);
+  --yss-home-footer-card-shadow-hover: 0 30px 58px -32px rgb(15 23 42 / 26%), 0 18px 36px -26px rgb(79 124 255 / 28%);
+  --yss-home-footer-row-bg: rgb(255 255 255 / 36%);
+
+  /* Demo/Common */
+  --demo-text-primary: rgb(0 0 0 / 88%);
+  --demo-text-secondary: rgb(0 0 0 / 65%);
+  --demo-text-muted: rgb(0 0 0 / 45%);
+  --demo-bg-container: #fff;
+  --demo-bg-surface: #fafafa;
+  --demo-border: rgb(0 0 0 / 6%);
+  --demo-bg-popover: #fff;
+  --demo-item-hover-bg: rgb(0 0 0 / 4%);
+  --demo-item-selected-bg: rgb(0 0 0 / 6%);
+  --demo-success-bg: #f6ffed;
+  --demo-success-color: #52c41a;
+  --demo-success-border: #b7eb8f;
+  --demo-error-bg: #fff2f0;
+  --demo-error-color: #ff4d4f;
+  --demo-error-border: #ffadd2;
+}
+
+/* Dark (同时兼容 data-prefers-color 挂在 root/body) */
+[data-prefers-color='dark'],
+:root[data-prefers-color='dark'] {
+  /* Documentation typography */
+  --yss-doc-text-primary: rgb(241 245 249 / 96%);
+  --yss-doc-text-body: rgb(203 213 225 / 88%);
+  --yss-doc-text-secondary: rgb(203 213 225 / 78%);
+  --yss-doc-text-muted: rgb(148 163 184 / 82%);
+  --yss-doc-link: #93c5fd;
+  --yss-doc-link-hover: #bfdbfe;
+  --yss-doc-code-text: #fda4af;
+  --yss-doc-code-bg: rgb(15 23 42 / 72%);
+  --yss-doc-border: rgb(148 163 184 / 22%);
+  --yss-doc-surface-muted: rgb(15 23 42 / 78%);
+
+  /* Header / Nav / Search / CTA */
+  --yss-header-bg: rgb(10 16 30 / 70%);
+  --yss-header-bg-static: rgb(10 16 30 / 82%);
+  --yss-header-border: rgb(148 163 184 / 20%);
+  --yss-header-icon: rgb(203 213 225 / 72%);
+  --yss-header-icon-hover: #93c5fd;
+  --yss-header-shell-bg: rgb(7 12 24 / 72%);
+  --yss-header-shell-bg-static: rgb(8 14 28 / 94%);
+  --yss-header-shell-border: rgb(148 163 184 / 20%);
+  --yss-header-shell-shadow: 0 28px 52px -36px rgb(0 0 0 / 86%);
+  --yss-brand-shell-bg: linear-gradient(145deg, rgb(9 18 34 / 94%), rgb(18 31 58 / 92%) 62%, rgb(16 46 82 / 88%) 100%);
+  --yss-brand-shell-border: rgb(96 165 250 / 18%);
+  --yss-brand-shell-shadow: 0 22px 40px -28px rgb(96 165 250 / 22%);
+  --yss-brand-text-main: #eff6ff;
+  --yss-brand-text-accent: #7dd3fc;
+  --yss-brand-chip-bg: linear-gradient(145deg, rgb(13 22 40 / 92%), rgb(23 44 80 / 88%));
+  --yss-brand-chip-border: rgb(96 165 250 / 24%);
+  --yss-brand-chip-text: #dbeafe;
+  --yss-brand-caption: rgb(191 219 254 / 72%);
+  --yss-nav-pill-bg: rgb(59 130 246 / 18%);
+  --yss-nav-pill-border: rgb(96 165 250 / 28%);
+  --yss-nav-line: #60a5fa;
+  --yss-nav-rail-bg: rgb(9 16 30 / 76%);
+  --yss-nav-rail-border: rgb(148 163 184 / 18%);
+  --yss-nav-rail-shadow: 0 28px 48px -30px rgb(0 0 0 / 88%);
+  --yss-nav-text: rgb(203 213 225 / 78%);
+  --yss-nav-text-hover: rgb(241 245 249 / 98%);
+  --yss-nav-text-active: #eff6ff;
+  --yss-nav-badge-bg: rgb(96 165 250 / 16%);
+  --yss-nav-badge-border: rgb(96 165 250 / 24%);
+  --yss-nav-badge-text: #dbeafe;
+  --yss-nav-indicator-bg: linear-gradient(135deg, rgb(18 30 56 / 94%), rgb(24 44 80 / 86%));
+  --yss-nav-indicator-border: rgb(96 165 250 / 18%);
+  --yss-nav-c4d-edge-outer: rgb(113 168 255 / 34%);
+  --yss-nav-c4d-edge-inner: rgb(255 255 255 / 14%);
+  --yss-nav-c4d-edge-top: rgb(255 255 255 / 24%);
+  --yss-nav-c4d-edge-bottom: rgb(4 10 23 / 34%);
+  --yss-nav-c4d-gloss:
+    radial-gradient(circle at 22% 16%, rgb(255 255 255 / 24%), transparent 28%),
+    linear-gradient(180deg, rgb(255 255 255 / 12%), rgb(255 255 255 / 0%) 62%);
+  --yss-nav-c4d-rim-glow: 0 18px 34px -24px rgb(96 165 250 / 24%);
+  --yss-nav-c4d-body-shadow: 0 18px 32px -26px rgb(96 165 250 / 34%);
+  --yss-nav-c4d-tail-tint: rgb(158 207 255 / 54%);
+  --yss-nav-c4d-tail-glow: 0 0 14px -5px rgb(96 165 250 / 36%);
+  --yss-nav-light-active-bg: var(--yss-nav-indicator-bg);
+  --yss-nav-light-active-edge: var(--yss-nav-c4d-body-shadow);
+  --yss-nav-light-active-tail: var(--yss-nav-c4d-tail-tint);
+  --yss-nav-dropdown-bg: rgb(10 18 34 / 96%);
+  --yss-nav-dropdown-border: rgb(148 163 184 / 20%);
+  --yss-nav-dropdown-shadow: 0 28px 56px -28px rgb(0 0 0 / 92%);
+  --yss-utility-dock-bg: rgb(10 18 34 / 76%);
+  --yss-utility-dock-border: rgb(148 163 184 / 22%);
+  --yss-utility-dock-shadow: 0 24px 36px -28px rgb(0 0 0 / 88%);
+  --yss-utility-orb-size: 40px;
+  --yss-utility-orb-icon-size: 18px;
+  --yss-utility-orb-gap: 8px;
+  --yss-utility-orb-radius: 16px;
+  --yss-utility-orb-divider: transparent;
+  --yss-utility-orb-bg: linear-gradient(145deg, rgb(12 20 36 / 88%), rgb(16 32 58 / 84%) 100%);
+  --yss-utility-orb-border: rgb(96 165 250 / 28%);
+  --yss-utility-orb-shadow:
+    0 18px 32px -24px rgb(0 0 0 / 72%), inset 0 1px 0 rgb(255 255 255 / 12%), inset 0 -1px 0 rgb(96 165 250 / 10%);
+  --yss-utility-orb-text: rgb(203 213 225 / 90%);
+  --yss-utility-orb-hover: #7dd3fc;
+  --yss-theme-card-bg: rgb(10 18 34 / 96%);
+  --yss-theme-card-border: rgb(148 163 184 / 20%);
+  --yss-theme-card-shadow: 0 28px 56px -28px rgb(0 0 0 / 92%);
+  --yss-theme-card-title: rgb(239 246 255 / 92%);
+  --yss-theme-card-muted: rgb(148 163 184 / 82%);
+  --yss-search-focus-ring: rgb(96 165 250 / 36%);
+  --yss-cta-primary-start: rgb(37 99 235 / 96%);
+  --yss-cta-primary-mid: rgb(67 56 202 / 94%);
+  --yss-cta-primary-end: rgb(8 145 178 / 92%);
+  --yss-cta-secondary-bg: rgb(15 23 42 / 76%);
+  --yss-cta-secondary-border: rgb(148 163 184 / 34%);
+  --yss-stage-max-width: 1540px;
+  --yss-home-stage-max-width: 1840px;
+  --yss-home-stage-gutter: 24px;
+  --yss-homepage-ambient-bg:
+    radial-gradient(ellipse at 8% 18%, rgb(37 99 235 / 18%), transparent 36%),
+    radial-gradient(ellipse at 92% 34%, rgb(109 40 217 / 15%), transparent 34%),
+    linear-gradient(180deg, #09111f 0%, #060d19 58%, #09101c 100%);
+  --yss-stage-gutter: 24px;
+  --yss-stage-gap: 24px;
+  --yss-stage-radius: 34px;
+  --yss-section-gap: 30px;
+  --yss-panel-inset: 28px;
+  --yss-stage-surface: rgb(6 13 25 / 76%);
+  --yss-stage-surface-strong: rgb(8 16 29 / 96%);
+  --yss-stage-left-glow: rgb(37 99 235 / 18%);
+  --yss-stage-right-glow: rgb(109 40 217 / 16%);
+  --yss-stage-center-glow: rgb(14 165 233 / 20%);
+  --yss-feature-panel-bg: linear-gradient(
+    180deg,
+    rgb(11 19 34 / 92%) 0%,
+    rgb(10 18 31 / 94%) 42%,
+    rgb(7 14 24 / 98%) 100%
+  );
+  --yss-feature-panel-aurora:
+    radial-gradient(32% 54% at 14% 10%, rgb(37 99 235 / 14%) 0%, transparent 76%),
+    radial-gradient(34% 60% at 50% 0%, rgb(14 165 233 / 12%) 0%, transparent 78%),
+    radial-gradient(32% 54% at 86% 12%, rgb(109 40 217 / 13%) 0%, transparent 76%);
+  --yss-feature-panel-border: rgb(148 163 184 / 22%);
+  --yss-feature-panel-highlight: rgb(255 255 255 / 18%);
+  --yss-feature-panel-shadow: 0 30px 72px -44px rgb(0 0 0 / 74%), 0 14px 32px -22px rgb(96 165 250 / 10%);
+
+  /* Product workbench */
+  --yss-workbench-shell-bg: linear-gradient(180deg, rgb(10 18 32 / 96%), rgb(7 14 26 / 96%));
+  --yss-workbench-shell-border: rgb(148 163 184 / 18%);
+  --yss-workbench-shell-shadow: 0 36px 86px -44px rgb(0 0 0 / 82%);
+  --yss-workbench-text: rgb(239 246 255 / 94%);
+  --yss-workbench-muted: rgb(148 163 184 / 82%);
+  --yss-workbench-kicker: rgb(125 211 252 / 82%);
+  --yss-workbench-card-bg: rgb(12 21 38 / 82%);
+  --yss-workbench-card-border: rgb(148 163 184 / 18%);
+  --yss-workbench-card-border-strong: rgb(96 165 250 / 34%);
+  --yss-workbench-card-shadow: 0 28px 64px -36px rgb(0 0 0 / 86%), inset 0 1px 0 rgb(255 255 255 / 8%);
+  --yss-workbench-preview-bg: rgb(5 12 24 / 52%);
+  --yss-workbench-preview-border: rgb(148 163 184 / 16%);
+  --yss-workbench-chip-bg: rgb(255 255 255 / 6%);
+  --yss-workbench-line: rgb(148 163 184 / 22%);
+  --yss-workbench-focus: rgb(96 165 250 / 42%);
+  --yss-workbench-success: #6ee7b7;
+  --yss-workbench-neutral: rgb(148 163 184 / 76%);
+
+  /* Footer */
+  --yss-footer-bg: #0b0d10;
+  --yss-footer-text: rgb(255 255 255 / 85%);
+  --yss-footer-muted: rgb(255 255 255 / 45%);
+  --yss-footer-border: rgb(255 255 255 / 12%);
+  --yss-footer-link: rgb(255 255 255 / 85%);
+  --yss-footer-link-hover: #fff;
+  --yss-footer-surface-top: color-mix(in oklab, var(--yss-footer-bg), var(--yss-footer-link) 4%);
+  --yss-footer-highlight: color-mix(in oklab, var(--yss-footer-link) 10%, transparent);
+  --yss-footer-card-bg: rgb(12 19 34 / 68%);
+  --yss-footer-card-border: rgb(148 163 184 / 22%);
+  --yss-footer-card-border-strong: rgb(96 165 250 / 26%);
+  --yss-footer-card-shadow: 0 26px 52px -34px rgb(0 0 0 / 82%), 0 10px 22px -18px rgb(96 165 250 / 18%);
+  --yss-footer-card-divider: rgb(148 163 184 / 16%);
+  --yss-footer-chip-bg: rgb(255 255 255 / 4%);
+  --yss-footer-chip-border: rgb(148 163 184 / 18%);
+  --yss-footer-kicker: rgb(226 232 240 / 42%);
+  --yss-footer-muted-strong: rgb(226 232 240 / 74%);
+  --yss-footer-highlight-soft: rgb(96 165 250 / 16%);
+  --yss-footer-focus-ring: rgb(96 165 250 / 38%);
+  --yss-footer-dot-start: #60a5fa;
+  --yss-footer-dot-end: #8b5cf6;
+  --yss-footer-glow-left: rgb(37 99 235 / 20%);
+  --yss-footer-glow-right: rgb(14 165 233 / 14%);
+  --yss-footer-bottom-haze: rgb(7 14 24 / 52%);
+  --yss-footer-bottom-border: rgb(148 163 184 / 18%);
+  --yss-footer-stage-border: rgb(148 163 184 / 20%);
+  --yss-footer-stage-shadow: 0 36px 86px -48px rgb(0 0 0 / 78%), 0 18px 38px -30px rgb(96 165 250 / 12%);
+  --yss-footer-panel-bg: linear-gradient(
+    180deg,
+    rgb(10 17 30 / 90%) 0%,
+    rgb(8 15 27 / 94%) 46%,
+    rgb(7 13 23 / 98%) 100%
+  );
+  --yss-footer-panel-aurora:
+    radial-gradient(30% 50% at 18% 18%, rgb(37 99 235 / 12%) 0%, transparent 74%),
+    radial-gradient(30% 50% at 82% 16%, rgb(109 40 217 / 11%) 0%, transparent 74%);
+  --yss-footer-panel-border: rgb(148 163 184 / 18%);
+  --yss-footer-panel-shadow: 0 28px 66px -44px rgb(0 0 0 / 72%), 0 10px 26px -20px rgb(96 165 250 / 8%);
+  --yss-footer-stage-plate: linear-gradient(
+    180deg,
+    rgb(10 16 30 / 42%) 0%,
+    rgb(8 16 29 / 80%) 20%,
+    rgb(7 14 24 / 96%) 100%
+  );
+  --yss-footer-stage-overlay: linear-gradient(180deg, rgb(255 255 255 / 10%), rgb(255 255 255 / 0%) 24%);
+  --yss-footer-stage-overlay-soft: rgb(10 18 34 / 56%);
+  --yss-footer-directory-bg: rgb(8 15 27 / 74%);
+  --yss-footer-directory-divider: rgb(148 163 184 / 16%);
+  --yss-footer-directory-row-hover: rgb(255 255 255 / 5%);
+  --yss-footer-connector-left: rgb(37 99 235 / 15%);
+  --yss-footer-connector-right: rgb(109 40 217 / 14%);
+  --yss-footer-connector-center: rgb(14 165 233 / 14%);
+  --yss-footer-scene-glow-left: rgb(37 99 235 / 18%);
+  --yss-footer-scene-glow-right: rgb(14 165 233 / 14%);
+  --yss-doc-footer-glass-bg: rgb(7 14 27 / 66%);
+  --yss-doc-footer-glass-aurora:
+    radial-gradient(50% 72% at 8% 4%, rgb(37 99 235 / 22%) 0%, transparent 72%),
+    radial-gradient(48% 68% at 94% 2%, rgb(109 40 217 / 19%) 0%, transparent 74%),
+    linear-gradient(180deg, rgb(18 30 52 / 64%), rgb(7 14 27 / 78%));
+  --yss-doc-footer-glass-border: rgb(148 163 184 / 20%);
+  --yss-doc-footer-glass-shadow: 0 38px 86px -44px rgb(0 0 0 / 82%), inset 0 1px 0 rgb(255 255 255 / 10%);
+  --yss-doc-footer-card-bg: rgb(12 22 39 / 58%);
+  --yss-doc-footer-card-border: rgb(148 163 184 / 18%);
+  --yss-doc-footer-card-shadow: 0 24px 52px -32px rgb(0 0 0 / 82%), 0 12px 30px -24px rgb(96 165 250 / 22%);
+  --yss-doc-footer-card-shadow-hover: 0 30px 62px -30px rgb(0 0 0 / 88%), 0 20px 38px -28px rgb(96 165 250 / 34%);
+  --yss-doc-footer-heading-bg: rgb(255 255 255 / 4%);
+  --yss-doc-footer-heading-border: rgb(148 163 184 / 14%);
+  --yss-doc-footer-row-bg: rgb(255 255 255 / 2%);
+  --yss-doc-footer-row-hover: rgb(255 255 255 / 7%);
+  --yss-doc-footer-icon-bg: rgb(255 255 255 / 7%);
+  --yss-doc-footer-kicker: rgb(125 211 252 / 76%);
+  --yss-doc-footer-shine: rgb(255 255 255 / 18%);
+  --yss-doc-footer-shine-soft: rgb(255 255 255 / 10%);
+  --yss-doc-footer-orb: radial-gradient(circle, rgb(109 40 217 / 25%) 0%, transparent 70%);
+  --yss-doc-footer-bottom-border: rgb(148 163 184 / 14%);
+  --yss-doc-footer-guides-rgb: 96 165 250;
+  --yss-doc-footer-dependencies-rgb: 45 212 191;
+  --yss-doc-footer-network-rgb: 167 139 250;
+
+  /* Homepage Footer Finale（首页终章：暗色 = 深墨蓝画布上的霓虹极光） */
+  --yss-home-footer-canvas:
+    radial-gradient(52% 30% at 18% 12%, rgb(79 124 255 / 15%), transparent 62%),
+    radial-gradient(46% 28% at 84% 16%, rgb(117 104 255 / 14%), transparent 60%),
+    radial-gradient(40% 24% at 50% 100%, rgb(43 184 200 / 8%), transparent 66%),
+    linear-gradient(180deg, rgb(5 7 9 / 0%) 0%, rgb(7 11 22 / 88%) 8%, #080d1a 16%, #060a15 100%);
+  --yss-home-footer-text: rgb(248 250 252 / 95%);
+  --yss-home-footer-muted: rgb(148 163 184 / 76%);
+  --yss-home-footer-muted-strong: rgb(203 213 225 / 88%);
+  --yss-home-footer-link: rgb(226 232 240 / 92%);
+  --yss-home-footer-link-hover: #fff;
+  --yss-home-footer-kicker: rgb(125 211 252 / 82%);
+  --yss-home-footer-kicker-line: linear-gradient(90deg, #7d9bff, #9d8fff);
+  --yss-home-footer-divider: rgb(148 163 184 / 15%);
+  --yss-home-footer-row-hover: rgb(148 163 184 / 10%);
+  --yss-home-footer-chip-border: rgb(125 155 255 / 26%);
+  --yss-home-footer-chip-bg: rgb(125 155 255 / 10%);
+  --yss-home-footer-focus-ring: rgb(125 211 252 / 45%);
+  --yss-home-footer-dot: #7d9bff;
+  --yss-home-footer-accent-guides-rgb: 125 155 255;
+  --yss-home-footer-accent-deps-rgb: 95 196 146;
+  --yss-home-footer-accent-network-rgb: 157 143 255;
+  --yss-home-footer-marquee-dot: rgb(226 232 240 / 26%);
+  --yss-home-footer-marquee-blue: #7d9bff;
+  --yss-home-footer-marquee-cyan: #4fd1e0;
+  --yss-home-footer-marquee-green: #5fc492;
+  --yss-home-footer-marquee-purple: #9d8fff;
+  --yss-home-footer-marquee-glow: 32%;
+  --yss-home-footer-title-gradient: linear-gradient(96deg, #7d9bff 0%, #9d8fff 52%, #4fd1e0 100%);
+  --yss-home-footer-card-bg: rgb(13 22 40 / 60%);
+  --yss-home-footer-card-border: rgb(148 163 184 / 20%);
+  --yss-home-footer-card-shine: rgb(255 255 255 / 12%);
+  --yss-home-footer-card-shadow: 0 26px 54px -34px rgb(0 0 0 / 78%), 0 12px 30px -24px rgb(96 165 250 / 18%);
+  --yss-home-footer-card-shadow-hover: 0 32px 64px -32px rgb(0 0 0 / 84%), 0 20px 40px -28px rgb(96 165 250 / 30%);
+  --yss-home-footer-row-bg: rgb(255 255 255 / 3%);
+
+  /* Demo/Common */
+  --demo-text-primary: rgb(255 255 255 / 85%);
+  --demo-text-secondary: rgb(255 255 255 / 65%);
+  --demo-text-muted: rgb(255 255 255 / 45%);
+  --demo-bg-container: #141414;
+  --demo-bg-surface: #1f1f1f;
+  --demo-border: rgb(255 255 255 / 12%);
+  --demo-bg-popover: #1f1f1f;
+  --demo-item-hover-bg: color-mix(in oklab, var(--demo-text-primary) 8%, transparent);
+  --demo-item-selected-bg: color-mix(in oklab, var(--demo-text-primary) 14%, transparent);
+  --demo-success-bg: rgb(82 196 26 / 15%);
+  --demo-success-color: #73d13d;
+  --demo-success-border: rgb(82 196 26 / 35%);
+  --demo-error-bg: rgb(255 77 79 / 15%);
+  --demo-error-color: #ff7875;
+  --demo-error-border: rgb(255 77 79 / 35%);
+}
+
+/* Dark Mode Structural Overrides (use theme vars above) */
+
+/* Previewer container */
+[data-prefers-color='dark'] .dumi-default-previewer,
+[data-prefers-color='dark'] .dumi-default-previewer .dumi-default-previewer-demo,
+[data-prefers-color='dark'] .dumi-default-previewer-demo {
+  background: var(--demo-bg-container) !important;
+  border-color: var(--demo-border) !important;
+}
+
+/* Form labels */
+[data-prefers-color='dark'] .ant-form-item .ant-form-item-label > label,
+:root[data-prefers-color='dark'] .ant-form-item .ant-form-item-label > label,
+[data-prefers-color='dark'] .ant-form-item-label > label,
+:root[data-prefers-color='dark'] .ant-form-item-label > label,
+[data-prefers-color='dark'] .formily-item .ant-form-item-label > label,
+:root[data-prefers-color='dark'] .formily-item .ant-form-item-label > label,
+[data-prefers-color='dark'] [class*='formily'] .ant-form-item-label > label,
+:root[data-prefers-color='dark'] [class*='formily'] .ant-form-item-label > label,
+[data-prefers-color='dark'] .ant-formily-form-item-label label,
+:root[data-prefers-color='dark'] .ant-formily-form-item-label label,
+[data-prefers-color='dark'] .ant-formily-form-item .ant-formily-form-item-label label,
+:root[data-prefers-color='dark'] .ant-formily-form-item .ant-formily-form-item-label label {
+  color: var(--demo-text-primary) !important;
+}
+
+[data-prefers-color='dark'] .ant-form-item-label > label.ant-form-item-required::before,
+:root[data-prefers-color='dark'] .ant-form-item-label > label.ant-form-item-required::before,
+[data-prefers-color='dark'] .ant-form-item-required::before,
+:root[data-prefers-color='dark'] .ant-form-item-required::before {
+  color: var(--demo-error-color) !important;
+}
+
+/* Inputs, selectors, pickers */
+[data-prefers-color='dark'] .ant-input,
+:root[data-prefers-color='dark'] .ant-input,
+[data-prefers-color='dark'] .ant-input-affix-wrapper,
+:root[data-prefers-color='dark'] .ant-input-affix-wrapper,
+[data-prefers-color='dark'] .ant-input-affix-wrapper > input.ant-input,
+:root[data-prefers-color='dark'] .ant-input-affix-wrapper > input.ant-input,
+[data-prefers-color='dark'] .ant-input-number,
+:root[data-prefers-color='dark'] .ant-input-number,
+[data-prefers-color='dark'] .ant-input-number input,
+:root[data-prefers-color='dark'] .ant-input-number input,
+[data-prefers-color='dark'] .ant-select-selector,
+:root[data-prefers-color='dark'] .ant-select-selector,
+[data-prefers-color='dark'] .ant-picker,
+:root[data-prefers-color='dark'] .ant-picker,
+[data-prefers-color='dark'] .ant-picker-input > input,
+:root[data-prefers-color='dark'] .ant-picker-input > input,
+[data-prefers-color='dark'] .ant-tree-select .ant-select-selector,
+:root[data-prefers-color='dark'] .ant-tree-select .ant-select-selector,
+[data-prefers-color='dark'] .ant-cascader-picker,
+:root[data-prefers-color='dark'] .ant-cascader-picker {
+  background: var(--demo-bg-container) !important;
+  border-color: var(--demo-border) !important;
+  color: var(--demo-text-primary) !important;
+}
+
+[data-prefers-color='dark'] input::placeholder,
+:root[data-prefers-color='dark'] input::placeholder,
+[data-prefers-color='dark'] .ant-input::placeholder,
+:root[data-prefers-color='dark'] .ant-input::placeholder,
+[data-prefers-color='dark'] .ant-picker-input > input::placeholder,
+:root[data-prefers-color='dark'] .ant-picker-input > input::placeholder,
+[data-prefers-color='dark'] .ant-select-selection-placeholder,
+:root[data-prefers-color='dark'] .ant-select-selection-placeholder {
+  color: var(--demo-text-muted) !important;
+}
+
+[data-prefers-color='dark'] .ant-select-dropdown,
+:root[data-prefers-color='dark'] .ant-select-dropdown,
+[data-prefers-color='dark'] .ant-cascader-menus,
+:root[data-prefers-color='dark'] .ant-cascader-menus,
+[data-prefers-color='dark'] .ant-cascader-menu,
+:root[data-prefers-color='dark'] .ant-cascader-menu,
+[data-prefers-color='dark'] .ant-picker-dropdown,
+:root[data-prefers-color='dark'] .ant-picker-dropdown {
+  background: var(--demo-bg-popover) !important;
+  color: var(--demo-text-primary) !important;
+  border-color: var(--demo-border) !important;
+}
+
+/* Select options */
+[data-prefers-color='dark'] .ant-select-item,
+:root[data-prefers-color='dark'] .ant-select-item {
+  color: var(--demo-text-primary) !important;
+}
+
+[data-prefers-color='dark'] .ant-select-item-option-active,
+:root[data-prefers-color='dark'] .ant-select-item-option-active {
+  background: var(--demo-item-hover-bg) !important;
+}
+
+[data-prefers-color='dark'] .ant-select-item-option-selected,
+:root[data-prefers-color='dark'] .ant-select-item-option-selected {
+  background: var(--demo-item-selected-bg) !important;
+  color: var(--demo-text-primary) !important;
+}
+
+[data-prefers-color='dark'] .ant-select-item-option-disabled,
+:root[data-prefers-color='dark'] .ant-select-item-option-disabled {
+  color: var(--demo-text-muted) !important;
+}
+
+/* Cascader menu */
+[data-prefers-color='dark'] .ant-cascader-menu-item:hover,
+:root[data-prefers-color='dark'] .ant-cascader-menu-item:hover,
+[data-prefers-color='dark'] .ant-cascader-menu-item-active,
+:root[data-prefers-color='dark'] .ant-cascader-menu-item-active {
+  background: var(--demo-item-hover-bg) !important;
+  color: var(--demo-text-primary) !important;
+}
+
+[data-prefers-color='dark'] .ant-cascader-menu-item-selected,
+:root[data-prefers-color='dark'] .ant-cascader-menu-item-selected {
+  background: var(--demo-item-selected-bg) !important;
+}
+
+/* DatePicker panels */
+[data-prefers-color='dark'] .ant-picker-panel-container,
+:root[data-prefers-color='dark'] .ant-picker-panel-container,
+[data-prefers-color='dark'] .ant-picker-time-panel,
+:root[data-prefers-color='dark'] .ant-picker-time-panel {
+  background: var(--demo-bg-popover) !important;
+  border-color: var(--demo-border) !important;
+  color: var(--demo-text-primary) !important;
+}
+
+[data-prefers-color='dark'] .ant-picker-header,
+:root[data-prefers-color='dark'] .ant-picker-header,
+[data-prefers-color='dark'] .ant-picker-header button,
+:root[data-prefers-color='dark'] .ant-picker-header button,
+[data-prefers-color='dark'] .ant-picker-content th,
+:root[data-prefers-color='dark'] .ant-picker-content th {
+  color: var(--demo-text-secondary) !important;
+}
+
+[data-prefers-color='dark'] .ant-picker-cell .ant-picker-cell-inner,
+:root[data-prefers-color='dark'] .ant-picker-cell .ant-picker-cell-inner,
+[data-prefers-color='dark'] .ant-picker-month-panel .ant-picker-cell .ant-picker-cell-inner,
+:root[data-prefers-color='dark'] .ant-picker-month-panel .ant-picker-cell .ant-picker-cell-inner,
+[data-prefers-color='dark'] .ant-picker-year-panel .ant-picker-cell .ant-picker-cell-inner,
+:root[data-prefers-color='dark'] .ant-picker-year-panel .ant-picker-cell .ant-picker-cell-inner,
+[data-prefers-color='dark'] .ant-picker-decade-panel .ant-picker-cell .ant-picker-cell-inner,
+:root[data-prefers-color='dark'] .ant-picker-decade-panel .ant-picker-cell .ant-picker-cell-inner {
+  color: var(--demo-text-primary) !important;
+}
+
+[data-prefers-color='dark'] .ant-picker-cell-disabled,
+:root[data-prefers-color='dark'] .ant-picker-cell-disabled,
+[data-prefers-color='dark'] .ant-picker-cell-disabled .ant-picker-cell-inner,
+:root[data-prefers-color='dark'] .ant-picker-cell-disabled .ant-picker-cell-inner {
+  color: var(--demo-text-muted) !important;
+}
+
+[data-prefers-color='dark'] .ant-picker-cell-in-view.ant-picker-cell-selected .ant-picker-cell-inner,
+:root[data-prefers-color='dark'] .ant-picker-cell-in-view.ant-picker-cell-selected .ant-picker-cell-inner,
+[data-prefers-color='dark'] .ant-picker-cell-in-view.ant-picker-cell-range-start .ant-picker-cell-inner,
+:root[data-prefers-color='dark'] .ant-picker-cell-in-view.ant-picker-cell-range-start .ant-picker-cell-inner,
+[data-prefers-color='dark'] .ant-picker-cell-in-view.ant-picker-cell-range-end .ant-picker-cell-inner,
+:root[data-prefers-color='dark'] .ant-picker-cell-in-view.ant-picker-cell-range-end .ant-picker-cell-inner {
+  background: var(--demo-item-selected-bg) !important;
+  color: var(--demo-text-primary) !important;
+}
+
+[data-prefers-color='dark'] .ant-picker-cell-in-view.ant-picker-cell-in-range::before,
+:root[data-prefers-color='dark'] .ant-picker-cell-in-view.ant-picker-cell-in-range::before {
+  background: var(--demo-item-selected-bg) !important;
+}
+
+[data-prefers-color='dark'] .ant-picker-cell-in-view.ant-picker-cell-range-hover::before,
+:root[data-prefers-color='dark'] .ant-picker-cell-in-view.ant-picker-cell-range-hover::before,
+[data-prefers-color='dark'] .ant-picker-cell-in-view.ant-picker-cell-range-hover-start::before,
+:root[data-prefers-color='dark'] .ant-picker-cell-in-view.ant-picker-cell-range-hover-start::before,
+[data-prefers-color='dark'] .ant-picker-cell-in-view.ant-picker-cell-range-hover-end::before,
+:root[data-prefers-color='dark'] .ant-picker-cell-in-view.ant-picker-cell-range-hover-end::before {
+  background: var(--demo-item-hover-bg) !important;
+}
+
+[data-prefers-color='dark'] .ant-picker-cell .ant-picker-cell-inner:hover,
+:root[data-prefers-color='dark'] .ant-picker-cell .ant-picker-cell-inner:hover {
+  background: var(--demo-item-hover-bg) !important;
+}
+
+[data-prefers-color='dark'] .ant-picker-cell-in-view.ant-picker-cell-today .ant-picker-cell-inner::before,
+:root[data-prefers-color='dark'] .ant-picker-cell-in-view.ant-picker-cell-today .ant-picker-cell-inner::before {
+  border-color: var(--demo-border) !important;
+}
+
+[data-prefers-color='dark'] .ant-picker-time-panel-column,
+:root[data-prefers-color='dark'] .ant-picker-time-panel-column {
+  border-color: var(--demo-border) !important;
+}
+
+[data-prefers-color='dark'] .ant-picker-time-panel-cell-inner,
+:root[data-prefers-color='dark'] .ant-picker-time-panel-cell-inner {
+  color: var(--demo-text-primary) !important;
+}
+
+[data-prefers-color='dark'] .ant-picker-time-panel-cell-selected .ant-picker-time-panel-cell-inner,
+:root[data-prefers-color='dark'] .ant-picker-time-panel-cell-selected .ant-picker-time-panel-cell-inner {
+  background: var(--demo-item-selected-bg) !important;
+}
+
+/* Collapse */
+[data-prefers-color='dark'] .ant-collapse,
+:root[data-prefers-color='dark'] .ant-collapse {
+  background: transparent !important;
+  color: var(--demo-text-primary) !important;
+  border-color: var(--demo-border) !important;
+}
+
+[data-prefers-color='dark'] .ant-collapse > .ant-collapse-item,
+:root[data-prefers-color='dark'] .ant-collapse > .ant-collapse-item {
+  border-color: var(--demo-border) !important;
+}
+
+[data-prefers-color='dark'] .ant-collapse .ant-collapse-header,
+:root[data-prefers-color='dark'] .ant-collapse .ant-collapse-header {
+  background: var(--demo-bg-surface) !important;
+  color: var(--demo-text-primary) !important;
+}
+
+[data-prefers-color='dark'] .ant-collapse .ant-collapse-header:hover,
+:root[data-prefers-color='dark'] .ant-collapse .ant-collapse-header:hover {
+  background: var(--demo-item-hover-bg) !important;
+}
+
+[data-prefers-color='dark'] .ant-collapse .ant-collapse-header .ant-collapse-arrow,
+:root[data-prefers-color='dark'] .ant-collapse .ant-collapse-header .ant-collapse-arrow {
+  color: var(--demo-text-secondary) !important;
+}
+
+[data-prefers-color='dark'] .ant-collapse-content,
+:root[data-prefers-color='dark'] .ant-collapse-content {
+  background: var(--demo-bg-surface) !important;
+  border-color: var(--demo-border) !important;
+  color: var(--demo-text-primary) !important;
+}
+
+[data-prefers-color='dark'] .ant-collapse-content > .ant-collapse-content-box,
+:root[data-prefers-color='dark'] .ant-collapse-content > .ant-collapse-content-box {
+  background: var(--demo-bg-container) !important;
+}
+
+/* Descriptions */
+[data-prefers-color='dark'] .ant-descriptions,
+:root[data-prefers-color='dark'] .ant-descriptions {
+  color: var(--demo-text-primary) !important;
+}
+
+[data-prefers-color='dark'] .ant-descriptions-title,
+:root[data-prefers-color='dark'] .ant-descriptions-title {
+  color: var(--demo-text-primary) !important;
+}
+
+[data-prefers-color='dark'] .ant-descriptions-item-label,
+:root[data-prefers-color='dark'] .ant-descriptions-item-label {
+  color: var(--demo-text-secondary) !important;
+}
+
+[data-prefers-color='dark'] .ant-descriptions-item-content,
+:root[data-prefers-color='dark'] .ant-descriptions-item-content {
+  color: var(--demo-text-primary) !important;
+}
+
+[data-prefers-color='dark'] .ant-descriptions-bordered .ant-descriptions-view,
+:root[data-prefers-color='dark'] .ant-descriptions-bordered .ant-descriptions-view {
+  border-color: var(--demo-border) !important;
+}
+
+[data-prefers-color='dark'] .ant-descriptions-bordered .ant-descriptions-row > th,
+:root[data-prefers-color='dark'] .ant-descriptions-bordered .ant-descriptions-row > th,
+[data-prefers-color='dark'] .ant-descriptions-bordered .ant-descriptions-row > td,
+:root[data-prefers-color='dark'] .ant-descriptions-bordered .ant-descriptions-row > td {
+  border-color: var(--demo-border) !important;
+  background: var(--demo-bg-surface) !important;
+}
+
+/* Button Group / Radio.Button */
+[data-prefers-color='dark'] .ant-radio-group .ant-radio-button-wrapper,
+:root[data-prefers-color='dark'] .ant-radio-group .ant-radio-button-wrapper {
+  background: var(--demo-bg-surface) !important;
+  color: var(--demo-text-primary) !important;
+  border-color: var(--demo-border) !important;
+}
+
+[data-prefers-color='dark'] .ant-radio-button-wrapper:not(:first-child)::before,
+:root[data-prefers-color='dark'] .ant-radio-button-wrapper:not(:first-child)::before {
+  background: var(--demo-border) !important;
+}
+
+[data-prefers-color='dark'] .ant-radio-group .ant-radio-button-wrapper:hover,
+:root[data-prefers-color='dark'] .ant-radio-group .ant-radio-button-wrapper:hover {
+  background: var(--demo-item-hover-bg) !important;
+}
+
+[data-prefers-color='dark'] .ant-radio-group .ant-radio-button-wrapper-checked,
+:root[data-prefers-color='dark'] .ant-radio-group .ant-radio-button-wrapper-checked {
+  background: var(--demo-item-selected-bg) !important;
+  color: var(--demo-text-primary) !important;
+  border-color: var(--demo-border) !important;
+  box-shadow: inset 0 0 0 1px var(--demo-border) !important;
+}
+
+[data-prefers-color='dark'] .ant-btn-group > .ant-btn:not(.ant-btn-primary, .ant-btn-dangerous),
+:root[data-prefers-color='dark'] .ant-btn-group > .ant-btn:not(.ant-btn-primary, .ant-btn-dangerous) {
+  background: var(--demo-bg-surface) !important;
+  color: var(--demo-text-primary) !important;
+  border-color: var(--demo-border) !important;
+}
+
+[data-prefers-color='dark'] .ant-btn-group > .ant-btn:hover,
+:root[data-prefers-color='dark'] .ant-btn-group > .ant-btn:hover {
+  background: var(--demo-item-hover-bg) !important;
+}
+
+/* Steps */
+[data-prefers-color='dark'] .ant-steps,
+:root[data-prefers-color='dark'] .ant-steps {
+  color: var(--demo-text-primary) !important;
+}
+
+[data-prefers-color='dark'] .ant-steps-item-title,
+:root[data-prefers-color='dark'] .ant-steps-item-title,
+[data-prefers-color='dark'] .ant-steps-item-description,
+:root[data-prefers-color='dark'] .ant-steps-item-description {
+  color: var(--demo-text-primary) !important;
+}
+
+[data-prefers-color='dark'] .ant-steps-item-wait .ant-steps-item-icon,
+:root[data-prefers-color='dark'] .ant-steps-item-wait .ant-steps-item-icon {
+  background: var(--demo-bg-surface) !important;
+  border-color: var(--demo-border) !important;
+}
+
+[data-prefers-color='dark'] .ant-steps-item-process .ant-steps-item-icon,
+:root[data-prefers-color='dark'] .ant-steps-item-process .ant-steps-item-icon,
+[data-prefers-color='dark'] .ant-steps-item-finish .ant-steps-item-icon,
+:root[data-prefers-color='dark'] .ant-steps-item-finish .ant-steps-item-icon {
+  background: var(--demo-item-selected-bg) !important;
+  border-color: var(--demo-border) !important;
+}
+
+[data-prefers-color='dark'] .ant-steps-item-finish .ant-steps-item-tail::after,
+:root[data-prefers-color='dark'] .ant-steps-item-finish .ant-steps-item-tail::after,
+[data-prefers-color='dark'] .ant-steps-item-process .ant-steps-item-tail::after,
+:root[data-prefers-color='dark'] .ant-steps-item-process .ant-steps-item-tail::after {
+  background: var(--demo-border) !important;
+}
+
+/* Focus ring */
+[data-prefers-color='dark'] .ant-input:focus,
+:root[data-prefers-color='dark'] .ant-input:focus,
+[data-prefers-color='dark'] .ant-input-affix-wrapper-focused,
+:root[data-prefers-color='dark'] .ant-input-affix-wrapper-focused,
+[data-prefers-color='dark'] .ant-select-focused .ant-select-selector,
+:root[data-prefers-color='dark'] .ant-select-focused .ant-select-selector,
+[data-prefers-color='dark'] .ant-picker-focused,
+:root[data-prefers-color='dark'] .ant-picker-focused {
+  box-shadow: 0 0 0 2px color-mix(in oklab, var(--demo-text-primary) 12%, transparent) !important;
+}

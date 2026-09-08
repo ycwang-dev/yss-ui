@@ -1,0 +1,58 @@
+import {
+  BarChart,
+  CandlestickChart,
+  FunnelChart,
+  GaugeChart,
+  HeatmapChart,
+  LineChart,
+  PieChart,
+  RadarChart,
+  ScatterChart,
+  TreemapChart,
+} from 'echarts/charts';
+import {
+  CalendarComponent,
+  DatasetComponent,
+  DataZoomComponent,
+  GridComponent,
+  LegendComponent,
+  MarkAreaComponent,
+  MarkLineComponent,
+  MarkPointComponent,
+  TitleComponent,
+  ToolboxComponent,
+  TooltipComponent,
+  TransformComponent,
+  VisualMapComponent,
+} from 'echarts/components';
+import { use } from 'echarts/core';
+import { CanvasRenderer, SVGRenderer } from 'echarts/renderers';
+
+// 注册常用图表与组件，支持 canvas/svg 双渲染器，按需 tree-shaking
+use([
+  TitleComponent,
+  TooltipComponent,
+  GridComponent,
+  LegendComponent,
+  DatasetComponent,
+  TransformComponent,
+  VisualMapComponent,
+  DataZoomComponent,
+  ToolboxComponent,
+  CalendarComponent,
+  MarkPointComponent,
+  MarkLineComponent,
+  MarkAreaComponent,
+  BarChart,
+  LineChart,
+  PieChart,
+  ScatterChart,
+  RadarChart,
+  GaugeChart,
+  FunnelChart,
+  TreemapChart,
+  CandlestickChart,
+  HeatmapChart,
+  CanvasRenderer,
+  SVGRenderer,
+]);

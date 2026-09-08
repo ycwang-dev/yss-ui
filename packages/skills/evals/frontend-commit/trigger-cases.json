@@ -1,0 +1,36 @@
+{
+  "skill": "frontend-commit",
+  "purpose": "触发行为规约：前端业务仓库 Git 提交的确定性词法路由（与 java-backend-commit 成对）。",
+  "cases": [
+    {
+      "id": "vue-project-commit",
+      "prompt": "帮我把这个 Vue 项目的改动提交了",
+      "should_trigger": true,
+      "assert": "分析 diff 选择业务 scope，生成规范提交并执行。"
+    },
+    {
+      "id": "atomic-split",
+      "prompt": "微前端仓库拆分原子提交",
+      "should_trigger": true,
+      "assert": "按变更边界拆分原子提交。"
+    },
+    {
+      "id": "commitlint-fix",
+      "prompt": "前端项目 commitlint 不过怎么修",
+      "should_trigger": true,
+      "assert": "定位 commitlint 规则冲突并修正提交信息。"
+    },
+    {
+      "id": "near-miss-java",
+      "prompt": "Spring Boot 服务提交代码",
+      "should_trigger": false,
+      "assert": "后端仓库提交归 java-backend-commit，不触发本 skill。"
+    },
+    {
+      "id": "near-miss-library-repo",
+      "prompt": "yss-ui 组件库的提交",
+      "should_trigger": false,
+      "assert": "组件库仓库提交归 commit-linting，不触发本 skill。"
+    }
+  ]
+}

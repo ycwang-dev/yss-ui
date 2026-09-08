@@ -1,0 +1,1098 @@
+/* stylelint-disable selector-pseudo-class-no-unknown -- Vue scoped 样式通过 :deep() 覆盖内部日期面板。 */
+.y-month-calendar {
+  --yss-month-calendar-primary: var(--yss-color-primary-6, var(--ant-primary-color, #4676f6));
+  --yss-month-calendar-primary-deep: color-mix(in srgb, var(--yss-month-calendar-primary) 78%, #193d9d);
+  --yss-month-calendar-primary-soft: color-mix(in srgb, var(--yss-month-calendar-primary) 11%, #fff);
+  --yss-month-calendar-cyan: #42c8c1;
+  --yss-month-calendar-border: color-mix(in srgb, var(--yss-month-calendar-primary) 9%, #dfe5ef);
+  --yss-month-calendar-text: var(--ant-text-color, #182235);
+  --yss-month-calendar-text-secondary: var(--ant-text-color-secondary, #7b879b);
+  --yss-month-calendar-disabled: var(--ant-disabled-color, #aeb7c6);
+  --yss-month-calendar-grid-min-width: 840px;
+  --yss-month-calendar-configured-cell-height: 88px;
+  --yss-month-calendar-cell-height: var(--yss-month-calendar-configured-cell-height);
+  --yss-month-calendar-cell-padding-inline: 10px;
+
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+  overflow: hidden;
+  color: var(--yss-month-calendar-text);
+  border: 1px solid rgb(125 145 184 / 18%);
+  border-radius: 20px;
+  background: #f7f9fd;
+  container: y-month-calendar / inline-size;
+
+  &--glass {
+    background:
+      radial-gradient(circle at 7% -8%, rgb(71 118 246 / 15%), transparent 31%),
+      radial-gradient(circle at 96% 6%, rgb(66 200 193 / 12%), transparent 29%),
+      linear-gradient(145deg, rgb(255 255 255 / 96%), rgb(244 247 253 / 90%));
+    box-shadow:
+      0 22px 58px rgb(54 72 111 / 12%),
+      inset 0 1px 0 rgb(255 255 255 / 92%);
+    backdrop-filter: blur(20px) saturate(135%);
+  }
+
+  &--glass::before {
+    position: absolute;
+    z-index: 0;
+    top: -76px;
+    right: 13%;
+    width: 210px;
+    height: 130px;
+    border-radius: 50%;
+    background: rgb(255 255 255 / 64%);
+    filter: blur(24px);
+    pointer-events: none;
+    content: "";
+  }
+
+  &--plain {
+    border-color: var(--yss-month-calendar-border);
+    border-radius: 12px;
+    background: var(--ant-component-background, #fff);
+    box-shadow: none;
+  }
+
+  &--fill-height {
+    height: 100%;
+    min-height: 0;
+  }
+
+  &--fill-height :deep(.y-month-calendar__body-scroll),
+  &--fill-height :deep(.y-month-calendar__body),
+  &--fill-height :deep(.y-month-calendar__spin),
+  &--fill-height :deep(.y-month-calendar__spin .ant-spin-container),
+  &--fill-height :deep(.y-month-calendar__spin .ant-picker-calendar),
+  &--fill-height :deep(.y-month-calendar__spin .ant-picker-calendar > div),
+  &--fill-height :deep(.y-month-calendar__spin .ant-picker-panel-container),
+  &--fill-height :deep(.y-month-calendar__spin .ant-picker-panel),
+  &--fill-height :deep(.y-month-calendar__spin .ant-picker-date-panel),
+  &--fill-height :deep(.y-month-calendar__spin .ant-picker-body) {
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: column;
+    min-height: 0;
+  }
+
+  &--fill-height :deep(.y-month-calendar__weekdays) {
+    flex: none;
+  }
+
+  &--fill-height :deep(.y-month-calendar__spin .ant-picker-content),
+  &--fill-height :deep(.y-month-calendar__spin .ant-picker-content tbody) {
+    height: 100%;
+  }
+
+  &--fill-height :deep(.y-month-calendar__spin .ant-picker-content tbody tr) {
+    height: calc(100% / 6);
+  }
+
+  &__header,
+  :deep(.y-month-calendar__body-scroll) {
+    position: relative;
+    z-index: 1;
+  }
+
+  &__header {
+    display: flex;
+    flex: none;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    min-height: 58px;
+    padding: 10px 14px 9px 18px;
+    border-bottom: 1px solid rgb(132 149 181 / 14%);
+    background: rgb(255 255 255 / 76%);
+  }
+
+  &--glass &__header {
+    background: linear-gradient(110deg, rgb(255 255 255 / 82%), rgb(247 250 255 / 50%));
+    backdrop-filter: blur(15px) saturate(125%);
+  }
+
+  &--plain &__header {
+    min-height: 52px;
+    background: var(--ant-component-background, #fff);
+  }
+
+  &__header strong {
+    color: #1a2942;
+    font-size: 17px;
+    line-height: 24px;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    text-shadow: 0 1px 0 #fff;
+  }
+
+  &__header-left {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  &__header-right {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  :deep(.y-month-calendar__header-actions) {
+    display: inline-flex;
+    flex: none;
+    align-items: stretch;
+    gap: 3px;
+    padding: 3px;
+    border: 1px solid rgb(255 255 255 / 65%);
+    border-radius: 12px;
+    background: linear-gradient(135deg, rgb(230 240 255 / 68%) 0%, rgb(244 248 255 / 42%) 100%);
+    box-shadow:
+      0 10px 24px rgb(45 75 135 / 8%),
+      inset 0 1px 1px rgb(255 255 255 / 95%);
+  }
+
+  &--glass :deep(.y-month-calendar__header-actions) {
+    backdrop-filter: blur(16px) saturate(140%);
+  }
+
+  :deep(.y-month-calendar__header-action) {
+    min-width: 34px;
+    height: 32px;
+    padding: 0 9px;
+    color: #2b3d58;
+    border: 0;
+    border-radius: 8px;
+    background: linear-gradient(135deg, rgb(255 255 255 / 92%) 0%, rgb(255 255 255 / 68%) 100%);
+    box-shadow:
+      0 3px 8px rgb(50 72 111 / 5%),
+      inset 0 1px 0 #fff,
+      inset 0 -1.5px 2px rgb(44 67 112 / 8%);
+    transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  :deep(.y-month-calendar__header-action--today) {
+    color: var(--yss-month-calendar-primary-deep);
+    background: linear-gradient(
+      135deg,
+      rgb(255 255 255 / 96%) 0%,
+      color-mix(in srgb, var(--yss-month-calendar-primary) 6%, rgb(255 255 255 / 85%)) 100%
+    );
+    font-weight: 600;
+    box-shadow:
+      0 3px 8px rgb(70 118 246 / 6%),
+      inset 0 1px 0 #fff,
+      inset 0 -1px 1px rgb(70 118 246 / 6%);
+  }
+
+  :deep(.y-month-calendar__header-action--selected) {
+    color: #fff !important;
+    background: linear-gradient(
+      135deg,
+      var(--yss-month-calendar-primary) 0%,
+      var(--yss-month-calendar-cyan) 100%
+    ) !important;
+    font-weight: 600;
+    box-shadow:
+      0 4px 12px color-mix(in srgb, var(--yss-month-calendar-primary) 32%, transparent),
+      inset 0 1px 0 rgb(255 255 255 / 35%),
+      inset 0 -1px 1px rgb(0 0 0 / 15%) !important;
+  }
+
+  :deep(.y-month-calendar__header-action:hover:not(:disabled)) {
+    z-index: 1;
+    color: var(--yss-month-calendar-primary);
+    background: linear-gradient(135deg, #fff 0%, rgb(255 255 255 / 85%) 100%);
+    box-shadow:
+      0 6px 14px rgb(46 118 246 / 12%),
+      inset 0 1px 0 #fff,
+      inset 0 -1px 1.5px rgb(46 118 246 / 4%);
+    transform: translateY(-1.5px);
+  }
+
+  :deep(.y-month-calendar__header-action--selected:hover:not(:disabled)) {
+    color: #fff !important;
+    background: linear-gradient(
+      135deg,
+      var(--yss-month-calendar-primary) 0%,
+      var(--yss-month-calendar-cyan) 100%
+    ) !important;
+    box-shadow:
+      0 8px 18px color-mix(in srgb, var(--yss-month-calendar-primary) 48%, transparent),
+      inset 0 1px 0 rgb(255 255 255 / 45%),
+      inset 0 -1px 1px rgb(0 0 0 / 15%) !important;
+  }
+
+  :deep(.y-month-calendar__header-action:active:not(:disabled)) {
+    box-shadow: inset 0 1.5px 3px rgb(44 67 112 / 12%);
+    transform: translateY(0.5px);
+  }
+
+  :deep(.y-month-calendar__header-action:focus-visible) {
+    z-index: 2;
+    outline: 2px solid color-mix(in srgb, var(--yss-month-calendar-primary) 70%, #fff);
+    outline-offset: 2px;
+  }
+
+  :deep(.y-month-calendar__header-action:disabled) {
+    color: var(--yss-month-calendar-disabled);
+    background: rgb(246 248 251 / 65%);
+    box-shadow: none;
+    transform: none;
+    opacity: 0.55;
+  }
+
+  &--plain :deep(.y-month-calendar__header-actions) {
+    gap: 4px;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    box-shadow: none;
+  }
+
+  &--plain :deep(.y-month-calendar__header-action) {
+    border: 1px solid var(--yss-month-calendar-border);
+    background: var(--ant-component-background, #fff);
+    box-shadow: none;
+  }
+
+  &__body-scroll {
+    flex: 1 1 auto;
+    min-width: 0;
+    min-height: 0;
+    overflow: auto;
+    overscroll-behavior: contain;
+    scrollbar-color: rgb(116 137 174 / 34%) transparent;
+    scrollbar-width: thin;
+  }
+
+  :deep(.y-month-calendar__body) {
+    min-width: var(--yss-month-calendar-grid-min-width);
+  }
+
+  :deep(.y-month-calendar__weekdays) {
+    display: grid;
+    grid-template-columns: repeat(7, minmax(0, 1fr));
+    gap: 6px;
+    padding: 3px 7px 2px;
+    color: var(--yss-month-calendar-text-secondary);
+    font-size: 12px;
+    line-height: 30px;
+    font-weight: 600;
+    border-bottom: 1px solid rgb(132 149 181 / 11%);
+    background: rgb(250 252 255 / 76%);
+  }
+
+  &--glass :deep(.y-month-calendar__weekdays) {
+    background: rgb(250 252 255 / 52%);
+    backdrop-filter: blur(10px);
+  }
+
+  :deep(.y-month-calendar__weekdays > div) {
+    padding: 0 9px;
+  }
+
+  :deep(.y-month-calendar__weekdays > div:nth-last-child(-n + 2)) {
+    color: #d36a64;
+  }
+
+  :deep(.y-month-calendar__spin) {
+    min-width: 0;
+    background: transparent;
+  }
+
+  :deep(.y-month-calendar__spin .ant-spin-container),
+  :deep(.y-month-calendar__spin .ant-picker-calendar),
+  :deep(.y-month-calendar__spin .ant-picker-panel),
+  :deep(.y-month-calendar__spin .ant-picker-date-panel),
+  :deep(.y-month-calendar__spin .ant-picker-body) {
+    background: transparent;
+  }
+
+  :deep(.y-month-calendar__spin .ant-picker-body) {
+    padding: 0;
+  }
+
+  :deep(.y-month-calendar__spin .ant-picker-content) {
+    width: calc(100% - 14px);
+    margin: 0 7px;
+    table-layout: fixed;
+    border-collapse: separate;
+    border-spacing: 6px;
+  }
+
+  :deep(.y-month-calendar__spin .ant-picker-content thead) {
+    display: none;
+  }
+
+  :deep(.y-month-calendar__spin .ant-picker-cell) {
+    height: var(--yss-month-calendar-cell-height);
+    padding: 0;
+    text-align: left;
+    vertical-align: top;
+    border: 0;
+  }
+
+  :deep(.y-month-calendar__spin .ant-picker-cell::before) {
+    display: none;
+  }
+
+  :deep(.y-month-calendar__spin .ant-picker-cell-inner),
+  :deep(.y-month-calendar__spin .ant-picker-calendar-date),
+  :deep(.y-month-calendar__spin .ant-picker-calendar-date-content) {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: visible;
+    border: 0;
+    background: transparent;
+  }
+
+  :deep(.y-month-calendar__spin .ant-picker-calendar-date-value) {
+    display: none;
+  }
+
+  :deep(.y-month-calendar__cell) {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    width: 100%;
+    height: var(--yss-month-calendar-cell-height);
+    min-height: 64px;
+    box-sizing: border-box;
+    padding: 9px var(--yss-month-calendar-cell-padding-inline);
+    overflow: hidden;
+    text-align: left;
+    border: 1px solid rgb(129 145 174 / 18%);
+    border-radius: 13px;
+    outline: none;
+    background: #fff;
+    cursor: pointer;
+    transition:
+      border-color 0.18s ease,
+      background 0.18s ease,
+      box-shadow 0.18s ease,
+      transform 0.18s ease;
+  }
+
+  &--glass :deep(.y-month-calendar__cell) {
+    background:
+      radial-gradient(circle at 86% 0, rgb(255 255 255 / 92%), transparent 32%),
+      linear-gradient(145deg, rgb(255 255 255 / 95%), rgb(248 251 255 / 78%));
+    box-shadow:
+      0 7px 17px rgb(42 58 91 / 6%),
+      inset 0 1px 0 #fff;
+  }
+
+  &--glass :deep(.y-month-calendar__cell::before) {
+    position: absolute;
+    top: 0;
+    left: 12%;
+    width: 76%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgb(255 255 255 / 95%), transparent);
+    pointer-events: none;
+    content: "";
+  }
+
+  :deep(.y-month-calendar__cell:hover) {
+    z-index: 2;
+    border-color: color-mix(in srgb, var(--yss-month-calendar-primary) 35%, #d9e0ec);
+  }
+
+  &--glass :deep(.y-month-calendar__cell:hover) {
+    background: linear-gradient(145deg, #fff, color-mix(in srgb, var(--yss-month-calendar-primary) 4%, #fff));
+    box-shadow:
+      0 12px 24px rgb(43 67 117 / 11%),
+      inset 0 1px 0 #fff;
+    transform: translateY(-2px);
+  }
+
+  :deep(.y-month-calendar__cell:focus-visible) {
+    z-index: 3;
+    border-color: var(--yss-month-calendar-primary);
+    box-shadow:
+      0 0 0 3px color-mix(in srgb, var(--yss-month-calendar-primary) 16%, transparent),
+      0 12px 26px rgb(52 87 164 / 14%);
+  }
+
+  :deep(.y-month-calendar__cell--selected) {
+    z-index: 1;
+    color: #173873;
+    border-color: color-mix(in srgb, var(--yss-month-calendar-primary) 72%, #fff);
+    background: color-mix(in srgb, var(--yss-month-calendar-primary) 9%, #fff);
+  }
+
+  &--glass :deep(.y-month-calendar__cell--selected) {
+    background:
+      radial-gradient(circle at 86% 12%, rgb(255 255 255 / 80%), transparent 23%),
+      linear-gradient(
+        145deg,
+        color-mix(in srgb, var(--yss-month-calendar-primary) 18%, #fff),
+        color-mix(in srgb, var(--yss-month-calendar-cyan) 10%, #fff)
+      );
+    box-shadow:
+      0 11px 25px color-mix(in srgb, var(--yss-month-calendar-primary) 18%, transparent),
+      inset 0 0 0 1px rgb(255 255 255 / 54%),
+      inset 0 1px 0 #fff;
+  }
+
+  :deep(.y-month-calendar__cell--selected::after) {
+    position: absolute;
+    top: -1px;
+    left: 50%;
+    width: 34px;
+    height: 3px;
+    border-radius: 0 0 4px 4px;
+    background: linear-gradient(90deg, var(--yss-month-calendar-primary), var(--yss-month-calendar-cyan));
+    box-shadow: 0 3px 8px rgb(62 111 232 / 25%);
+    transform: translateX(-50%);
+    content: "";
+  }
+
+  :deep(.y-month-calendar__cell--outside) {
+    color: var(--yss-month-calendar-disabled);
+    border-color: rgb(139 152 176 / 11%);
+    background: #f7f8fb;
+    box-shadow: none;
+  }
+
+  &--glass :deep(.y-month-calendar__cell--outside) {
+    background: linear-gradient(145deg, rgb(244 247 252 / 68%), rgb(249 250 253 / 52%));
+  }
+
+  :deep(.y-month-calendar__cell--outside:hover) {
+    border-color: rgb(139 152 176 / 18%);
+    box-shadow: 0 6px 15px rgb(52 64 88 / 5%);
+  }
+
+  :deep(.y-month-calendar__cell--disabled) {
+    color: var(--yss-month-calendar-disabled);
+    background: color-mix(in srgb, #edf1f8 76%, transparent);
+    box-shadow: none;
+    cursor: not-allowed;
+  }
+
+  :deep(.y-month-calendar__cell--disabled:hover) {
+    border-color: var(--yss-month-calendar-border);
+    box-shadow: none;
+    transform: none;
+  }
+
+  :deep(.y-month-calendar__date-line) {
+    display: flex;
+    flex: none;
+    align-items: center;
+    justify-content: space-between;
+    gap: 6px;
+    min-height: 20px;
+  }
+
+  :deep(.y-month-calendar__date) {
+    display: inline-flex;
+    flex: none;
+    align-items: center;
+    justify-content: center;
+    min-width: 20px;
+    font-size: 15px;
+    line-height: 20px;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0.01em;
+  }
+
+  :deep(.y-month-calendar__date--today) {
+    width: 28px;
+    height: 28px;
+    color: #fff;
+    line-height: 28px;
+    border-radius: 50%;
+    background: var(--yss-month-calendar-primary);
+    box-shadow:
+      0 5px 12px color-mix(in srgb, var(--yss-month-calendar-primary) 28%, transparent),
+      inset 0 1px 0 rgb(255 255 255 / 32%);
+  }
+
+  :deep(.y-month-calendar__today-badge) {
+    display: inline-flex;
+    flex: none;
+    align-items: center;
+    height: 18px;
+    max-width: 70%;
+    padding: 0 7px;
+    overflow: hidden;
+    color: #fff;
+    font-size: 11px;
+    line-height: 18px;
+    font-weight: 600;
+    border-radius: 9px;
+    background: var(--yss-month-calendar-primary);
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  &--glass :deep(.y-month-calendar__today-badge) {
+    background: linear-gradient(105deg, var(--yss-month-calendar-primary), #6799ff 56%, var(--yss-month-calendar-cyan));
+    box-shadow:
+      0 5px 12px rgb(58 102 214 / 23%),
+      inset 0 1px 0 rgb(255 255 255 / 36%);
+  }
+
+  :deep(.y-month-calendar__cell--outside .y-month-calendar__today-badge),
+  :deep(.y-month-calendar__cell--disabled .y-month-calendar__today-badge),
+  :deep(.y-month-calendar__cell--outside .y-month-calendar__date--today),
+  :deep(.y-month-calendar__cell--disabled .y-month-calendar__date--today) {
+    opacity: 0.55;
+  }
+
+  &--cell-grid :deep(.y-month-calendar__weekdays) {
+    gap: 0;
+    padding-inline: 0;
+  }
+
+  &--cell-grid :deep(.y-month-calendar__weekdays > div) {
+    padding-inline: 10px;
+  }
+
+  &--cell-grid :deep(.y-month-calendar__spin .ant-picker-content) {
+    width: 100%;
+    margin: 0;
+    border-spacing: 0;
+  }
+
+  &--cell-grid :deep(.y-month-calendar__cell) {
+    border: 0;
+    border-radius: 0;
+    box-shadow: inset -1px -1px 0 var(--yss-month-calendar-border);
+    transform: none;
+  }
+
+  &--cell-grid.y-month-calendar--glass :deep(.y-month-calendar__cell),
+  &--cell-grid.y-month-calendar--glass :deep(.y-month-calendar__cell:hover) {
+    box-shadow: inset -1px -1px 0 var(--yss-month-calendar-border);
+    transform: none;
+  }
+
+  &--cell-grid :deep(.y-month-calendar__cell::before),
+  &--cell-grid :deep(.y-month-calendar__cell--selected::after) {
+    display: none;
+  }
+
+  &--cell-grid :deep(.y-month-calendar__cell:hover) {
+    z-index: 1;
+    border: 0;
+    background: color-mix(in srgb, var(--yss-month-calendar-primary) 4%, #fff);
+    box-shadow:
+      inset 0 0 0 1px color-mix(in srgb, var(--yss-month-calendar-primary) 38%, transparent),
+      inset -1px -1px 0 var(--yss-month-calendar-border);
+  }
+
+  &--cell-grid :deep(.y-month-calendar__cell:focus-visible) {
+    z-index: 3;
+    border: 0;
+    box-shadow:
+      inset 0 0 0 3px color-mix(in srgb, var(--yss-month-calendar-primary) 42%, transparent),
+      inset -1px -1px 0 var(--yss-month-calendar-border);
+  }
+
+  &--cell-grid :deep(.y-month-calendar__cell--selected),
+  &--cell-grid :deep(.y-month-calendar__cell--selected:hover) {
+    z-index: 2;
+    border: 0;
+    background: color-mix(in srgb, var(--yss-month-calendar-primary) 9%, #fff);
+    box-shadow:
+      inset 0 0 0 2px var(--yss-month-calendar-primary),
+      inset -1px -1px 0 var(--yss-month-calendar-border);
+  }
+
+  &--cell-grid.y-month-calendar--glass :deep(.y-month-calendar__cell--selected),
+  &--cell-grid.y-month-calendar--glass :deep(.y-month-calendar__cell--selected:hover) {
+    background:
+      radial-gradient(circle at 86% 12%, rgb(255 255 255 / 80%), transparent 23%),
+      linear-gradient(
+        145deg,
+        color-mix(in srgb, var(--yss-month-calendar-primary) 18%, #fff),
+        color-mix(in srgb, var(--yss-month-calendar-cyan) 10%, #fff)
+      );
+    box-shadow:
+      inset 0 0 0 2px var(--yss-month-calendar-primary),
+      inset -1px -1px 0 var(--yss-month-calendar-border);
+  }
+}
+
+@container y-month-calendar (max-width: 839px) {
+  .y-month-calendar--responsive :deep(.y-month-calendar__body) {
+    --yss-month-calendar-cell-height: clamp(64px, 16cqw, var(--yss-month-calendar-configured-cell-height));
+    --yss-month-calendar-cell-padding-inline: 8px;
+
+    min-width: 0;
+  }
+
+  .y-month-calendar--responsive .y-month-calendar__header {
+    min-height: 52px;
+    padding: 8px 10px 7px 14px;
+  }
+
+  .y-month-calendar--responsive :deep(.y-month-calendar__weekdays) {
+    gap: 4px;
+    padding-inline: 5px;
+  }
+
+  .y-month-calendar--responsive :deep(.y-month-calendar__weekdays > div) {
+    padding-inline: 7px;
+  }
+
+  .y-month-calendar--responsive :deep(.y-month-calendar__spin .ant-picker-content) {
+    width: calc(100% - 10px);
+    margin-inline: 5px;
+    border-spacing: 4px;
+  }
+
+  .y-month-calendar--responsive :deep(.y-month-calendar__cell) {
+    padding-block: 7px;
+    padding-inline: var(--yss-month-calendar-cell-padding-inline);
+    border-radius: 11px;
+  }
+
+  .y-month-calendar--responsive.y-month-calendar--cell-grid :deep(.y-month-calendar__weekdays) {
+    gap: 0;
+    padding-inline: 0;
+  }
+
+  .y-month-calendar--responsive.y-month-calendar--cell-grid :deep(.y-month-calendar__spin .ant-picker-content) {
+    width: 100%;
+    margin-inline: 0;
+    border-spacing: 0;
+  }
+
+  .y-month-calendar--responsive.y-month-calendar--cell-grid :deep(.y-month-calendar__cell) {
+    border-radius: 0;
+  }
+}
+
+@container y-month-calendar (max-width: 640px) {
+  .y-month-calendar--responsive :deep(.y-month-calendar__body) {
+    --yss-month-calendar-cell-padding-inline: 6px;
+  }
+
+  .y-month-calendar--responsive .y-month-calendar__header {
+    gap: 10px;
+    min-height: 48px;
+    padding: 7px 8px 6px 11px;
+  }
+
+  .y-month-calendar--responsive .y-month-calendar__header strong {
+    font-size: 15px;
+  }
+
+  .y-month-calendar--responsive :deep(.y-month-calendar__header-actions) {
+    gap: 2px;
+    padding: 2px;
+  }
+
+  .y-month-calendar--responsive :deep(.y-month-calendar__header-action) {
+    min-width: 30px;
+    height: 30px;
+    padding-inline: 7px;
+  }
+
+  .y-month-calendar--responsive :deep(.y-month-calendar__weekdays) {
+    gap: 3px;
+    padding: 2px 4px 1px;
+    font-size: 11px;
+    line-height: 26px;
+  }
+
+  .y-month-calendar--responsive :deep(.y-month-calendar__weekdays > div) {
+    padding-inline: 5px;
+  }
+
+  .y-month-calendar--responsive :deep(.y-month-calendar__spin .ant-picker-content) {
+    width: calc(100% - 8px);
+    margin-inline: 4px;
+    border-spacing: 3px;
+  }
+
+  .y-month-calendar--responsive :deep(.y-month-calendar__cell) {
+    gap: 3px;
+    padding-block: 6px;
+    padding-inline: var(--yss-month-calendar-cell-padding-inline);
+    border-radius: 9px;
+  }
+
+  .y-month-calendar--responsive :deep(.y-month-calendar__date-line) {
+    gap: 3px;
+    min-height: 18px;
+  }
+
+  .y-month-calendar--responsive :deep(.y-month-calendar__date) {
+    font-size: 13px;
+    line-height: 18px;
+  }
+
+  .y-month-calendar--responsive :deep(.y-month-calendar__today-badge) {
+    max-width: 56%;
+    height: 16px;
+    padding-inline: 5px;
+    font-size: 10px;
+    line-height: 16px;
+  }
+
+  .y-month-calendar--responsive.y-month-calendar--cell-grid :deep(.y-month-calendar__weekdays) {
+    gap: 0;
+    padding-inline: 0;
+  }
+
+  .y-month-calendar--responsive.y-month-calendar--cell-grid :deep(.y-month-calendar__spin .ant-picker-content) {
+    width: 100%;
+    margin-inline: 0;
+    border-spacing: 0;
+  }
+
+  .y-month-calendar--responsive.y-month-calendar--cell-grid :deep(.y-month-calendar__cell) {
+    border-radius: 0;
+  }
+}
+
+@container y-month-calendar (max-width: 520px) {
+  .y-month-calendar--responsive :deep(.y-month-calendar__body) {
+    --yss-month-calendar-cell-padding-inline: 5px;
+  }
+
+  .y-month-calendar--responsive :deep(.y-month-calendar__header-today-text) {
+    display: none;
+  }
+
+  .y-month-calendar--responsive :deep(.y-month-calendar__header-action--today) {
+    min-width: 30px;
+    padding-inline: 7px;
+  }
+
+  .y-month-calendar--responsive :deep(.y-month-calendar__weekdays) {
+    gap: 2px;
+    padding-inline: 2px;
+    line-height: 24px;
+  }
+
+  .y-month-calendar--responsive :deep(.y-month-calendar__weekdays > div) {
+    padding-inline: 3px;
+  }
+
+  .y-month-calendar--responsive :deep(.y-month-calendar__spin .ant-picker-content) {
+    width: calc(100% - 4px);
+    margin-inline: 2px;
+    border-spacing: 2px;
+  }
+
+  .y-month-calendar--responsive :deep(.y-month-calendar__cell) {
+    padding-block: 5px;
+    padding-inline: var(--yss-month-calendar-cell-padding-inline);
+    border-radius: 8px;
+  }
+
+  .y-month-calendar--responsive :deep(.y-month-calendar__date--today) {
+    width: 24px;
+    height: 24px;
+    line-height: 24px;
+  }
+
+  .y-month-calendar--responsive.y-month-calendar--cell-grid :deep(.y-month-calendar__weekdays) {
+    gap: 0;
+    padding-inline: 0;
+  }
+
+  .y-month-calendar--responsive.y-month-calendar--cell-grid :deep(.y-month-calendar__spin .ant-picker-content) {
+    width: 100%;
+    margin-inline: 0;
+    border-spacing: 0;
+  }
+
+  .y-month-calendar--responsive.y-month-calendar--cell-grid :deep(.y-month-calendar__cell) {
+    border-radius: 0;
+  }
+}
+
+/* ==========================================================
+ * 暗色模式适配 (Dark Mode)
+ * dumi / yss-ui 通用暗色属性：[data-prefers-color='dark']
+ * ========================================================== */
+[data-prefers-color="dark"] .y-month-calendar,
+:root[data-prefers-color="dark"] .y-month-calendar {
+  --yss-month-calendar-primary-deep: color-mix(in srgb, var(--yss-month-calendar-primary) 85%, #b4c6ff);
+  --yss-month-calendar-primary-soft: color-mix(in srgb, var(--yss-month-calendar-primary) 15%, #1f1f1f);
+  --yss-month-calendar-border: color-mix(in srgb, var(--yss-month-calendar-primary) 15%, #303030);
+  --yss-month-calendar-text: rgb(255 255 255 / 85%);
+  --yss-month-calendar-text-secondary: rgb(255 255 255 / 45%);
+  --yss-month-calendar-disabled: rgb(255 255 255 / 25%);
+
+  border-color: rgb(255 255 255 / 12%);
+  background: #141414;
+
+  &.y-month-calendar--plain {
+    border-color: var(--yss-month-calendar-border);
+    background: #141414;
+  }
+
+  &.y-month-calendar--glass {
+    background:
+      radial-gradient(circle at 7% -8%, rgb(71 118 246 / 18%), transparent 35%),
+      radial-gradient(circle at 96% 6%, rgb(66 200 193 / 15%), transparent 32%),
+      linear-gradient(145deg, rgb(20 24 33 / 95%), rgb(13 16 23 / 92%));
+    box-shadow:
+      0 22px 58px rgb(0 0 0 / 45%),
+      inset 0 1px 0 rgb(255 255 255 / 8%);
+  }
+
+  &.y-month-calendar--glass::before {
+    background: rgb(255 255 255 / 3%);
+  }
+
+  .y-month-calendar__header {
+    border-bottom-color: rgb(255 255 255 / 8%);
+    background: #1f1f1f;
+  }
+
+  &.y-month-calendar--glass .y-month-calendar__header {
+    background: linear-gradient(110deg, rgb(25 30 41 / 85%), rgb(18 22 31 / 65%));
+  }
+
+  &.y-month-calendar--plain .y-month-calendar__header {
+    background: #1f1f1f;
+  }
+
+  .y-month-calendar__header strong {
+    color: #e2e8f0;
+    text-shadow: 0 1px 0 rgb(0 0 0 / 50%);
+  }
+
+  :deep(.y-month-calendar__header-actions) {
+    border-color: rgb(255 255 255 / 8%);
+    background: linear-gradient(135deg, rgb(30 37 51 / 60%) 0%, rgb(20 25 36 / 40%) 100%);
+    box-shadow:
+      0 8px 20px rgb(0 0 0 / 30%),
+      inset 0 1px 0 rgb(255 255 255 / 5%);
+  }
+
+  :deep(.y-month-calendar__header-action) {
+    color: #a0aec0;
+    background: linear-gradient(135deg, rgb(255 255 255 / 8%) 0%, rgb(255 255 255 / 3%) 100%);
+    box-shadow:
+      0 2px 6px rgb(0 0 0 / 20%),
+      inset 0 1px 0 rgb(255 255 255 / 8%);
+  }
+
+  :deep(.y-month-calendar__header-action--today) {
+    color: #60a5fa;
+    background: linear-gradient(
+      135deg,
+      rgb(255 255 255 / 10%) 0%,
+      color-mix(in srgb, var(--yss-month-calendar-primary) 6%, rgb(255 255 255 / 5%)) 100%
+    );
+    box-shadow:
+      0 2px 6px rgb(0 0 0 / 20%),
+      inset 0 1px 0 rgb(255 255 255 / 8%);
+  }
+
+  :deep(.y-month-calendar__header-action--selected) {
+    color: #fff !important;
+    background: linear-gradient(
+      135deg,
+      var(--yss-month-calendar-primary) 0%,
+      var(--yss-month-calendar-cyan) 100%
+    ) !important;
+    box-shadow:
+      0 4px 12px rgb(70 118 246 / 35%),
+      inset 0 1px 0 rgb(255 255 255 / 25%) !important;
+  }
+
+  :deep(.y-month-calendar__header-action:hover:not(:disabled)) {
+    color: var(--yss-month-calendar-primary);
+    background: linear-gradient(135deg, rgb(255 255 255 / 15%) 0%, rgb(255 255 255 / 8%) 100%);
+    box-shadow:
+      0 4px 10px rgb(0 0 0 / 30%),
+      inset 0 1px 0 rgb(255 255 255 / 10%);
+  }
+
+  :deep(.y-month-calendar__header-action--selected:hover:not(:disabled)) {
+    color: #fff !important;
+    background: linear-gradient(
+      135deg,
+      var(--yss-month-calendar-primary) 0%,
+      var(--yss-month-calendar-cyan) 100%
+    ) !important;
+  }
+
+  :deep(.y-month-calendar__header-action:disabled) {
+    background: rgb(255 255 255 / 2%);
+  }
+
+  :deep(.y-month-calendar__weekdays) {
+    border-bottom-color: rgb(255 255 255 / 6%);
+    background: rgb(255 255 255 / 2%);
+  }
+
+  &.y-month-calendar--glass :deep(.y-month-calendar__weekdays) {
+    background: rgb(255 255 255 / 1%);
+  }
+
+  :deep(.y-month-calendar__weekdays > div:nth-last-child(-n + 2)) {
+    color: #e27c76;
+  }
+
+  :deep(.y-month-calendar__cell) {
+    border-color: rgb(255 255 255 / 6%);
+    background: #1e1e1e;
+  }
+
+  &.y-month-calendar--glass :deep(.y-month-calendar__cell) {
+    background: linear-gradient(145deg, rgb(255 255 255 / 5%), rgb(255 255 255 / 2%));
+    box-shadow:
+      0 4px 12px rgb(0 0 0 / 20%),
+      inset 0 1px 0 rgb(255 255 255 / 3%);
+  }
+
+  &.y-month-calendar--glass :deep(.y-month-calendar__cell::before) {
+    background: linear-gradient(90deg, transparent, rgb(255 255 255 / 8%), transparent);
+  }
+
+  :deep(.y-month-calendar__cell:hover) {
+    border-color: rgb(255 255 255 / 15%);
+  }
+
+  &.y-month-calendar--glass :deep(.y-month-calendar__cell:hover) {
+    background: linear-gradient(145deg, rgb(255 255 255 / 8%), rgb(255 255 255 / 3%));
+    box-shadow:
+      0 8px 20px rgb(0 0 0 / 35%),
+      inset 0 1px 0 rgb(255 255 255 / 5%);
+  }
+
+  :deep(.y-month-calendar__cell--selected) {
+    color: #b4c6ff;
+    border-color: rgb(70 118 246 / 80%);
+    background: rgb(70 118 246 / 15%);
+  }
+
+  &.y-month-calendar--glass :deep(.y-month-calendar__cell--selected) {
+    background: linear-gradient(145deg, rgb(70 118 246 / 20%), rgb(66 200 193 / 12%));
+    box-shadow:
+      0 8px 20px rgb(70 118 246 / 25%),
+      inset 0 0 0 1px rgb(255 255 255 / 8%),
+      inset 0 1px 0 rgb(255 255 255 / 5%);
+  }
+
+  :deep(.y-month-calendar__cell--outside) {
+    border-color: rgb(255 255 255 / 3%);
+    background: #141414;
+  }
+
+  &.y-month-calendar--glass :deep(.y-month-calendar__cell--outside) {
+    background: linear-gradient(145deg, rgb(255 255 255 / 2%), rgb(255 255 255 / 1%));
+  }
+
+  :deep(.y-month-calendar__cell--disabled) {
+    background: rgb(255 255 255 / 2%);
+  }
+
+  :deep(.y-month-calendar__today-badge) {
+    background: var(--yss-month-calendar-primary);
+  }
+
+  &.y-month-calendar--glass :deep(.y-month-calendar__today-badge) {
+    background: linear-gradient(105deg, var(--yss-month-calendar-primary), #4c84ff 56%, var(--yss-month-calendar-cyan));
+    box-shadow:
+      0 4px 10px rgb(70 118 246 / 30%),
+      inset 0 1px 0 rgb(255 255 255 / 15%);
+  }
+
+  &.y-month-calendar--cell-grid :deep(.y-month-calendar__cell),
+  &.y-month-calendar--cell-grid.y-month-calendar--glass :deep(.y-month-calendar__cell) {
+    background: #1e1e1e;
+    box-shadow: inset -1px -1px 0 var(--yss-month-calendar-border);
+  }
+
+  &.y-month-calendar--cell-grid :deep(.y-month-calendar__cell:hover),
+  &.y-month-calendar--cell-grid.y-month-calendar--glass :deep(.y-month-calendar__cell:hover) {
+    background: color-mix(in srgb, var(--yss-month-calendar-primary) 9%, #1e1e1e);
+    box-shadow:
+      inset 0 0 0 1px color-mix(in srgb, var(--yss-month-calendar-primary) 52%, transparent),
+      inset -1px -1px 0 var(--yss-month-calendar-border);
+  }
+
+  &.y-month-calendar--cell-grid :deep(.y-month-calendar__cell--selected),
+  &.y-month-calendar--cell-grid :deep(.y-month-calendar__cell--selected:hover),
+  &.y-month-calendar--cell-grid.y-month-calendar--glass :deep(.y-month-calendar__cell--selected),
+  &.y-month-calendar--cell-grid.y-month-calendar--glass :deep(.y-month-calendar__cell--selected:hover) {
+    background: color-mix(in srgb, var(--yss-month-calendar-primary) 15%, #1e1e1e);
+    box-shadow:
+      inset 0 0 0 2px var(--yss-month-calendar-primary),
+      inset -1px -1px 0 var(--yss-month-calendar-border);
+  }
+
+  &.y-month-calendar--cell-grid :deep(.y-month-calendar__cell--outside) {
+    background: #141414;
+  }
+
+  &.y-month-calendar--cell-grid :deep(.y-month-calendar__cell--disabled) {
+    background: rgb(255 255 255 / 2%);
+  }
+}
+
+@supports not (backdrop-filter: blur(1px)) {
+  [data-prefers-color="dark"] {
+    .y-month-calendar--glass,
+    .y-month-calendar--glass .y-month-calendar__header,
+    .y-month-calendar--glass :deep(.y-month-calendar__weekdays) {
+      background-color: #1a1e26;
+    }
+  }
+}
+
+@supports not (backdrop-filter: blur(1px)) {
+  .y-month-calendar--glass,
+  .y-month-calendar--glass .y-month-calendar__header,
+  .y-month-calendar--glass :deep(.y-month-calendar__weekdays) {
+    background-color: rgb(248 250 254 / 98%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .y-month-calendar :deep(.y-month-calendar__cell),
+  .y-month-calendar__header-actions :deep(.y-month-calendar__header-action) {
+    transition: none;
+  }
+
+  .y-month-calendar--glass :deep(.y-month-calendar__cell:hover),
+  .y-month-calendar__header-actions :deep(.y-month-calendar__header-action:hover:not(:disabled)) {
+    transform: none;
+  }
+}
+
+@media (max-width: 760px) {
+  .y-month-calendar__header {
+    padding-inline: 12px;
+  }
+
+  .y-month-calendar__header strong {
+    font-size: 16px;
+  }
+}
+
+/* 放在容器查询之后，确保填充模式优先于 responsive 的固定单元格高度。 */
+.y-month-calendar--fill-height :deep(.y-month-calendar__body) {
+  --yss-month-calendar-cell-height: 100%;
+}
+
+.y-month-calendar--fill-height :deep(.y-month-calendar__spin .ant-picker-cell) {
+  height: auto;
+}
+
+.y-month-calendar--fill-height :deep(.y-month-calendar__cell) {
+  height: 100%;
+  min-height: 0;
+}
+/* stylelint-enable selector-pseudo-class-no-unknown */

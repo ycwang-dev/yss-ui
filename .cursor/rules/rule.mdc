@@ -1,0 +1,165 @@
+---
+alwaysApply: true
+title: YSS UI 代码生成规范
+---
+
+# YSS UI（yss-ui）项目规则（Cursor 生成规范）
+
+## 一、基础技术栈与风格
+
+- 语言与框架：TypeScript + Vue 3，统一使用 `<script setup lang="ts">`。
+- SFC 结构顺序：
+  1. `<script setup lang="ts">` 2) `<template>` 3) `<style scoped lang="less">`。
+- 代码风格：
+  - 必须使用分号；ES6+；函数优先使用 `const` + 箭头函数。
+  - 组件/公共 API 必须有显式类型；保持函数浅层、尽早返回。
+  - 注释仅保留对未来维护者关键背景的说明；优先 JSDoc。
+- 包管理：统一使用 pnpm。
+- 样式：统一 Less + scoped；避免硬编码颜色，原则上使用主题变量（`packages/theme`）。
+- 导入别名：在 Dumi demos 中始终通过 `@yss-ui/components` 导入组件。
+
+## 二、组件与 Hooks 约定
+
+- 组件库源码路径：`packages/components`。
+- 组合式 Hooks：
+  - 存放：`packages/components/src/<component>/hooks/`。
+  - 命名：`use[A-Z][a-zA-Z]+`（如 `useColumns`、`usePagination`）。
+  - 单一职责；能复用表格相关 Hook 时优先复用。
+- Vue 规范：
+  - `defineProps`/`defineEmits` 使用 JSDoc 描述；必要时 `defineOptions` 指定 `name`。
+  - 对外暴露方法使用 `defineExpose`，并用 JSDoc 标注。
+- 公共质量：
+  - 不要无意义 try/catch；避免 2–3 层以上深嵌套；公共 API 显式类型。
+
+## 三、vxe-table 集成规范（YTable / YEditTable）
+
+- 版本：vxe-table 4.19.x。
+- 默认约定：
+  - `showOverflow=true` / `showHeaderOverflow=true` 表示 tooltip。
+  - `scrollY` 默认 `{ enabled: true, gt: 100 }`。
+  - `editConfig.autoClear=false`；行拖拽需 `rowConfig.drag=true`。
+  - tooltip `contentMethod` 返回 string 或 null。
+- 事件名：`edit-closed`、`row-dragend` 等与 vxe 对齐。
+- 插槽命名（重要）：统一在文档与 demos 使用 kebab-case，组件内部兼容 camelCase。
+  - 工具栏：`#toolbar-left`、`#toolbar-right`（兼容 `#toolbarLeft` / `#toolbarRight`）。
+  - 操作列更多图标：`#action-more-icon`（兼容 `#actionMoreIcon`）。
+  - 列单元格：`#<field>`（如 `#name`）。
+  - 表头：`#<field>-header`（兼容 `#<field>Header`）。
+  - 筛选：`#<field>-filter`（兼容 `#<field>Filter`）。
+  - 展开行：`#expand-row`（兼容 `#expandRow`）。
+  - 说明：在 JSP/HTML 等 DOM 模板中属性名会被转为小写，camelCase 容易失效，故统一使用 kebab-case 编写 demos 与文档。
+
+## 四、Dumi 文档与 Demos 规范
+
+- 组件导入：一律使用 `@yss-ui/components`（不要使用相对路径或包内私有路径）。
+- Demo 组织：
+  - 简单 Demo：直接在 `index.vue` 内实现逻辑即可。
+  - 复杂 Demo：参考以下规范拆分 hooks 与样式：
+    - 目录：`docs/components/demos/<feature>/<demo>/`
+      - `index.vue`（只保留视图与最少逻辑）
+      - `hooks/useXxx.ts`（业务逻辑与状态管理）
+      - `style.less`（样式，使用 CSS 变量，避免硬编码颜色）
+    - 参考范例：
+      - `docs/components/demos/table/column-custom-search`
+      - `docs/components/demos/table/action`
+  - Hooks 写法：
+    - 命名 `useXxx`；返回明确的状态与方法；具备显式类型。
+    - 避免在 hooks 中产生全局副作用；必要时提供显式 cleanup。
+- 插槽写法：kebab-case（见第三节）。
+- 文档更新要求：
+  - 新增/变更组件 API 时，同步更新 docs 的 API 表与示例；若有不兼容变更，补充迁移说明。
+
+## 五、主题与样式
+
+- 使用主题变量（`packages/theme`）：colors / spacing / typography。
+- 不允许硬编码色值；如必须，需使用 `var(...)` 提供回退：
+  - 例如 `var(--primary-color, #3371ff)`。
+- 弹层/下拉容器默认挂载 `body`（与 antd/vxe 生态一致），必要时提供 `getPopupContainer`。
+
+## 六、命名与展示
+
+- 组件对外展示名以 Y 前缀（`<YTable/>`）；文档语境中表述组件类别/概念时以 `y-` 作为前缀（例如 y-table），避免直接使用底层依赖名（如 vxe-table）。
+- 路由 keepAlive 时，组件需 `defineOptions({ name: 'ComponentName' })` 显式命名。
+
+## 七、工程与提交
+
+- 开发命令：`pnpm -w -r dev/build/test`（按实际脚本）。
+- 变更后运行 linter，确保无错误；对复杂改动建议补充最小 Demo 覆盖。
+- `scripts/lib/home-release-positioning.js` 中的 `HOME_PRODUCT_HIGHLIGHTS` 是首页长期产品总体介绍；常规 changelog、版本号、日期和发版摘要更新禁止修改，除非用户明确要求调整首页产品定位。
+- 修改 `packages/skills/**` 后必须同步 `docs/skills`、补充 `docs/changelog/skills.md`，并在发版前运行 `node scripts/release-changed.js patch --dry`。
+
+## 附：生成代码时的要点（给 AI/脚手架）
+
+- Vue 3 + `<script setup lang="ts">`；SFC 三段式顺序严格遵守。
+- 公共 API 类型显式；JSDoc 描述 props/返回值/暴露方法。
+- Dumi demos：默认 kebab-case 插槽；复杂示例拆 hooks；import 使用 `@yss-ui/components`。
+- 样式使用 CSS 变量与主题变量；避免硬编码颜色；Less + scoped。
+- vxe-table 集成遵循第三节规范，保持与文档示例一致的插槽/事件命名。
+
+```yaml
+project_name: yss-ui
+
+style:
+  language: typescript
+  framework: vue3
+  codegen:
+    - use_composition_api_hooks: true
+    - prefer_jsdoc_block_comments: true
+    - require_semicolons: true
+    - avoid_color_hardcode: true
+    - use_theme_variables: true
+  imports:
+    demos_use_alias: '@yss-ui/components'
+
+conventions:
+  hooks:
+    - place_under: 'packages/components/src/<component>/hooks/'
+    - single_responsibility: true
+    - naming: 'use[A-Z][a-zA-Z]+'
+    - reuse_table_hooks_when_possible: true
+  vue:
+    - defineProps_defineEmits_use_jsdoc: true
+    - expose_methods_with_jsdoc: true
+  vxe_table:
+    version: '4.16'
+    x_table_props:
+      editConfig_autoClear: false
+      showOverflow_true_means: 'tooltip'
+      showHeaderOverflow_true_means: 'tooltip'
+      scrollY_default: { enabled: true, gt: 100 }
+      row_drag_requires_rowConfig_drag_true: true
+      tooltip_contentMethod_returns_text_or_null: true
+    events:
+      - edit-closed
+      - row-dragend
+  ui:
+    - dropdown_popup_container_is_body: true
+    - use_css_variables_for_colors: true
+
+documentation:
+  on_change:
+    - update_docs_api_table: true
+    - update_or_add_demos: true
+    - for_breaking_change_add_migration_note: true
+  demos_import_from: '@yss-ui/components'
+
+quality:
+  - run_linter_on_changes: true
+  - keep_functions_shallow_and_early_return: true
+  - explicit_types_for_public_apis: true
+
+templates:
+  hook_jsdoc: |
+    /**
+     * ${description}
+     * @param ${paramName} - ${paramDesc}
+     * @returns ${returnsDesc}
+     */
+  prop_jsdoc: |
+    /** ${description} */
+
+reminders:
+  - "在 Dumi demos 中始终通过 '@yss-ui/components' 导入组件。"
+  - "组件库命名使用 'y-table'（不是 vxe-table 名称）。"
+  - '新增配置项后，请同步更新 docs 的 API 表和 demos。'
+```

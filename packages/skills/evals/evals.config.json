@@ -1,0 +1,8 @@
+{
+  "collisionAllowlist": [
+    {
+      "pair": ["frontend-commit", "java-backend-commit"],
+      "reason": "同一提交规范的前端/后端双端变体，描述结构刻意一致，正确路由由各自 trigger-cases 的正例保证"
+    }
+  ]
+}

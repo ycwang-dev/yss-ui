@@ -1,0 +1,43 @@
+{
+  "skill": "ytree-usage",
+  "purpose": "触发行为规约：YTree 组织树/分类树（搜索过滤、节点操作、左树右表）的确定性词法路由。",
+  "cases": [
+    {
+      "id": "org-tree-search",
+      "prompt": "组织树搜索过滤节点",
+      "should_trigger": true,
+      "assert": "YTree 搜索过滤配置，保留父链展示。"
+    },
+    {
+      "id": "fieldnames-mapping",
+      "prompt": "YTree fieldNames 字段映射怎么配",
+      "should_trigger": true,
+      "assert": "fieldNames 映射后端字段，避免手动转换数据。"
+    },
+    {
+      "id": "node-delete-confirm",
+      "prompt": "树节点删除要有确认提示",
+      "should_trigger": true,
+      "assert": "节点动作 + 删除确认的标准交互。"
+    },
+    {
+      "id": "tree-table-linkage",
+      "prompt": "左树右表点节点刷新右侧列表",
+      "should_trigger": true,
+      "accept_route_to": ["page-list-module", "yss-ui-business-page-generation"],
+      "assert": "受控选中 + 节点变更触发列表查询。"
+    },
+    {
+      "id": "near-miss-table-filter",
+      "prompt": "表格列筛选字典翻译",
+      "should_trigger": false,
+      "assert": "表格功能归 ytable-usage，不触发本 skill。"
+    },
+    {
+      "id": "near-miss-tree-height",
+      "prompt": "树区域独立滚动高度计算",
+      "should_trigger": false,
+      "assert": "树高度归 use-tree-height，不触发本 skill。"
+    }
+  ]
+}

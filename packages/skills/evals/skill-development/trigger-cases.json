@@ -1,0 +1,30 @@
+{
+  "skill": "skill-development",
+  "purpose": "触发行为规约：YSS UI 官方 Skill 的创建、维护和评测。",
+  "cases": [
+    {
+      "id": "create-repository-skill",
+      "prompt": "在 yss-ui 的 packages/skills 新增一个官方组件测试 skill，并补触发评测",
+      "should_trigger": true,
+      "assert": "遵守单一事实源，更新分类、eval、同步文档和 changelog。"
+    },
+    {
+      "id": "fix-skill-routing",
+      "prompt": "修复两个 YSS Skill description 太像导致的触发冲突",
+      "should_trigger": true,
+      "assert": "根据真实触发边界收窄 description，并用 near-miss 评测验证。"
+    },
+    {
+      "id": "near-miss-use-skill",
+      "prompt": "按照 ytable-usage 帮我实现一个列表页",
+      "should_trigger": false,
+      "assert": "这是使用现有 Skill，不触发 Skill 开发维护。"
+    },
+    {
+      "id": "near-miss-sync-only",
+      "prompt": "把当前已有的 skills 同步到 Cursor",
+      "should_trigger": false,
+      "assert": "仅同步现有内容，不触发 Skill 源码开发。"
+    }
+  ]
+}

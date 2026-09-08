@@ -1,0 +1,36 @@
+{
+  "skill": "prototype-page-acceptance",
+  "purpose": "触发行为规约：原型截图/老项目复刻与验收清单的确定性词法路由。",
+  "cases": [
+    {
+      "id": "prototype-screenshot",
+      "prompt": "按这张原型截图复刻页面",
+      "should_trigger": true,
+      "assert": "先提取视觉与交互验收清单，再开发并逐项对照。"
+    },
+    {
+      "id": "old-project-restore",
+      "prompt": "对照老项目路径把这个页面还原出来",
+      "should_trigger": true,
+      "assert": "读取老项目页面提取验收清单后复刻。"
+    },
+    {
+      "id": "acceptance-check",
+      "prompt": "开发完了按截图逐项验收布局和控件",
+      "should_trigger": true,
+      "assert": "用截图/运行结果对照验收清单逐项核对。"
+    },
+    {
+      "id": "near-miss-new-page",
+      "prompt": "生成一个列表页面",
+      "should_trigger": false,
+      "assert": "无原型参照的页面生成归 yss-ui-business-page-generation。"
+    },
+    {
+      "id": "near-miss-theme",
+      "prompt": "页面颜色改成主题色",
+      "should_trigger": false,
+      "assert": "颜色规范归 theme-token-usage，不触发本 skill。"
+    }
+  ]
+}

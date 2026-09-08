@@ -1,0 +1,42 @@
+{
+  "skill": "yedit-table-usage",
+  "purpose": "触发行为规约：YEditTable 可编辑表格（行内编辑、增删行、校验）的确定性词法路由。",
+  "cases": [
+    {
+      "id": "inline-edit",
+      "prompt": "表格里行内编辑,点单元格直接改值",
+      "should_trigger": true,
+      "assert": "用 YEditTable 行内编辑配置，editConfig.autoClear=false。"
+    },
+    {
+      "id": "add-remove-rows",
+      "prompt": "可编辑表格支持加一行删一行",
+      "should_trigger": true,
+      "assert": "添加/删除行的标准交互与数据同步。"
+    },
+    {
+      "id": "multi-select-tags",
+      "prompt": "编辑表格里下拉多选还能输入创建 tags",
+      "should_trigger": true,
+      "assert": "配置下拉多选与可创建 tags 的编辑列。"
+    },
+    {
+      "id": "detail-rows-validation",
+      "prompt": "明细行编辑校验不通过不能保存",
+      "should_trigger": true,
+      "assert": "行级校验拦截保存并给出错误定位。"
+    },
+    {
+      "id": "near-miss-plain-table",
+      "prompt": "普通列表的表格分页",
+      "should_trigger": false,
+      "assert": "只读列表表格归 ytable-usage，不触发本 skill。"
+    },
+    {
+      "id": "near-miss-form-validation",
+      "prompt": "表单字段校验规则",
+      "should_trigger": false,
+      "assert": "表单校验归 formily-foundation，不触发本 skill。"
+    }
+  ]
+}

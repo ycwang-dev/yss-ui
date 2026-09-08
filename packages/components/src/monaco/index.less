@@ -1,0 +1,320 @@
+.yss-monaco-wrapper {
+  position: relative;
+
+  /* 关键：放入 flex 布局时允许按容器收缩，避免挤压兄弟元素 */
+  min-width: 0;
+  box-sizing: border-box;
+}
+
+.yss-monaco-container {
+  width: 100%;
+  height: 100%;
+  background: var(--ant-bg-container, #fff);
+  overflow: hidden; /* Fix: Clip internal sharp corners */
+
+  /* Monaco Editor find widget 按钮样式调整 */
+  .find-widget > .button.codicon-widget-close {
+    width: 22px;
+    height: 22px;
+  }
+}
+
+.yss-monaco-border {
+  border: 1px solid var(--yss-border-color, var(--ant-border-color-split, #e5e6eb));
+  border-radius: 6px;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 1px 2px 0 rgb(0 0 0 / 3%);
+
+  &:focus-within {
+    border-color: var(--yss-color-primary-6, var(--ant-primary-color, #3371ff));
+    box-shadow: 0 0 0 3px
+      color-mix(in srgb, var(--yss-color-primary-6, var(--ant-primary-color, #3371ff)) 15%, transparent);
+  }
+}
+
+/* 应用内全屏：占据最近的定位容器或页面根容器 */
+.yss-monaco-fullscreen {
+  position: fixed;
+  z-index: var(--yss-monaco-fs-zindex, 10000);
+  background: var(--ant-bg-container, #fff);
+  box-shadow:
+    0 12px 24px rgb(0 0 0 / 12%),
+    0 6px 12px rgb(0 0 0 / 10%);
+}
+
+.yss-monaco-fullscreen-transitioning {
+  will-change: left, top, width, height;
+  transition:
+    left var(--yss-monaco-fs-duration, 220ms) var(--yss-monaco-fs-easing, cubic-bezier(0.22, 1, 0.36, 1)),
+    top var(--yss-monaco-fs-duration, 220ms) var(--yss-monaco-fs-easing, cubic-bezier(0.22, 1, 0.36, 1)),
+    width var(--yss-monaco-fs-duration, 220ms) var(--yss-monaco-fs-easing, cubic-bezier(0.22, 1, 0.36, 1)),
+    height var(--yss-monaco-fs-duration, 220ms) var(--yss-monaco-fs-easing, cubic-bezier(0.22, 1, 0.36, 1)),
+    box-shadow 180ms ease;
+}
+
+.yss-monaco-placeholder {
+  pointer-events: none;
+  visibility: hidden;
+}
+
+/* 全屏提示（顶部居中，自动淡入淡出） */
+.yss-monaco-fs-hint {
+  position: absolute;
+  top: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border-radius: 6px;
+  color: var(--yss-fs-hint-color, #fff);
+  background: var(--yss-fs-hint-bg, rgb(0 0 0 / 86%));
+  box-shadow:
+    0 6px 16px 0 rgb(0 0 0 / 12%),
+    0 3px 6px -4px rgb(0 0 0 / 12%),
+    0 9px 28px 8px rgb(0 0 0 / 5%);
+  z-index: 1001;
+  font-size: 12px;
+  line-height: 1;
+  pointer-events: none;
+  animation: yss-fs-hint-appear 2.5s ease forwards;
+}
+
+.yss-monaco-fs-hint kbd {
+  min-width: 28px;
+  padding: 4px 6px;
+  border-radius: 4px;
+  background: var(--yss-fs-hint-kbd-bg, rgb(255 255 255 / 12%));
+  color: var(--yss-fs-hint-kbd-color, #fff);
+  border: 1px solid var(--yss-fs-hint-kbd-border, rgb(255 255 255 / 35%));
+  text-transform: uppercase;
+  text-align: center;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+
+@keyframes yss-fs-hint-appear {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -8px);
+  }
+
+  10% {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+
+  85% {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -6px);
+  }
+}
+
+/* 可拖拽缩放手柄 */
+.yss-monaco-resize-handle {
+  position: absolute;
+  background: transparent;
+  z-index: 1000;
+  transition: all 0.2s;
+
+  &::after {
+    content: "";
+    position: absolute;
+    opacity: 0;
+    transition: opacity 0.2s;
+    background-color: var(--ant-border-color-split, #f0f0f0);
+  }
+
+  &:hover {
+    background-color: rgb(0 0 0 / 4%);
+
+    &::after {
+      opacity: 1;
+    }
+  }
+}
+
+/* 右侧水平拖拽 */
+.yss-monaco-resize-handle-e {
+  top: 0;
+  right: 0;
+  width: 10px; /* 增大热区 */
+  height: 100%;
+  cursor: ew-resize;
+
+  &::after {
+    top: 50%;
+    right: 3px;
+    width: 4px;
+    height: 24px;
+    transform: translateY(-50%);
+    border-radius: 2px;
+  }
+}
+
+/* 底部垂直拖拽 */
+.yss-monaco-resize-handle-s {
+  left: 0;
+  bottom: -4px;
+  width: 100%;
+  height: 8px; /* 4px in, 4px out */
+  cursor: ns-resize;
+
+  &::after {
+    left: 50%;
+    bottom: 2px;
+    width: 24px;
+    height: 4px;
+    transform: translateX(-50%);
+    border-radius: 2px;
+  }
+}
+
+/* 右下角同时拖拽 */
+.yss-monaco-resize-handle-se {
+  right: -4px;
+  bottom: -4px;
+  width: 12px;
+  height: 12px;
+  cursor: nwse-resize;
+  z-index: 1001; /* 确保在其他手柄之上 */
+
+  &::after {
+    right: 2px;
+    bottom: 2px;
+    background: transparent;
+    border-bottom: 2px solid #999;
+    border-right: 2px solid #999;
+    width: 6px;
+    height: 6px;
+  }
+}
+
+/* Dark Theme Adaptations */
+.yss-monaco-container[data-theme="vs-dark"],
+.yss-monaco-container[data-theme="hc-black"] {
+  /* 深色主题预设背景，避免初始化闪烁 */
+  background: #1e1e1e;
+
+  &.yss-monaco-border {
+    border-color: var(--ant-border-color, #434343);
+    box-shadow: none;
+  }
+
+  &.yss-monaco-border:focus-within {
+    border-color: #177ddc;
+    box-shadow: 0 0 0 2px rgb(23 125 220 / 20%);
+  }
+
+  .yss-monaco-resize-handle:hover {
+    background-color: rgb(255 255 255 / 8%);
+  }
+
+  .yss-monaco-resize-handle::after {
+    background-color: rgb(255 255 255 / 40%);
+  }
+
+  .yss-monaco-resize-handle-se::after {
+    border-color: rgb(255 255 255 / 50%);
+    background-color: transparent;
+  }
+}
+
+/* 悬浮工具栏 */
+.yss-monaco-toolbar {
+  position: absolute;
+  top: 8px;
+  right: 16px;
+  z-index: 200; /* 高于编辑器内容 */
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px;
+  background-color: var(--yss-toolbar-bg, rgb(255 255 255 / 90%));
+  border: 1px solid var(--yss-toolbar-border, #e5e6eb);
+  border-radius: 6px;
+  box-shadow: 0 2px 8px rgb(0 0 0 / 8%); /* 柔和阴影 */
+  opacity: 0;
+  transform: translateY(-4px);
+  transition:
+    opacity 0.2s,
+    transform 0.2s;
+  pointer-events: none; /* 隐藏时不阻挡点击 */
+
+  /* 深色模式适配 */
+  [data-theme="vs-dark"] &,
+  [data-theme="hc-black"] & {
+    background-color: var(--yss-toolbar-bg-dark, rgb(30 30 30 / 85%));
+    border-color: var(--yss-toolbar-border-dark, #434343);
+    box-shadow: 0 2px 8px rgb(0 0 0 / 30%);
+  }
+
+  .yss-monaco-toolbar-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    padding: 0;
+    font-size: 14px;
+    color: var(--yss-toolbar-text, #4e5969);
+    background: transparent;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition:
+      color 0.2s ease,
+      background-color 0.2s ease,
+      transform 0.16s ease;
+    outline: none;
+
+    &:hover {
+      background-color: rgb(0 0 0 / 6%);
+      color: var(--yss-toolbar-text-hover, #1d2129);
+    }
+
+    &:active {
+      transform: scale(0.95);
+    }
+
+    &:focus-visible {
+      background-color: rgb(0 0 0 / 8%);
+      box-shadow: 0 0 0 2px color-mix(in srgb, var(--yss-color-primary-6, #3371ff) 24%, transparent);
+    }
+
+    /* 深色模式按钮 */
+    [data-theme="vs-dark"] &,
+    [data-theme="hc-black"] & {
+      color: #c5c5c5;
+
+      &:hover {
+        background-color: rgb(255 255 255 / 10%);
+        color: #fff;
+      }
+
+      &:focus-visible {
+        background-color: rgb(255 255 255 / 14%);
+        box-shadow: 0 0 0 2px rgb(255 255 255 / 24%);
+      }
+    }
+  }
+}
+
+/* 鼠标悬停在 Wrapper 或聚焦时显示 */
+.yss-monaco-wrapper:hover .yss-monaco-toolbar,
+.yss-monaco-wrapper:focus-within .yss-monaco-toolbar {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+/* 自动避让策略：当编辑器内部出现可见的搜索框时，工具栏下移，避免遮挡 */
+.yss-monaco-wrapper:has(.find-widget.visible) .yss-monaco-toolbar {
+  top: 48px; /* 搜索框高度约 35px + 顶部间距，错开显示 */
+  transition: top 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}

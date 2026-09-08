@@ -1,0 +1,31 @@
+{
+  "skill": "commit-linting",
+  "purpose": "触发行为规约：yss-ui 组件库仓库提交规范的确定性词法路由。",
+  "cases": [
+    {
+      "id": "type-scope-choice",
+      "prompt": "yss-ui 组件库仓库的提交 type 和 scope 怎么选",
+      "should_trigger": true,
+      "assert": "按变更范围选择 type/scope，与 changelog 对齐。"
+    },
+    {
+      "id": "conventional-check",
+      "prompt": "检查这次提交是否符合 Conventional Commits",
+      "should_trigger": true,
+      "accept_route_to": ["frontend-commit"],
+      "assert": "校验提交信息格式并给出修正建议。"
+    },
+    {
+      "id": "near-miss-changelog",
+      "prompt": "生成更新日志",
+      "should_trigger": false,
+      "assert": "更新日志归 changelog-generation，不触发本 skill。"
+    },
+    {
+      "id": "near-miss-business-commit",
+      "prompt": "把业务项目的前端代码提交了",
+      "should_trigger": false,
+      "assert": "业务仓库提交归 frontend-commit，不触发本 skill。"
+    }
+  ]
+}

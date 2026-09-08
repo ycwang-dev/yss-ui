@@ -1,0 +1,248 @@
+@import (reference) "dumi/theme-default/styles/variables.less";
+
+/* ======================== */
+
+/* 贡献者 & 最后更新时间区域  */
+
+/* ======================== */
+
+.yss-contributors-section {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 64px;
+  padding: 8px 0;
+  border-top: 1px solid @c-border-light;
+  font-family: var(--yss-doc-font-family, -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", sans-serif);
+
+  @{dark-selector} & {
+    border-top-color: @c-border-less-dark;
+  }
+}
+
+/* ---- 贡献者列表 ---- */
+
+.yss-contributors {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  min-width: 0;
+
+  /* Hover 容器：展开所有头像 */
+  &:hover .yss-contributors-list li {
+    margin-inline-end: 0;
+  }
+}
+
+.yss-contributors-list {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+
+  li {
+    height: 24px;
+    margin-inline-end: -8px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    position: relative;
+    z-index: 1;
+
+    &:hover {
+      z-index: 10;
+    }
+  }
+}
+
+.yss-contributor-tooltip {
+  position: fixed;
+  z-index: 9999;
+  transform: translate(-50%, -100%);
+  pointer-events: none;
+  padding: 6px 8px;
+  border-radius: 6px;
+  background: rgb(0 0 0 / 85%);
+  color: #fff;
+  box-shadow: 0 8px 20px rgb(0 0 0 / 16%);
+  font-size: 12px;
+  font-weight: normal;
+  line-height: 1.5;
+  white-space: nowrap;
+  max-width: calc(100vw - 16px);
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+  &::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 100%;
+    transform: translateX(-50%);
+    border: 5px solid transparent;
+    border-top-color: rgb(0 0 0 / 85%);
+  }
+}
+
+.yss-contributor-avatar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 1px solid #fff;
+  box-shadow: 0 1px 2px rgb(0 0 0 / 8%);
+  object-fit: cover;
+  vertical-align: middle;
+  background-color: #fff;
+  transition: all 0.3s ease;
+
+  @{dark-selector} & {
+    border-color: #1f1f1f;
+    box-shadow: 0 1px 2px rgb(0 0 0 / 30%);
+  }
+}
+
+.yss-contributor-avatar--letter {
+  color: #fff;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1;
+}
+
+/* ---- 最后更新时间 ---- */
+
+.yss-last-updated {
+  display: inline-flex;
+  align-items: center;
+  color: var(--yss-doc-link);
+  font-size: 14px;
+  white-space: nowrap;
+  flex-shrink: 0;
+
+  @{dark-selector} & {
+    color: var(--yss-doc-link);
+  }
+}
+
+/* ======================== */
+
+/* 下方导航区域（继承 dumi 默认） */
+
+/* ======================== */
+
+.dumi-default-content-footer {
+  margin-top: 48px;
+  color: var(--yss-doc-text-muted);
+  font-size: 14px;
+  line-height: 1;
+
+  @{dark-selector} & {
+    color: var(--yss-doc-text-muted);
+  }
+
+  > nav {
+    padding: 12px 0;
+    margin-bottom: 18px;
+    border-block-start: 1px solid @c-border-light;
+    overflow: hidden;
+
+    &:empty {
+      display: none;
+    }
+
+    @{dark-selector} & {
+      border-block-start-color: @c-border-less-dark;
+    }
+
+    > a {
+      max-width: 180px;
+      min-width: 120px;
+      color: var(--yss-doc-link);
+      font-size: 16px;
+      text-decoration: none;
+      border-radius: 2px;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+
+      @{dark-selector} & {
+        color: var(--yss-doc-link);
+      }
+
+      &[data-prev] {
+        float: left;
+        padding-inline-end: 24px;
+
+        svg {
+          margin-inline-end: 4px;
+        }
+
+        [data-direction="rtl"] & {
+          float: right;
+
+          svg {
+            transform: rotate(180deg);
+          }
+        }
+      }
+
+      &[data-next] {
+        float: right;
+        text-align: end;
+        padding-inline-start: 24px;
+
+        svg {
+          margin-inline-start: 4px;
+          transform: rotate(180deg);
+        }
+
+        [data-direction="rtl"] & {
+          float: left;
+
+          svg {
+            transform: rotate(0);
+          }
+        }
+      }
+
+      small {
+        display: block;
+        margin-bottom: 5px;
+        color: var(--yss-doc-text-muted);
+        font-size: 14px;
+        transition: color 0.2s;
+
+        @{dark-selector} & {
+          color: var(--yss-doc-text-muted);
+        }
+      }
+
+      &:hover {
+        small {
+          color: var(--yss-doc-text-secondary);
+
+          @{dark-selector} & {
+            color: var(--yss-doc-text-secondary);
+          }
+        }
+
+        svg {
+          fill: var(--yss-doc-text-secondary);
+
+          @{dark-selector} & {
+            fill: var(--yss-doc-text-secondary);
+          }
+        }
+      }
+    }
+  }
+
+  [data-no-sidebar] > & {
+    display: none;
+  }
+}

@@ -1,0 +1,469 @@
+/* ============================================================
+ * SearchBar 科技感重设计 v3
+ * 浅色模式：旋转浅色渐变边框 + 鼠标跟随光斑 + Focus 辉光
+ * 暗色模式：蓝紫科技流光旋转边框 + 辉光弥散
+ * ============================================================ */
+
+/* ---- 动画 ---- */
+@keyframes spin {
+  0% {
+    --bg-angle: 0deg;
+  }
+
+  100% {
+    --bg-angle: 360deg;
+  }
+}
+
+@keyframes shimmer {
+  0%,
+  100% {
+    opacity: 0.5;
+  }
+
+  50% {
+    opacity: 0.9;
+  }
+}
+
+@keyframes yss-search-demo-pulse {
+  0%,
+  100% {
+    filter: saturate(1) brightness(1);
+  }
+
+  50% {
+    filter: saturate(1.08) brightness(1.06);
+  }
+}
+
+@property --bg-angle {
+  syntax: "<angle>";
+  inherits: true;
+  initial-value: 0deg;
+}
+
+.dumi-default-search-bar {
+  --search-width: 268px;
+  --search-height: 42px;
+  position: relative;
+  border-radius: 18px;
+  --mouse-x: 50%;
+  --mouse-y: 50%;
+
+  @media only screen and (max-width: 767px) {
+    display: none;
+  }
+
+  margin-inline-end: 0;
+
+  &.search-bar-demo-active .yss-search-bar-glow-layer {
+    opacity: 0.86;
+    animation:
+      spin 7s linear infinite,
+      yss-search-demo-pulse 2.1s ease-in-out infinite;
+  }
+
+  &.search-bar-demo-active .yss-search-bar-glow-layer::before {
+    opacity: 0.52;
+  }
+
+  &.search-bar-demo-active .dumi-default-search-bar-input::placeholder {
+    color: rgba(115, 122, 134, 0.8);
+  }
+
+  /* ========================== 发光层 ========================== */
+  .yss-search-bar-glow-layer {
+    position: absolute;
+    inset: -2px;
+    border-radius: 20px;
+    pointer-events: none;
+    z-index: 0;
+    transition: opacity 0.4s ease;
+
+    /* ---- 浅色模式：柔和浅色旋转渐变边框 ---- */
+    opacity: 0.36;
+    background: conic-gradient(from var(--bg-angle), #a5d8ff, #99e9f2, #b197fc, #fcc2d7, #a5d8ff);
+    animation: none;
+
+    /* 白色内部遮罩，只露出渐变边框 */
+    &::after {
+      content: "";
+      position: absolute;
+      inset: 2px;
+      background: #fff;
+      border-radius: 18px;
+    }
+
+    /* 浅色底部弥散辉光 */
+    &::before {
+      content: "";
+      position: absolute;
+      inset: -3px;
+      background: conic-gradient(from var(--bg-angle), #a5d8ff, #99e9f2, #b197fc, #fcc2d7, #a5d8ff);
+      animation: none;
+      filter: blur(10px);
+      opacity: 0.22;
+      border-radius: 22px;
+      z-index: -1;
+    }
+
+    /* ---- 暗色模式：蓝→青→紫 科技配色 ---- */
+    [data-prefers-color="dark"] & {
+      opacity: 0.6;
+      background: conic-gradient(from var(--bg-angle), #1677ff, #36d1dc, #5b86e5, #7c3aed, #a855f7, #36d1dc, #1677ff);
+      animation: none;
+
+      &::after {
+        background: #0d1117;
+      }
+
+      &::before {
+        background: conic-gradient(from var(--bg-angle), #1677ff, #36d1dc, #5b86e5, #7c3aed, #a855f7, #36d1dc, #1677ff);
+        animation: none;
+        filter: blur(12px);
+        opacity: 0.28;
+      }
+    }
+  }
+
+  /* ---- 鼠标跟随光斑叠加层 (浅色 + 暗色通用) ---- */
+  &::before {
+    content: "";
+    position: absolute;
+    inset: -2px;
+    border-radius: 22px;
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0;
+    background: radial-gradient(
+      120px circle at var(--mouse-x) var(--mouse-y),
+      rgba(22, 119, 255, 0.35),
+      transparent 70%
+    );
+    transition: opacity 0.3s ease;
+  }
+
+  /* Hover 时显示鼠标光斑 */
+  &:hover::before {
+    opacity: 1;
+  }
+
+  /* Hover 时加强渐变边框 */
+  &:hover .yss-search-bar-glow-layer {
+    opacity: 0.95;
+    animation: spin 7s linear infinite;
+  }
+
+  &:hover .yss-search-bar-glow-layer::before,
+  &:focus-within .yss-search-bar-glow-layer::before {
+    opacity: 0.46;
+    animation: spin 7s linear infinite;
+  }
+
+  /* 暗色 hover 时辉光增强 */
+  [data-prefers-color="dark"] &:hover .yss-search-bar-glow-layer::before {
+    opacity: 0.7;
+  }
+
+  /* ========================= 搜索图标 ========================= */
+  &-svg {
+    position: absolute;
+    top: 50%;
+    margin-top: 1px;
+    inset-inline-start: 16px;
+    width: 16px;
+    fill: var(--yss-doc-text-muted);
+    transform: translateY(-50%);
+    z-index: 2;
+    pointer-events: none;
+    transition: fill 0.3s ease;
+
+    [data-prefers-color="dark"] & {
+      fill: var(--yss-doc-text-muted);
+    }
+  }
+
+  /* Hover 时搜索图标变蓝 */
+  &:hover &-svg {
+    fill: #1677ff;
+  }
+
+  /* ========================= 输入框 ========================= */
+  &-input {
+    position: relative;
+    z-index: 1;
+    width: var(--search-width);
+    height: var(--search-height);
+    padding: 0;
+    padding-inline-start: 40px;
+    padding-inline-end: 12px;
+    color: var(--yss-doc-text-body);
+    font-size: 14px;
+    border-radius: 18px;
+    box-sizing: border-box;
+    outline: none;
+    transition: all 0.3s;
+
+    /* 浅色模式：透明边框（渐变层有边框），白色半透明底 */
+    border: 2px solid transparent;
+    background-color: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(8px) saturate(160%);
+    -webkit-backdrop-filter: blur(8px) saturate(160%);
+    box-shadow: none;
+
+    /* 暗色模式 */
+    [data-prefers-color="dark"] & {
+      color: var(--yss-doc-text-body);
+      background-color: transparent;
+      backdrop-filter: none;
+      -webkit-backdrop-filter: none;
+    }
+
+    /* --- Focus 态 --- */
+    &:focus {
+      background-color: rgba(255, 255, 255, 0.95);
+
+      [data-prefers-color="dark"] & {
+        background-color: transparent;
+      }
+    }
+
+    /* 暗色 Focus 时加强底部辉光 */
+    [data-prefers-color="dark"] &:focus ~ .yss-search-bar-glow-layer::before {
+      opacity: 0.9;
+      filter: blur(18px);
+    }
+
+    /* 浅色 Focus 时加强底部辉光 */
+    &:focus ~ .yss-search-bar-glow-layer {
+      opacity: 1;
+    }
+
+    &:focus ~ .yss-search-bar-glow-layer::before {
+      opacity: 0.6;
+      filter: blur(14px);
+      animation:
+        spin 5s linear infinite,
+        shimmer 2s ease-in-out infinite;
+    }
+
+    /* 有内容或聚焦时隐藏快捷键提示 */
+    &:focus,
+    &:not(:placeholder-shown) {
+      ~ .dumi-default-search-shortcut {
+        opacity: 0;
+        transform: translateY(-50%) scale(0.9);
+      }
+    }
+  }
+
+  /* ======================== 快捷键标签 ======================== */
+  .dumi-default-search-shortcut {
+    position: absolute;
+    top: 50%;
+    inset-inline-end: 11px;
+    display: inline-block;
+    padding: 4px 8px;
+    color: var(--yss-doc-text-muted);
+    font-size: 12px;
+    line-height: 1;
+    white-space: nowrap;
+    background-color: rgba(255, 255, 255, 0.7);
+    border-radius: 11px;
+    border: 1px solid rgba(208, 213, 216, 0.5);
+    box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.05);
+    transform: translateY(-50%);
+    transition: all 0.3s;
+    pointer-events: none;
+    z-index: 2;
+
+    [data-prefers-color="dark"] & {
+      background-color: rgba(0, 0, 0, 0.4);
+      border-color: rgba(48, 54, 61, 0.5);
+      color: var(--yss-doc-text-muted);
+      box-shadow: inset 0 -1px 0 rgba(255, 255, 255, 0.05);
+    }
+
+    @media only screen and (max-width: 767px) {
+      display: none;
+    }
+  }
+
+  @media (max-width: 1200px) {
+    --search-width: 220px;
+  }
+
+  @media (max-width: 992px) {
+    --search-width: 190px;
+  }
+
+  /* ======================= 搜索结果弹出面板 ======================= */
+  .dumi-default-search-popover {
+    position: absolute;
+    top: 100%;
+    inset-inline-start: 0;
+    inset-inline-end: auto;
+    display: flex;
+    flex-direction: column;
+    width: min(540px, calc(100vw - 24px));
+    max-height: 460px;
+    margin-top: 18px;
+    z-index: 100;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.15);
+
+    [data-prefers-color="dark"] & {
+      background-color: #161b22;
+      box-shadow: 0 4px 30px rgba(0, 0, 0, 0.6);
+    }
+
+    &::before {
+      content: "";
+      position: absolute;
+      bottom: 100%;
+      inset-inline-start: 56px;
+      inset-inline-end: auto;
+      display: inline-block;
+      width: 0;
+      height: 0;
+      border: 8px solid transparent;
+      border-bottom-color: #fff;
+
+      [data-prefers-color="dark"] & {
+        border-bottom-color: #161b22;
+      }
+    }
+
+    > section {
+      flex: 1;
+      min-height: 60px;
+      overflow: auto;
+      overscroll-behavior: contain;
+      -webkit-overflow-scrolling: touch;
+      border-radius: inherit;
+    }
+  }
+
+  /* ========================= 模态搜索框 ========================= */
+  .dumi-default-search-modal {
+    position: fixed;
+    top: 0;
+    inset-inline-start: 0;
+    z-index: 1000;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+
+    &-mask {
+      background-color: rgba(0, 0, 0, 0.45);
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      left: 0;
+      top: 0;
+    }
+
+    &-content {
+      position: absolute;
+      top: 60px;
+      background-color: #fff;
+      width: 500px;
+      padding: 12px;
+      box-sizing: border-box;
+      box-shadow:
+        inset 1px 1px 0 0 hsla(0deg, 0%, 100%, 50%),
+        0 3px 8px 0 #555a64;
+      border-radius: 8px;
+      max-height: calc(100% - 120px);
+      display: flex;
+      flex-direction: column;
+
+      [data-prefers-color="dark"] & {
+        background-color: #161b22;
+        box-shadow:
+          0 24px 64px rgba(0, 0, 0, 0.6),
+          0 8px 24px rgba(0, 0, 0, 0.3);
+      }
+    }
+
+    .dumi-default-search-bar-input {
+      width: 100%;
+      border-radius: 4px;
+
+      [data-prefers-color="dark"] & {
+        background-color: rgba(0, 0, 0, 0.2);
+        border: 1px solid rgba(48, 54, 61, 0.5);
+      }
+    }
+
+    .dumi-default-search-result {
+      min-height: 60px;
+      margin-top: 12px;
+      flex: auto;
+      overflow: auto;
+
+      > dl > dd {
+        margin: 0 auto;
+      }
+    }
+
+    &-commands {
+      justify-content: flex-start;
+      font-size: 12px;
+      color: var(--yss-doc-text-muted);
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      border-top: 1px solid #e4e9ec;
+      padding-top: 12px;
+      display: flex;
+      align-items: center;
+      user-select: none;
+
+      [data-prefers-color="dark"] & {
+        color: var(--yss-doc-text-muted);
+        border-top-color: rgba(48, 54, 61, 0.5);
+      }
+
+      > li {
+        margin-inline-end: 10px;
+      }
+
+      &-arrow {
+        .dumi-default-search-modal-shortcut {
+          margin-inline-end: 4px;
+        }
+      }
+
+      &-text {
+        margin-inline-start: 5px;
+      }
+    }
+
+    &-shortcut {
+      display: inline-block;
+      padding: 4px 8px;
+      color: var(--yss-doc-text-muted);
+      font-size: 12px;
+      line-height: 1;
+      white-space: nowrap;
+      background-color: #f7f9fb;
+      border-radius: 3px;
+      border: 1px solid #d0d5d8;
+      border-bottom-width: 2px;
+      transition: all 0.3s;
+      pointer-events: none;
+
+      [data-prefers-color="dark"] & {
+        color: var(--yss-doc-text-muted);
+        background-color: #0d1117;
+        border-color: rgba(48, 54, 61, 0.6);
+      }
+    }
+  }
+}

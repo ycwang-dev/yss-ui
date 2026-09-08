@@ -1,0 +1,50 @@
+.demo2-use-tree-height-container {
+  display: flex;
+  gap: 16px;
+  height: 320px;
+}
+
+.left-panel {
+  width: 280px;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--demo-border, #e5e6eb);
+  border-radius: 4px;
+  overflow: hidden;
+  background: var(--demo-bg-surface, #fafafa);
+}
+
+.header {
+  padding: 12px;
+  border-bottom: 1px solid var(--demo-border, #e5e6eb);
+  background: var(--demo-bg-surface, #fafafa);
+}
+
+.tree-area {
+  flex: 1;
+  overflow: hidden;
+}
+
+.info-panel {
+  flex: 1;
+  padding: 16px;
+  background: var(--demo-bg-container, #fff);
+  border: 1px solid var(--demo-border, #e5e6eb);
+  border-radius: 4px;
+
+  p {
+    margin: 0 0 12px;
+    color: var(--demo-text-primary, #333);
+  }
+
+  .tip {
+    font-size: 12px;
+    color: var(--demo-text-muted, #999);
+    line-height: 1.6;
+  }
+
+  strong {
+    color: var(--primary-color, #3371ff);
+    font-size: 16px;
+  }
+}

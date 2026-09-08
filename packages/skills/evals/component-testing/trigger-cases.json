@@ -1,0 +1,30 @@
+{
+  "skill": "component-testing",
+  "purpose": "触发行为规约：YSS UI 组件库运行时测试与回归测试。",
+  "cases": [
+    {
+      "id": "component-regression-test",
+      "prompt": "给 YConditionBuilder 的公开实例方法补一个 Vue Test Utils 回归测试",
+      "should_trigger": true,
+      "assert": "读取真实组件契约，使用组件测试验证 Expose 行为并清理 wrapper。"
+    },
+    {
+      "id": "browser-api-cleanup",
+      "prompt": "补测组件卸载后 ResizeObserver 和定时器是否清理",
+      "should_trigger": true,
+      "assert": "建立可观察的资源清理断言，并在测试后恢复 mock。"
+    },
+    {
+      "id": "near-miss-component-implementation",
+      "prompt": "在组件库新增一个树形组件并导出",
+      "should_trigger": false,
+      "assert": "组件实现归 component-development，不因可能需要测试而误触发本 skill。"
+    },
+    {
+      "id": "near-miss-doc-browser-smoke",
+      "prompt": "遍历文档站路由做浏览器冒烟验收",
+      "should_trigger": false,
+      "assert": "文档站浏览器验收不属于组件单元测试。"
+    }
+  ]
+}

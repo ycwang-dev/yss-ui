@@ -1,0 +1,36 @@
+{
+  "skill": "component-selection-imports",
+  "purpose": "触发行为规约：组件选型与导入来源判定（虚构组件排查、包边界）的确定性词法路由。",
+  "cases": [
+    {
+      "id": "fictional-component",
+      "prompt": "这个 Y 前缀组件是不是虚构的,从哪导入",
+      "should_trigger": true,
+      "assert": "对照真实导出清单判定组件是否存在，给出正确导入来源。"
+    },
+    {
+      "id": "which-package",
+      "prompt": "该用 ant-design-vue 还是 @yss-ui/components 的组件",
+      "should_trigger": true,
+      "assert": "按选型规则判定组件来源，YSS 封装优先。"
+    },
+    {
+      "id": "import-error",
+      "prompt": "导入报错找不到 @yss-ui/hooks 里的方法",
+      "should_trigger": true,
+      "assert": "核对 hooks 真实导出，修正导入路径。"
+    },
+    {
+      "id": "near-miss-table-config",
+      "prompt": "YTable 的列怎么配置",
+      "should_trigger": false,
+      "assert": "组件用法归 ytable-usage，不触发本 skill。"
+    },
+    {
+      "id": "near-miss-form-usage",
+      "prompt": "表单校验怎么写",
+      "should_trigger": false,
+      "assert": "表单用法归 formily-foundation，不触发本 skill。"
+    }
+  ]
+}

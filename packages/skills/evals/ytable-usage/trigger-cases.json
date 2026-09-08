@@ -1,0 +1,42 @@
+{
+  "skill": "ytable-usage",
+  "purpose": "触发行为规约：YTable 列表表格（操作列、分页、筛选、字典、拖拽）的确定性词法路由。",
+  "cases": [
+    {
+      "id": "action-column-confirm",
+      "prompt": "YTable 操作列加编辑删除按钮和气泡确认",
+      "should_trigger": true,
+      "assert": "用 YTableActionConfig 配操作列与气泡确认，不手写按钮列。"
+    },
+    {
+      "id": "filter-and-dict",
+      "prompt": "表格列头筛选和字典翻译显示",
+      "should_trigger": true,
+      "assert": "配置列筛选 filter-change 与字典翻译渲染。"
+    },
+    {
+      "id": "row-drag",
+      "prompt": "表格行拖拽排序怎么开启",
+      "should_trigger": true,
+      "assert": "开启 rowConfig.drag 并处理 row-dragend 事件。"
+    },
+    {
+      "id": "pagination-config",
+      "prompt": "YTable 远程分页 pagination 怎么配",
+      "should_trigger": true,
+      "assert": "远程分页配置与页码变更回调，符合 skill 标准骨架。"
+    },
+    {
+      "id": "near-miss-edit-table",
+      "prompt": "表格里行内编辑单元格",
+      "should_trigger": false,
+      "assert": "行内编辑归 yedit-table-usage，不触发本 skill。"
+    },
+    {
+      "id": "near-miss-table-height",
+      "prompt": "表格高度自适应出现双滚动条",
+      "should_trigger": false,
+      "assert": "表格高度问题归 use-table-height，不触发本 skill。"
+    }
+  ]
+}

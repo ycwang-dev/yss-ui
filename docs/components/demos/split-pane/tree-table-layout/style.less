@@ -1,0 +1,80 @@
+.layout-split-pane-demo {
+  height: 500px;
+  border: 1px solid var(--demo-border, var(--border-color, #e8e8e8));
+  border-radius: 8px;
+  overflow: hidden;
+
+  // Tree 侧边栏样式
+  .left-pane-content {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    padding: 12px;
+    background: var(--demo-bg-surface, #fafafa);
+
+    .tree-title {
+      font-weight: 600;
+      margin-bottom: 12px;
+      padding: 0 4px;
+      font-size: 14px;
+      color: var(--demo-text-primary, rgb(0 0 0 / 88%));
+    }
+
+    .tree-wrapper {
+      flex: 1;
+      min-height: 0;
+      overflow: hidden;
+    }
+  }
+
+  // 右侧表格区域样式
+  .right-pane-content {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    padding: 16px;
+    background-color: var(--demo-bg-container, #fff);
+
+    .table-toolbar {
+      margin-bottom: 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      flex-shrink: 0;
+
+      .filter-area {
+        display: flex;
+        gap: 12px;
+        flex: 1;
+        max-width: 400px;
+      }
+
+      .action-area {
+        display: flex;
+        gap: 8px;
+      }
+    }
+
+    .table-wrapper {
+      flex: 1;
+      min-height: 0;
+      overflow: hidden;
+    }
+  }
+}
+
+.action-link {
+  color: var(--primary-color, var(--yss-color-primary-6, #3371ff));
+  cursor: pointer;
+  margin-right: 12px;
+
+  &:hover {
+    color: var(--primary-color-hover, var(--yss-color-primary-5, #4096ff));
+  }
+
+  &:last-child {
+    margin-right: 0;
+  }
+}

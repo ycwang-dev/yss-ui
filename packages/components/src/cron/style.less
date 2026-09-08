@@ -1,0 +1,310 @@
+/**
+ * YCron 组件样式
+ * @description 左右分栏布局，支持主题色和交互动画
+ */
+
+// 主题色变量（支持用户自定义）
+@cron-primary-color: var(--primary-color, var(--yss-color-primary-6, var(--ant-primary-color, #3371ff)));
+@cron-primary-hover: var(--primary-color-hover, var(--yss-color-primary-5, var(--ant-primary-color-hover, #3177ff)));
+@cron-primary-bg: var(--demo-item-selected-bg, var(--ant-primary-1, #e6f4ff));
+@cron-border-color: var(--demo-border, var(--ant-border-color-split, #f0f0f0));
+@cron-text-color: var(--demo-text-primary, var(--ant-text-color, rgb(0 0 0 / 88%)));
+@cron-text-secondary: var(--demo-text-secondary, var(--ant-text-color-secondary, rgb(0 0 0 / 65%)));
+@cron-bg-container: var(--demo-bg-container, var(--ant-bg-container, #fff));
+@cron-bg-hover: var(--demo-item-hover-bg, var(--ant-control-item-bg-hover, rgb(0 0 0 / 4%)));
+@cron-border-radius: var(--ant-border-radius, 6px);
+@cron-box-shadow: var(
+  --ant-box-shadow-tertiary,
+  0 1px 2px 0 rgb(0 0 0 / 3%),
+  0 1px 6px -1px rgb(0 0 0 / 2%),
+  0 2px 4px 0 rgb(0 0 0 / 2%)
+);
+
+.y-cron {
+  display: flex;
+  flex-direction: column;
+  background: @cron-bg-container;
+  border: 1px solid @cron-border-color;
+  border-radius: @cron-border-radius;
+  overflow: hidden;
+  font-size: 14px;
+  color: @cron-text-color;
+
+  // 主体区域：左右分栏
+  &__body {
+    display: flex;
+    min-height: 240px;
+  }
+
+  // 左侧导航
+  &__nav {
+    flex-shrink: 0;
+    width: 64px;
+    background: linear-gradient(180deg, #fafbfc 0%, #f5f7fa 100%);
+    border-right: 1px solid @cron-border-color;
+    padding: 6px 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+  }
+
+  // 导航项
+  &__nav-item {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 34px;
+    margin: 0 4px;
+    border-radius: @cron-border-radius;
+    cursor: pointer;
+    font-weight: 500;
+    font-size: 13px;
+    color: @cron-text-secondary;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    user-select: none;
+
+    // Hover 效果
+    &:hover {
+      background: @cron-bg-hover;
+      color: @cron-text-color;
+    }
+
+    // 选中状态
+    &--active {
+      background: @cron-primary-bg;
+      color: @cron-primary-color;
+      font-weight: 600;
+
+      // 左侧指示条
+      &::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 3px;
+        height: 16px;
+        background: @cron-primary-color;
+        border-radius: 0 2px 2px 0;
+      }
+
+      &:hover {
+        background: @cron-primary-bg;
+        color: @cron-primary-color;
+      }
+    }
+
+    // Icon
+    &-icon {
+      margin-right: 3px;
+      font-size: 12px;
+    }
+  }
+
+  // 右侧内容区
+  &__content {
+    flex: 1;
+    padding: 8px 12px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  // 配置行
+  &__option {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 6px 8px;
+    border-radius: @cron-border-radius;
+    transition: background 0.2s ease;
+
+    &:hover {
+      background: @cron-bg-hover;
+    }
+
+    // 选中状态
+    &--selected {
+      background: @cron-primary-bg;
+
+      &:hover {
+        background: @cron-primary-bg;
+      }
+    }
+  }
+
+  // Radio 标签
+  &__radio-label {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    min-width: 100px;
+    line-height: 28px;
+    cursor: pointer;
+    font-size: 13px;
+    color: @cron-text-color;
+  }
+
+  // 配置控件区
+  &__controls {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px;
+    flex: 1;
+
+    // 控件间的文本
+    .control-text {
+      color: @cron-text-secondary;
+      font-size: 12px;
+      white-space: nowrap;
+    }
+
+    // 数字输入框
+    .ant-input-number {
+      width: 70px;
+    }
+
+    // 下拉多选
+    .ant-select {
+      min-width: 140px;
+      max-width: 240px;
+    }
+  }
+
+  // 底部表达式预览
+  &__footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 12px;
+    background: linear-gradient(180deg, #fafbfc 0%, #f5f7fa 100%);
+    border-top: 1px solid @cron-border-color;
+    gap: 12px;
+  }
+
+  // 表达式展示
+  &__expression {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-width: 0; // 允许 flex 子元素收缩
+
+    &-label {
+      color: @cron-text-secondary;
+      font-size: 13px;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    &-value {
+      font-family: SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace;
+      font-size: 15px;
+      font-weight: 600;
+      color: @cron-primary-color;
+      background: @cron-bg-container;
+      padding: 6px 12px;
+      border-radius: @cron-border-radius;
+      border: 1px solid @cron-border-color;
+      letter-spacing: 0.5px;
+      transition: all 0.2s ease;
+      cursor: pointer;
+      // 溢出省略
+      max-width: 100%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+
+      &:hover {
+        border-color: @cron-primary-color;
+        box-shadow: 0 0 0 2px rgb(22 119 255 / 10%);
+      }
+    }
+  }
+
+  // 操作按钮区
+  &__actions {
+    display: flex;
+    gap: 8px;
+  }
+}
+
+// 响应式：窄容器
+@media (max-width: 480px) {
+  .y-cron {
+    &__nav {
+      width: 56px;
+    }
+
+    &__nav-item {
+      font-size: 13px;
+    }
+
+    &__content {
+      padding: 12px;
+    }
+
+    &__controls {
+      .ant-input-number {
+        width: 64px;
+      }
+
+      .ant-select {
+        min-width: 120px;
+      }
+    }
+  }
+}
+
+/* ==========================================================
+ * 暗色模式适配 (Dark Mode)
+ * dumi / yss-ui 通用暗色属性：[data-prefers-color='dark'] / [data-theme='dark']
+ * ========================================================== */
+[data-prefers-color="dark"] .y-cron,
+:root[data-prefers-color="dark"] .y-cron,
+[data-theme="dark"] .y-cron,
+:root[data-theme="dark"] .y-cron {
+  // 覆盖 AntDV CSS 变量以修正失效的回退（Fallback）
+  --ant-bg-container: #141414;
+  --ant-border-color-split: #303030;
+  --ant-text-color: rgb(255 255 255 / 85%);
+  --ant-text-color-secondary: rgb(255 255 255 / 65%);
+  --ant-control-item-bg-hover: rgb(255 255 255 / 8%);
+  --ant-primary-1: color-mix(in srgb, var(--primary-color, #3371ff) 16%, transparent);
+
+  // 专属组件覆写静态硬编码部分
+  .y-cron__nav,
+  .y-cron__footer {
+    background: var(--demo-bg-surface, #1f1f1f);
+  }
+
+  .y-cron__nav-item {
+    color: var(--demo-text-secondary, rgb(255 255 255 / 65%));
+
+    &:hover {
+      color: var(--demo-text-primary, rgb(255 255 255 / 85%));
+    }
+
+    &--active {
+      background: color-mix(in srgb, var(--primary-color, #3371ff) 16%, transparent);
+      color: var(--primary-color, #3371ff);
+    }
+  }
+
+  .y-cron__expression-value {
+    background: var(--demo-bg-container, #141414);
+    border-color: var(--demo-border, #303030);
+    color: var(--primary-color, #3371ff);
+  }
+
+  .y-cron__radio-label {
+    color: var(--demo-text-primary, rgb(255 255 255 / 85%));
+  }
+
+  .control-text {
+    color: var(--demo-text-secondary, rgb(255 255 255 / 65%));
+  }
+}

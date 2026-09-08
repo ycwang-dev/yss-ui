@@ -1,0 +1,7 @@
+.agent/skills
+.agents/skills
+.cursor/skills
+.claude/skills
+.trae/skills
+packages/skills/*/examples
+/scripts/

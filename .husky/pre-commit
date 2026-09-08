@@ -1,0 +1,15 @@
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+
+echo "👥 正在生成最新的贡献者信息..."
+pnpm generate:contributors
+git add public/contributors.json
+
+echo "🔍 正在运行代码检查和格式化..."
+pnpm lint-staged
+
+echo "🛡️ 正在校验首页长期产品定位文案..."
+pnpm test:home-releases
+
+echo "✅ 代码检查通过，提交继续..."
+

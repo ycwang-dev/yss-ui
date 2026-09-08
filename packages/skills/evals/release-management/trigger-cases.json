@@ -1,0 +1,36 @@
+{
+  "skill": "release-management",
+  "purpose": "触发行为规约：多包发版规划/预检/核验的确定性词法路由。",
+  "cases": [
+    {
+      "id": "detect-pending-packages",
+      "prompt": "检测哪些包需要发版",
+      "should_trigger": true,
+      "assert": "运行 release-changed 检测待发包并给出版本建议。"
+    },
+    {
+      "id": "pre-release-gate",
+      "prompt": "发版前预检 changelog 门禁",
+      "should_trigger": true,
+      "assert": "核对 changelog 门禁与版本类型后再放行。"
+    },
+    {
+      "id": "release-changed-usage",
+      "prompt": "release-changed 检测待发包怎么用",
+      "should_trigger": true,
+      "assert": "解释 release-changed 检测逻辑与输出。"
+    },
+    {
+      "id": "near-miss-full-flow",
+      "prompt": "准备发版走全流程",
+      "should_trigger": false,
+      "assert": "全流程编排归 release-workflow，不触发本 skill。"
+    },
+    {
+      "id": "near-miss-changelog",
+      "prompt": "生成更新日志",
+      "should_trigger": false,
+      "assert": "更新日志归 changelog-generation，不触发本 skill。"
+    }
+  ]
+}

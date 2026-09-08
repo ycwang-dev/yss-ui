@@ -1,0 +1,196 @@
+@import (reference) "~dumi/theme-default/styles/variables.less";
+
+/** 自定义 Logo Slot 样式 */
+.yss-custom-logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+  line-height: 1;
+  width: 238px;
+  min-width: 0;
+  user-select: none;
+
+  .yss-custom-logo-mark {
+    --yss-logo-mark-safe-inset: 2px;
+
+    position: relative;
+    width: 54px;
+    height: 54px;
+    flex: 0 0 54px;
+    overflow: hidden;
+    border-radius: 22px;
+    isolation: isolate;
+    background: transparent;
+    box-shadow: 0 16px 28px -24px rgb(59 130 246 / 42%);
+    transition:
+      transform 0.26s cubic-bezier(0.16, 1, 0.3, 1),
+      box-shadow 0.26s ease,
+      filter 0.26s ease;
+
+    &::before {
+      content: "";
+      display: none;
+    }
+
+    &::after {
+      content: "";
+      display: none;
+    }
+  }
+
+  .yss-custom-logo-img {
+    position: relative;
+    z-index: 1;
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    transform: translateZ(0);
+    border-radius: 22px;
+    filter: saturate(1.05) contrast(1.03);
+  }
+
+  .yss-custom-logo-img-dark {
+    display: none;
+    width: calc(100% - var(--yss-logo-mark-safe-inset) - var(--yss-logo-mark-safe-inset));
+    height: calc(100% - var(--yss-logo-mark-safe-inset) - var(--yss-logo-mark-safe-inset));
+    margin: var(--yss-logo-mark-safe-inset);
+    object-fit: contain;
+    border-radius: 19px;
+    filter: saturate(1.08) contrast(1.04);
+  }
+
+  @{dark-selector} & {
+    .yss-custom-logo-mark {
+      background: rgb(3 8 20 / 72%);
+      box-shadow:
+        0 18px 28px -24px rgb(96 165 250 / 28%),
+        inset 0 0 0 1px rgb(96 165 250 / 10%);
+    }
+
+    .yss-custom-logo-img-light {
+      display: none;
+    }
+
+    .yss-custom-logo-img-dark {
+      display: block;
+    }
+  }
+
+  .yss-custom-logo-text {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .yss-custom-logo-title {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    min-width: 0;
+  }
+
+  .yss-custom-logo-word {
+    font-family: var(
+      --yss-doc-font-family,
+      -apple-system,
+      BlinkMacSystemFont,
+      "SF Pro Display",
+      "Segoe UI",
+      sans-serif
+    );
+    font-size: 23px;
+    font-weight: 800;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    background: linear-gradient(
+      125deg,
+      var(--yss-brand-text-main, #4968eb) 0%,
+      var(--yss-brand-text-accent, #217dff) 46%,
+      var(--yss-brand-text-end, #1ab7ef) 100%
+    );
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    filter: drop-shadow(0 6px 14px rgb(99 162 255 / 12%));
+  }
+
+  .yss-custom-logo-chip {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 21px;
+    padding: 0 8px;
+    border-radius: 999px;
+    border: 1px solid var(--yss-brand-chip-border, rgb(59 130 246 / 20%));
+    background: var(
+      --yss-brand-chip-bg,
+      linear-gradient(145deg, rgb(255 255 255 / 96%), rgb(236 245 255 / 88%) 60%, rgb(220 236 255 / 84%) 100%)
+    );
+    box-shadow:
+      inset 0 1px 0 rgb(255 255 255 / 66%),
+      0 14px 20px -18px rgb(59 130 246 / 32%);
+    color: var(--yss-brand-chip-text, #1d4ed8);
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.18em;
+    text-indent: 0.18em;
+  }
+
+  .yss-custom-logo-caption {
+    padding-left: 2px;
+    color: var(--yss-brand-caption, rgb(71 85 105 / 78%));
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.26em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  &:hover {
+    .yss-custom-logo-mark {
+      transform: translateY(-1px);
+      box-shadow:
+        0 22px 28px -22px rgb(79 124 255 / 24%),
+        0 10px 18px -18px rgb(34 211 238 / 18%);
+      filter: saturate(1.02);
+    }
+
+    .yss-custom-logo-img {
+      filter: saturate(1.08) contrast(1.04);
+    }
+  }
+
+  @media only screen and (max-width: 767px) {
+    gap: 10px;
+    width: auto;
+
+    .yss-custom-logo-mark {
+      --yss-logo-mark-safe-inset: 1px;
+
+      width: 41px;
+      height: 41px;
+      flex-basis: 41px;
+      border-radius: 18px;
+    }
+
+    .yss-custom-logo-word {
+      font-size: 19px;
+      letter-spacing: 0.12em;
+    }
+
+    .yss-custom-logo-chip {
+      height: 19px;
+      padding: 0 7px;
+      font-size: 10px;
+    }
+
+    .yss-custom-logo-caption {
+      display: none;
+    }
+  }
+}

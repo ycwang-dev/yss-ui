@@ -1,0 +1,36 @@
+{
+  "skill": "yss-create-microapp",
+  "purpose": "触发行为规约：微前端子应用脚手架的确定性词法路由。",
+  "cases": [
+    {
+      "id": "create-microapp",
+      "prompt": "创建一个新的微应用",
+      "should_trigger": true,
+      "assert": "用 YSS 模板脚手架在本地生成子应用工程。"
+    },
+    {
+      "id": "qiankun-subapp",
+      "prompt": "生成 qiankun 子应用",
+      "should_trigger": true,
+      "assert": "生成 Vue3 + TypeScript + qiankun 子应用。"
+    },
+    {
+      "id": "scaffold-new",
+      "prompt": "用 YSS 模板脚手架新建微前端项目",
+      "should_trigger": true,
+      "assert": "走脚手架标准流程并完成初始化校验。"
+    },
+    {
+      "id": "near-miss-frontend-commit",
+      "prompt": "微前端仓库提交代码",
+      "should_trigger": false,
+      "assert": "仓库提交归 frontend-commit，不触发本 skill。"
+    },
+    {
+      "id": "near-miss-page",
+      "prompt": "生成业务页面",
+      "should_trigger": false,
+      "assert": "页面生成归 yss-ui-business-page-generation，不触发本 skill。"
+    }
+  ]
+}

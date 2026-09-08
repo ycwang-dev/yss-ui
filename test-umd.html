@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Test UMD</title>
+    <!-- Load Vue -->
+    <script src="https://unpkg.com/vue@3"></script>
+    <!-- Load yss-ui UMD -->
+    <script src="./packages/components/dist-umd/yss-ui.umd.js"></script>
+    <link rel="stylesheet" href="./packages/components/dist-umd/yss-ui.css" />
+    <style>
+      body {
+        padding: 50px;
+      }
+
+      #app {
+        width: 800px;
+        height: 500px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="app">
+      <y-monaco v-model="code" language="sql"></y-monaco>
+    </div>
+    <script>
+      const { createApp, ref } = Vue;
+      const app = createApp({
+        setup() {
+          const code = ref('SELECT * FROM table');
+          return { code };
+        },
+      });
+      console.log('Global YssUI:', window.YssUI);
+      if (window.YssUI && window.YssUI.default) {
+        app.use(window.YssUI.default);
+      } else if (window.YssUI) {
+        app.use(window.YssUI);
+      }
+      app.mount('#app');
+    </script>
+  </body>
+</html>

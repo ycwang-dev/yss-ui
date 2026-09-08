@@ -1,0 +1,877 @@
+diff --git a/dist/compiler/browser.d.ts b/dist/compiler/browser.d.ts
+index 7d9e3c27bb460bef43211ae62a7610f6f1ca420f..cc26716f9a90c04734c167fad0f74f4dcd419665 100644
+--- a/dist/compiler/browser.d.ts
++++ b/dist/compiler/browser.d.ts
+@@ -1,3 +1,4 @@
+-export default function compile(code: string, { filename }: {
++export default function compile(code: string, { filename, sources }: {
+     filename: string;
++    sources?: Record<string, string>;
+ }): string;
+diff --git a/dist/compiler/browser.js b/dist/compiler/browser.js
+index 903329159232b584e39645a7e1f5ff56955835f8..d06beda363fb166a93b9768703feecba274ce7b3 100644
+--- a/dist/compiler/browser.js
++++ b/dist/compiler/browser.js
+@@ -50,7 +50,7 @@ var { compileSFC, transformTS, toCommonJS } = (0, import_index.createCompiler)({
+     "vue-jsx": import_babel_plugin_jsx.default
+   }
+ });
+-function compile(code, { filename }) {
++function compile(code, { filename, sources }) {
+   var _a;
+   const { lang } = (0, import_index.resolveFilename)(filename);
+   if (["js", "jsx", "ts", "tsx"].includes(lang)) {
+@@ -60,7 +60,7 @@ function compile(code, { filename }) {
+     });
+   }
+   const id = (0, import_hash_sum.default)(filename);
+-  const compiled = compileSFC({ id, filename, code });
++  const compiled = compileSFC({ id, filename, code, sources });
+   if (Array.isArray(compiled)) {
+     throw compiled[0];
+   }
+diff --git a/dist/compiler/index.d.ts b/dist/compiler/index.d.ts
+index b966c449ceefb167a2c1dfa6558c1ed66dcf8fbf..1c831c8faac8929ad1647b290aa5b29beea49252 100644
+--- a/dist/compiler/index.d.ts
++++ b/dist/compiler/index.d.ts
+@@ -4,7 +4,9 @@ export interface CompileOptions {
+     id: string;
+     filename: string;
+     code: string;
++    sources?: CompileSources;
+ }
++export type CompileSources = Record<string, string>;
+ export type CompileResult = (string | CompilerError | SyntaxError)[] | {
+     js: string;
+     css: string;
+@@ -20,6 +22,7 @@ type CreateCompilerContext = {
+     availablePresets?: Plugins;
+ };
+ export declare const COMP_IDENTIFIER = "__sfc__";
++export declare function collectStyleDependencies(code: string, filename: string, sources?: CompileSources): string[];
+ export declare function createCompiler({ babel, availablePlugins, availablePresets, }: CreateCompilerContext): {
+     toCommonJS: (es: string) => BabelCore.BabelFileResult | null;
+     transformTS: (src: string, filename: string, options?: {
+diff --git a/dist/compiler/index.js b/dist/compiler/index.js
+index 1e492e87cb02afb3d078cdb8be255d8020781139..2b9b718e242d4426c2068a6ca1f2f46936de9b58 100644
+--- a/dist/compiler/index.js
++++ b/dist/compiler/index.js
+@@ -20,6 +20,7 @@ var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: tru
+ var compiler_exports = {};
+ __export(compiler_exports, {
+   COMP_IDENTIFIER: () => COMP_IDENTIFIER,
++  collectStyleDependencies: () => collectStyleDependencies,
+   createCompiler: () => createCompiler,
+   resolveFilename: () => resolveFilename
+ });
+@@ -30,6 +31,125 @@ function resolveFilename(filename) {
+   return { basename, lang };
+ }
+ var COMP_IDENTIFIER = "__sfc__";
++var SUPPORTED_STYLE_PREPROCESSORS = /* @__PURE__ */ new Set(["less"]);
++function createStyleImportRegExp() {
++  return /@import\s+(?:url\(\s*)?['"]([^'"]+)['"]\s*\)?[^;]*;/gi;
++}
++function normalizePath(filePath) {
++  return filePath.replace(/\\/g, "/").replace(/\/+/g, "/");
++}
++function stripQuery(filePath) {
++  return filePath.split(/[?#]/)[0];
++}
++function getDirname(filePath) {
++  const normalized = normalizePath(filePath);
++  const index = normalized.lastIndexOf("/");
++  return index === -1 ? "" : normalized.slice(0, index);
++}
++function joinPath(base, request) {
++  if (request.startsWith("/"))
++    return normalizePath(request);
++  const parts = `${base ? `${base}/` : ""}${request}`.split("/");
++  const stack = [];
++  parts.forEach((part) => {
++    if (!part || part === ".")
++      return;
++    if (part === "..") {
++      stack.pop();
++      return;
++    }
++    stack.push(part);
++  });
++  const prefix = base.startsWith("/") ? "/" : "";
++  return `${prefix}${stack.join("/")}`;
++}
++function isLocalStyleImport(request) {
++  return request.startsWith(".") || request.startsWith("/");
++}
++function getStyleImportRequests(source) {
++  const requests = [];
++  const styleImportRegExp = createStyleImportRegExp();
++  let match = styleImportRegExp.exec(source);
++  while (match) {
++    if (isLocalStyleImport(match[1])) {
++      requests.push(match[1]);
++    }
++    match = styleImportRegExp.exec(source);
++  }
++  return requests;
++}
++function getSourceValue(sources, filePath) {
++  if (!sources)
++    return void 0;
++  const normalized = normalizePath(filePath);
++  const withoutLeadingSlash = normalized.replace(/^\//, "");
++  const withoutDemoPrefix = withoutLeadingSlash.replace(/^[^/]+\//, "");
++  const withoutDotSlash = withoutDemoPrefix.replace(/^\.\//, "");
++  const candidates = [
++    filePath,
++    normalized,
++    withoutLeadingSlash,
++    withoutDemoPrefix,
++    withoutDotSlash,
++    `./${withoutDotSlash}`
++  ];
++  for (const candidate of candidates) {
++    if (candidate in sources)
++      return sources[candidate];
++  }
++  return void 0;
++}
++function readStyleFile(filePath) {
++  if (typeof window !== "undefined")
++    return void 0;
++  try {
++    const req = eval("require");
++    const fs = req("fs");
++    return fs.readFileSync(filePath, "utf-8");
++  } catch {
++    return void 0;
++  }
++}
++function resolveStyleImport(importer, request, sources) {
++  const resolved = joinPath(getDirname(stripQuery(importer)), stripQuery(request));
++  const source = getSourceValue(sources, resolved) ?? readStyleFile(resolved);
++  return source === void 0 ? null : {
++    filename: resolved,
++    source
++  };
++}
++function inlineLessImports(source, filename, sources, seen = /* @__PURE__ */ new Set()) {
++  return source.replace(createStyleImportRegExp(), (statement, request) => {
++    if (!isLocalStyleImport(request))
++      return statement;
++    const resolved = resolveStyleImport(filename, request, sources);
++    if (!resolved || seen.has(resolved.filename))
++      return statement;
++    seen.add(resolved.filename);
++    return inlineLessImports(resolved.source, resolved.filename, sources, seen);
++  });
++}
++function collectStyleDependencies(code, filename, sources) {
++  const { descriptor, errors } = (0, import_compiler_sfc.parse)(code, { filename });
++  if (errors.length)
++    return [];
++  const dependencies = /* @__PURE__ */ new Set();
++  function collect(source, importer) {
++    getStyleImportRequests(source).forEach((request) => {
++      const resolved = resolveStyleImport(importer, request, sources);
++      if (!resolved || dependencies.has(resolved.filename))
++        return;
++      dependencies.add(resolved.filename);
++      collect(resolved.source, resolved.filename);
++    });
++  }
++  descriptor.styles.forEach((style) => {
++    if (style.lang === "less") {
++      collect(style.content, filename);
++    }
++  });
++  return Array.from(dependencies);
++}
+ function createCompiler({
+   babel,
+   availablePlugins = {},
+@@ -112,15 +232,17 @@ ${code.replace(
+     }
+     return sfcCode;
+   }
+-  function doCompileStyle(id, descriptor) {
++  function doCompileStyle(id, descriptor, sources) {
+     const { filename } = descriptor;
+     const styleList = [];
+     for (const style of descriptor.styles) {
++      const source = style.lang === "less" ? inlineLessImports(style.content, filename, sources) : style.content;
+       const { code, errors } = (0, import_compiler_sfc.compileStyle)({
+-        source: style.content,
++        source,
+         filename,
+         id,
+-        scoped: style.scoped
++        scoped: style.scoped,
++        preprocessLang: style.lang === "less" ? "less" : void 0
+       });
+       if (errors.length) {
+         return errors;
+@@ -130,14 +252,17 @@ ${code.replace(
+     return styleList.join("\n");
+   }
+   function compileSFC(options) {
+-    const { id, code, filename } = options;
++    const { id, code, filename, sources } = options;
+     const { descriptor, errors } = (0, import_compiler_sfc.parse)(code, { filename });
+     if (errors.length) {
+       return errors;
+     }
+     let js = "";
+     let skipStyleCompile = false;
+-    if (descriptor.styles.some((style) => style.lang) || descriptor.template && descriptor.template.lang) {
++    const unsupportedStyles = descriptor.styles.filter(
++      (style) => style.lang && !SUPPORTED_STYLE_PREPROCESSORS.has(style.lang)
++    );
++    if (unsupportedStyles.length || descriptor.template && descriptor.template.lang) {
+       skipStyleCompile = true;
+       js += '\nconsole.warn("Custom preprocessors for <template> and <style> are not supported in the Codeblock.")';
+     }
+@@ -166,7 +291,7 @@ ${COMP_IDENTIFIER}.__scopeId = ${JSON.stringify(
+     }
+     let css = "";
+     if (!skipStyleCompile) {
+-      const styleResult = doCompileStyle(id, descriptor);
++      const styleResult = doCompileStyle(id, descriptor, sources);
+       if (Array.isArray(styleResult)) {
+         return styleResult;
+       }
+@@ -183,6 +308,7 @@ ${COMP_IDENTIFIER}.__scopeId = ${JSON.stringify(
+ // Annotate the CommonJS export names for ESM import in node:
+ 0 && (module.exports = {
+   COMP_IDENTIFIER,
++  collectStyleDependencies,
+   createCompiler,
+   resolveFilename
+ });
+diff --git a/dist/compiler/node.d.ts b/dist/compiler/node.d.ts
+index bc2db08127a27590552a7918380398185b5b170d..b0c011f2de708eecbb2ab9bacc56dc77965ea508 100644
+--- a/dist/compiler/node.d.ts
++++ b/dist/compiler/node.d.ts
+@@ -1,4 +1,5 @@
+ import { type CompileOptions } from './index';
++export { collectStyleDependencies } from './index';
+ export declare const compiler: {
+     toCommonJS: (es: string) => import("@umijs/bundler-utils/compiled/@babel/core").BabelFileResult | null;
+     transformTS: (src: string, filename: string, options?: {
+diff --git a/dist/compiler/node.js b/dist/compiler/node.js
+index 1d1f4fad39df7861a7b1210f7767aff4df288a96..fddf7f9d3192efa15421e7e576ced7347beb3ad8 100644
+--- a/dist/compiler/node.js
++++ b/dist/compiler/node.js
+@@ -29,6 +29,7 @@ var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: tru
+ // src/compiler/node.ts
+ var node_exports = {};
+ __export(node_exports, {
++  collectStyleDependencies: () => import_index.collectStyleDependencies,
+   compile: () => compile,
+   compiler: () => compiler
+ });
+@@ -67,6 +68,7 @@ ${import_index.COMP_IDENTIFIER}.__id__ = "${id}";
+ }
+ // Annotate the CommonJS export names for ESM import in node:
+ 0 && (module.exports = {
++  collectStyleDependencies,
+   compile,
+   compiler
+ });
+diff --git a/dist/vue/techStack/index.js b/dist/vue/techStack/index.js
+index 8affa5c0b1dc74571677702e010d4bd6b70bc1e2..7efb707c4ee271af7df250c4eb5d18c97bd48490 100644
+--- a/dist/vue/techStack/index.js
++++ b/dist/vue/techStack/index.js
+@@ -33,13 +33,16 @@ var PREFLIGHT_FILENAME = "preflight.mjs";
+ function registerTechStack(api) {
+   var _a;
+   const vueConfig = (_a = api.userConfig) == null ? void 0 : _a.vue;
++  const liveEnabled = api.userConfig.live !== false;
+   const pkgPath = (0, import_shared.getPkgPath)("@dumijs/preset-vue", api.cwd);
+   const libPath = (0, import_path.join)(pkgPath, "/lib");
+   api.onGenerateFiles(() => {
+-    api.writeTmpFile({
+-      path: COMPILE_FILENAME,
+-      content: import_plugin_utils.fsExtra.readFileSync((0, import_path.join)(libPath, COMPILE_FILENAME), "utf8")
+-    });
++    if (liveEnabled) {
++      api.writeTmpFile({
++        path: COMPILE_FILENAME,
++        content: import_plugin_utils.fsExtra.readFileSync((0, import_path.join)(libPath, COMPILE_FILENAME), "utf8")
++      });
++    }
+     api.writeTmpFile({
+       path: RENDERER_FILENAME,
+       content: import_plugin_utils.fsExtra.readFileSync((0, import_path.join)(libPath, RENDERER_FILENAME), "utf8")
+@@ -50,13 +53,15 @@ function registerTechStack(api) {
+     });
+   });
+   const runtimeOpts = {
+-    compilePath: (0, import_shared.getPluginPath)(api, COMPILE_FILENAME),
++    compilePath: liveEnabled ? (0, import_shared.getPluginPath)(api, COMPILE_FILENAME) : void 0,
+     rendererPath: (0, import_shared.getPluginPath)(api, RENDERER_FILENAME),
+     preflightPath: (0, import_shared.getPluginPath)(api, PREFLIGHT_FILENAME),
+-    pluginPath: (0, import_path.join)(libPath, "runtimePlugin.mjs")
++    pluginPath: liveEnabled ? (0, import_path.join)(libPath, "runtimePlugin.mjs") : void 0
+   };
+   api.addHTMLHeadScripts(() => {
+     var _a2;
++    if (!liveEnabled)
++      return [];
+     return [
+       {
+         src: ((_a2 = vueConfig == null ? void 0 : vueConfig.compiler) == null ? void 0 : _a2.babelStandaloneCDN) || import_shared.BABEL_STANDALONE_CDN,
+@@ -65,10 +70,12 @@ function registerTechStack(api) {
+     ];
+   });
+   api.modifyConfig((memo) => {
+-    memo.externals = {
+-      ...memo.externals,
+-      "@babel/standalone": "Babel"
+-    };
++    if (liveEnabled) {
++      memo.externals = {
++        ...memo.externals,
++        "@babel/standalone": "Babel"
++      };
++    }
+     return memo;
+   });
+   api.register({
+diff --git a/dist/vue/techStack/jsx.js b/dist/vue/techStack/jsx.js
+index 246b26ff779f329219012fdf00d9d5eca12b57af..f89edfb51c197c7d9cc34642256317610ea608e6 100644
+--- a/dist/vue/techStack/jsx.js
++++ b/dist/vue/techStack/jsx.js
+@@ -69,7 +69,7 @@ var VueJSXTechStack = (runtimeOpts) => (0, import_tech_stack_utils.defineTechSta
+             syntax: "ecmascript"
+           }
+         });
+-        return `(${code})()`;
++        return `() => (${code})()`;
+       }
+     }
+     return raw;
+diff --git a/dist/vue/techStack/sfc.js b/dist/vue/techStack/sfc.js
+index 25246b2cf8fedfeea3f2cbcaeddccf2b64f20546..3745bdfc1e58df3b2e538ad58cefa893b30068d1 100644
+--- a/dist/vue/techStack/sfc.js
++++ b/dist/vue/techStack/sfc.js
+@@ -33,9 +33,14 @@ __export(sfc_exports, {
+ });
+ module.exports = __toCommonJS(sfc_exports);
+ var import_node = require("../../compiler/node");
++var import_node_path = require("node:path");
+ var import_plugin_utils = require("dumi/plugin-utils");
+ var import_tech_stack_utils = require("dumi/tech-stack-utils");
+ var import_hash_sum = __toESM(require("hash-sum"));
++function toRelativeImport(importer, dependency) {
++  const relative = import_node_path.relative(import_node_path.dirname(importer), dependency).replace(/\\/g, "/");
++  return relative.startsWith(".") ? relative : `./${relative}`;
++}
+ var VueSfcTechStack = (runtimeOpts) => (0, import_tech_stack_utils.defineTechStack)({
+   name: "vue3-sfc",
+   runtimeOpts,
+@@ -48,11 +53,13 @@ var VueSfcTechStack = (runtimeOpts) => (0, import_tech_stack_utils.defineTechSta
+     const result = import_node.compiler.compileSFC({
+       id: args.path,
+       code: args.entryPointCode,
+-      filename: args.filename
++      filename: args.path
+     });
++    const styleImports = (0, import_node.collectStyleDependencies)(args.entryPointCode, args.path).map((dependency) => `import ${JSON.stringify(toRelativeImport(args.path, dependency))};`).join("\n");
+     return {
+       type: "tsx",
+-      content: Array.isArray(result) ? "" : result.js
++      content: Array.isArray(result) ? styleImports : `${result.js}
++${styleImports}`
+     };
+   },
+   transformCode(raw, opts) {
+@@ -70,7 +77,7 @@ var VueSfcTechStack = (runtimeOpts) => (0, import_tech_stack_utils.defineTechSta
+           syntax: "ecmascript"
+         }
+       });
+-      return `(${code})()`;
++      return `() => (${code})()`;
+     }
+     return raw;
+   }
+diff --git a/lib/compiler.mjs b/lib/compiler.mjs
+index f4c5c0242ea0a6fb000f1cff9540e9ec79221d6c..3c3e068e921022d76a6ccc4d6616dbbc69c6e074 100644
+--- a/lib/compiler.mjs
++++ b/lib/compiler.mjs
+@@ -70,4 +70,223 @@ assert/assert.js:
+    *)
+ */
+ 
+-export { w_ as default };
++const yssCompIdentifier = "__sfc__";
++const yssSupportedStylePreprocessors = new Set(["less"]);
++function yssCreateStyleImportRegExp() {
++  return /@import\s+(?:url\(\s*)?['"]([^'"]+)['"]\s*\)?[^;]*;/gi;
++}
++function yssResolveFilename(filename) {
++  const [, basename, lang] = filename.match(/([^.]+)\.([^.]+)$/) || [];
++  return { basename, lang };
++}
++function yssNormalizePath(filePath) {
++  return filePath.replace(/\\/g, "/").replace(/\/+/g, "/");
++}
++function yssStripQuery(filePath) {
++  return filePath.split(/[?#]/)[0];
++}
++function yssGetDirname(filePath) {
++  const normalized = yssNormalizePath(filePath);
++  const index = normalized.lastIndexOf("/");
++  return index === -1 ? "" : normalized.slice(0, index);
++}
++function yssJoinPath(base, request) {
++  if (request.startsWith("/")) return yssNormalizePath(request);
++  const parts = `${base ? `${base}/` : ""}${request}`.split("/");
++  const stack = [];
++  parts.forEach((part) => {
++    if (!part || part === ".") return;
++    if (part === "..") {
++      stack.pop();
++      return;
++    }
++    stack.push(part);
++  });
++  const prefix = base.startsWith("/") ? "/" : "";
++  return `${prefix}${stack.join("/")}`;
++}
++function yssIsLocalStyleImport(request) {
++  return request.startsWith(".") || request.startsWith("/");
++}
++function yssGetSourceValue(sources, filePath) {
++  if (!sources) return void 0;
++  const normalized = yssNormalizePath(filePath);
++  const withoutLeadingSlash = normalized.replace(/^\//, "");
++  const withoutDemoPrefix = withoutLeadingSlash.replace(/^[^/]+\//, "");
++  const withoutDotSlash = withoutDemoPrefix.replace(/^\.\//, "");
++  const basename = normalized.slice(normalized.lastIndexOf("/") + 1);
++  const candidates = [
++    filePath,
++    normalized,
++    withoutLeadingSlash,
++    withoutDemoPrefix,
++    withoutDotSlash,
++    `./${withoutDotSlash}`,
++    basename,
++    `./${basename}`
++  ];
++  for (const candidate of candidates) {
++    if (candidate in sources) return sources[candidate];
++  }
++  return void 0;
++}
++function yssResolveStyleImport(importer, request, sources) {
++  const resolved = yssJoinPath(yssGetDirname(yssStripQuery(importer)), yssStripQuery(request));
++  const source = yssGetSourceValue(sources, resolved);
++  return source === void 0 ? null : { filename: resolved, source };
++}
++function yssInlineLessImports(source, filename, sources, seen = new Set()) {
++  return source.replace(yssCreateStyleImportRegExp(), (statement, request) => {
++    if (!yssIsLocalStyleImport(request)) return statement;
++    const resolved = yssResolveStyleImport(filename, request, sources);
++    if (!resolved || seen.has(resolved.filename)) return statement;
++    seen.add(resolved.filename);
++    return yssInlineLessImports(resolved.source, resolved.filename, sources, seen);
++  });
++}
++function yssTransformTS(src, filename, options = {}) {
++  const { lang, plugins = [], presets = [] } = options;
++  if (lang === "ts" || lang === "tsx") {
++    const isTSX = lang === "tsx";
++    presets.push(["typescript", { isTSX, allExtensions: isTSX, onlyRemoveTypeImports: true }]);
++  }
++  if ((lang === "tsx" || lang === "jsx") && typeof pd !== "undefined") {
++    plugins.push(pd);
++  }
++  const { basename } = yssResolveFilename(filename);
++  const result = Babel.transform(src, {
++    filename: `${basename}.${lang || "ts"}`,
++    presets,
++    plugins
++  });
++  return result?.code || "";
++}
++function yssToCommonJS(es) {
++  return Babel.transform(es, { presets: [["env", { modules: "cjs" }]] });
++}
++function yssCompileScript(id, descriptor, hasScoped, lang) {
++  const { filename, template, scriptSetup, script } = descriptor;
++  const templateContent = template?.content;
++  const hasSetup = !!scriptSetup;
++  const isTS = lang === "ts" || lang === "tsx";
++  const expressionPlugins = [];
++  if (isTS) expressionPlugins.push("typescript");
++  if (lang === "jsx" || lang === "tsx") expressionPlugins.push("jsx");
++  let sfcCode = "";
++  if (script || scriptSetup) {
++    try {
++      const { content } = compileScript(descriptor, {
++        id,
++        inlineTemplate: hasSetup,
++        templateOptions: {
++          compilerOptions: { expressionPlugins }
++        }
++      });
++      sfcCode = yssTransformTS(
++        rewriteDefault(content, yssCompIdentifier, expressionPlugins),
++        filename,
++        { lang }
++      );
++    } catch (error) {
++      return [error];
++    }
++  } else {
++    sfcCode = `const ${yssCompIdentifier} = {};`;
++  }
++  if (!hasSetup && templateContent) {
++    let { code, errors } = compileTemplate({
++      id,
++      filename,
++      source: templateContent,
++      scoped: hasScoped,
++      compilerOptions: { expressionPlugins }
++    });
++    if (errors.length) return errors;
++    code = yssTransformTS(code, filename, { lang });
++    sfcCode += `
++${code.replace(/\nexport (function|const) render/, "$1 render")}
++      ${yssCompIdentifier}.render = render;`;
++  }
++  return sfcCode;
++}
++function yssCompileStyle(id, descriptor, sources) {
++  const { filename } = descriptor;
++  const styleList = [];
++  for (const style of descriptor.styles) {
++    const source = style.lang === "less"
++      ? yssInlineLessImports(style.content, filename, sources)
++      : style.content;
++    const { code, errors } = compileStyle({
++      source,
++      filename,
++      id,
++      scoped: style.scoped,
++      preprocessLang: style.lang === "less" ? "less" : void 0
++    });
++    if (errors.length) return errors;
++    styleList.push(code);
++  }
++  return styleList.join("\n");
++}
++function yssCompileSFC(options) {
++  const { id, code, filename, sources } = options;
++  const { descriptor, errors } = parse(code, { filename });
++  if (errors.length) return errors;
++  let js = "";
++  let skipStyleCompile = false;
++  const unsupportedStyles = descriptor.styles.filter(
++    (style) => style.lang && !yssSupportedStylePreprocessors.has(style.lang)
++  );
++  if (unsupportedStyles.length || descriptor.template && descriptor.template.lang) {
++    skipStyleCompile = true;
++    js += '\nconsole.warn("Custom preprocessors for <template> and <style> are not supported in the Codeblock.")';
++  }
++  if (descriptor.styles.some((style) => style.module)) {
++    skipStyleCompile = true;
++    js += '\nconsole.warn("<style module> is not supported in the the Codeblock.")';
++  }
++  const scriptLang = descriptor.script && descriptor.script.lang || descriptor.scriptSetup && descriptor.scriptSetup.lang;
++  const hasScoped = descriptor.styles.some((style) => style.scoped);
++  const scriptResult = yssCompileScript(id, descriptor, hasScoped, scriptLang || "");
++  if (Array.isArray(scriptResult)) return scriptResult;
++  js += `
++${scriptResult}`;
++  if (hasScoped) {
++    js += `
++${yssCompIdentifier}.__scopeId = ${JSON.stringify(`data-v-${id}`)};`;
++  }
++  let css = "";
++  if (!skipStyleCompile) {
++    const styleResult = yssCompileStyle(id, descriptor, sources);
++    if (Array.isArray(styleResult)) return styleResult;
++    css = styleResult;
++  }
++  return { js, css };
++}
++function yssCompile(code, options) {
++  const { filename, sources } = options;
++  const { lang } = yssResolveFilename(filename);
++  if (["js", "jsx", "ts", "tsx"].includes(lang)) {
++    return yssTransformTS(code, filename, {
++      lang,
++      presets: [["env", { modules: "cjs" }]]
++    });
++  }
++  if (!/<style\b[^>]*lang=["']less["'][^>]*>/i.test(code)) {
++    return w_(code, options);
++  }
++  const id = (0, md.default)(filename);
++  const compiled = yssCompileSFC({ id, filename, code, sources });
++  if (Array.isArray(compiled)) throw compiled[0];
++  let { js, css } = compiled;
++  if (css) {
++    js += `
++${yssCompIdentifier}.__css__ = ${JSON.stringify(css)};`;
++  }
++  js += `
++${yssCompIdentifier}.__id__ = "${id}";
++    export default ${yssCompIdentifier};`;
++  return yssToCommonJS(js)?.code || "";
++}
++
++export { yssCompile as default };
+diff --git a/lib/renderer.mjs b/lib/renderer.mjs
+index e46847f8a311986eab0825b928ccb9e5478cd083..a9419a4ec5805c668d3aae6b4710c23b02fe1c7c 100644
+--- a/lib/renderer.mjs
++++ b/lib/renderer.mjs
+@@ -1,5 +1,244 @@
+-import { createApp } from 'vue';
++import { createApp, defineAsyncComponent, ref, h, provide } from 'vue';
++import { ConfigProvider, theme as antTheme } from 'ant-design-vue';
+ 
+-var _=async function(s,e){e.__css__&&setTimeout(()=>{document.querySelectorAll(`style[css-${e.__id__}]`).forEach(r=>r.remove()),document.head.insertAdjacentHTML("beforeend",`<style css-${e.__id__}>${e.__css__}</style>`);},1);let t=createApp(e);return t.config.errorHandler=function(r){throw r},t.mount(s),()=>{t.unmount();}},o=_;
++/**
++ * 挂载队列：确保 Vue 实例逐个挂载，避免同时创建多个实例阻塞主线程
++ */
++let mountChain = Promise.resolve();
++
++/**
++ * 全局暗色模式响应式状态（所有 Vue Demo 实例共享）
++ */
++const isDark = ref(
++  typeof document !== 'undefined' &&
++    document.documentElement.getAttribute('data-prefers-color') === 'dark'
++);
++
++/**
++ * 记录所有需要同步 vxe-table 主题属性的宿主元素
++ */
++const hostElements = new Set();
++
++/**
++ * 同步所有宿主元素上的 vxe-table 主题属性
++ */
++function syncVxeTheme(dark) {
++  const themeValue = dark ? 'dark' : 'light';
++  hostElements.forEach((el) => {
++    el.setAttribute('data-vxe-ui-theme', themeValue);
++  });
++}
++
++function isHostStale(el) {
++  return !el || !el.isConnected;
++}
++
++/**
++ * 初始化全局 MutationObserver，监听 document.documentElement 上
++ * data-prefers-color 属性的变化，驱动所有 Vue Demo 的暗色模式切换
++ */
++if (typeof MutationObserver !== 'undefined' && typeof document !== 'undefined') {
++  const observer = new MutationObserver(() => {
++    const newValue =
++      document.documentElement.getAttribute('data-prefers-color') === 'dark';
++    if (isDark.value !== newValue) {
++      isDark.value = newValue;
++      syncVxeTheme(newValue);
++    }
++  });
++  observer.observe(document.documentElement, {
++    attributes: true,
++    attributeFilter: ['data-prefers-color'],
++  });
++}
++
++/**
++ * 等待元素进入视口（或距离视口 200px 以内）
++ */
++function waitForVisible(el) {
++  return new Promise((resolve) => {
++    if (isHostStale(el)) {
++      resolve(false);
++      return;
++    }
++
++    // 如果没有 IntersectionObserver 支持，直接挂载
++    if (typeof IntersectionObserver === 'undefined') {
++      resolve(true);
++      return;
++    }
++
++    let rafId = 0;
++    let settled = false;
++
++    const finish = (isVisible) => {
++      if (settled) return;
++      settled = true;
++      observer.disconnect();
++      cancelAnimationFrame(rafId);
++      resolve(isVisible);
++    };
++
++    const observer = new IntersectionObserver(
++      ([entry]) => {
++        if (entry.isIntersecting) {
++          finish(true);
++        }
++      },
++      { rootMargin: '200px 0px' }
++    );
++
++    observer.observe(el);
++
++    const checkDetached = () => {
++      if (settled) return;
++      if (isHostStale(el)) {
++        finish(false);
++        return;
++      }
++      rafId = requestAnimationFrame(checkDetached);
++    };
++
++    rafId = requestAnimationFrame(checkDetached);
++  });
++}
++
++if (typeof document !== 'undefined') {
++  const style = document.createElement('style');
++  style.innerHTML = `
++    @keyframes __dumi_skeleton_pulse {
++      0% { opacity: 1; }
++      50% { opacity: 0.4; }
++      100% { opacity: 1; }
++    }
++    .dumi-vue-demo-skeleton {
++      padding: 24px;
++      display: flex;
++      flex-direction: column;
++      gap: 16px;
++      animation: __dumi_skeleton_pulse 1.5s ease-in-out infinite;
++    }
++    [data-prefers-color='dark'] .dumi-vue-demo-skeleton .dumi-vue-skeleton-block {
++      background: rgba(255,255,255,0.08);
++    }
++    .dumi-vue-skeleton-block {
++      background: #f2f2f2;
++      border-radius: 4px;
++    }
++  `;
++  document.head.appendChild(style);
++}
++
++const LoadingSkeleton = {
++  render() {
++    return h('div', { class: 'dumi-vue-demo-skeleton' }, [
++      h('div', { class: 'dumi-vue-skeleton-block', style: 'width: 30%; height: 16px;' }),
++      h('div', { class: 'dumi-vue-skeleton-block', style: 'width: 100%; height: 16px;' }),
++      h('div', { class: 'dumi-vue-skeleton-block', style: 'width: 80%; height: 16px;' })
++    ]);
++  }
++};
++
++var _ = async function (s, e) {
++  let cssTimer = 0;
++
++  // 注入等待骨架屏到宿主元素的初始内容中（填补等待期间的空白）
++  s.innerHTML = `
++    <div class="dumi-vue-demo-skeleton">
++      <div class="dumi-vue-skeleton-block" style="width: 30%; height: 16px;"></div>
++      <div class="dumi-vue-skeleton-block" style="width: 100%; height: 16px;"></div>
++      <div class="dumi-vue-skeleton-block" style="width: 80%; height: 16px;"></div>
++    </div>
++  `;
++
++  if (typeof e === 'function') {
++    const originalLoader = e;
++    e = defineAsyncComponent({
++      loader: async () => {
++        const comp = originalLoader();
++        return comp instanceof Promise ? await comp : comp;
++      },
++      loadingComponent: LoadingSkeleton,
++      delay: 0,
++    });
++  }
++
++  // 处理 CSS 注入
++  if (e.__css__) {
++    cssTimer = window.setTimeout(() => {
++      if (isHostStale(s)) return;
++      document.querySelectorAll(`style[css-${e.__id__}]`).forEach((r) => r.remove());
++      document.head.insertAdjacentHTML(
++        'beforeend',
++        `<style css-${e.__id__}>${e.__css__}</style>`
++      );
++    }, 1);
++  }
++
++  // 等待宿主元素进入视口附近
++  const isVisible = await waitForVisible(s);
++  if (!isVisible || isHostStale(s)) {
++    clearTimeout(cssTimer);
++    return () => {};
++  }
++
++  // 串行挂载：排队等待上一个 Vue 实例挂载完毕后，再挂载下一个
++  // 通过 requestAnimationFrame 让浏览器在每帧之间有喘息机会，保持 UI 响应
++  const canMount = await new Promise((resolve) => {
++    mountChain = mountChain.then(
++      () =>
++        new Promise((next) => {
++          requestAnimationFrame(() => {
++            const stillActive = !isHostStale(s);
++            resolve(stillActive);
++            // 给一个小延迟再处理下一个，避免连续帧内密集挂载
++            setTimeout(next, stillActive ? 32 : 0);
++          });
++        })
++    );
++  });
++  if (!canMount || isHostStale(s)) {
++    clearTimeout(cssTimer);
++    return () => {};
++  }
++
++  // 在宿主元素上设置 vxe-table 主题属性，使 vxe-table 组件跟随暗色模式
++  s.setAttribute('data-vxe-ui-theme', isDark.value ? 'dark' : 'light');
++  hostElements.add(s);
++
++  // 创建包裹组件：用 ConfigProvider 包裹 Demo 组件，动态注入暗色/浅色主题
++  const DemoComp = e;
++  const WrapperApp = {
++    name: 'DumiDarkModeWrapper',
++    setup() {
++      // 将暗色模式状态注入到所有子组件，组件可通过 inject('__dumi_dark__') 获取
++      provide('__dumi_dark__', isDark);
++      return () =>
++        h(
++          ConfigProvider,
++          {
++            theme: {
++              algorithm: isDark.value
++                ? antTheme.darkAlgorithm
++                : antTheme.defaultAlgorithm,
++            },
++          },
++          () => h(DemoComp)
++        );
++    },
++  };
++
++  let t = createApp(WrapperApp);
++  t.config.errorHandler = function (r) {
++    throw r;
++  };
++  t.mount(s);
++  return () => {
++    clearTimeout(cssTimer);
++    hostElements.delete(s);
++    t.unmount();
++  };
++},
++o = _;
+ 
+ export { o as default };

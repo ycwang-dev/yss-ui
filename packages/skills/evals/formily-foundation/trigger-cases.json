@@ -1,0 +1,50 @@
+{
+  "skill": "formily-foundation",
+  "purpose": "触发行为规约：基础表单开发（字段校验、提交链路、查询布局）的确定性词法路由。",
+  "cases": [
+    {
+      "id": "field-validation-rules",
+      "prompt": "表单字段的必填校验规则怎么写",
+      "should_trigger": true,
+      "assert": "给出 YFormily 字段级 required/validator 的标准 Schema 写法，不引入联动或分步内容。"
+    },
+    {
+      "id": "query-form-layout",
+      "prompt": "查询表单的栅格布局怎么排",
+      "should_trigger": true,
+      "assert": "按查询表单布局规范给出列数、折叠与操作区排布。"
+    },
+    {
+      "id": "submit-chain",
+      "prompt": "YFormily 表单提交链路怎么写",
+      "should_trigger": true,
+      "accept_route_to": ["yss-formily"],
+      "assert": "给出 validate -> submit -> 错误处理的标准提交链路。"
+    },
+    {
+      "id": "scope-expression",
+      "prompt": "schema 里的 scope 表达式怎么用",
+      "should_trigger": true,
+      "accept_route_to": ["yss-formily", "formily-linkage-effects"],
+      "assert": "解释 scope 注入与表达式引用方式，并给出安全边界。"
+    },
+    {
+      "id": "near-miss-linkage",
+      "prompt": "选择类型后另一个字段动态显隐",
+      "should_trigger": false,
+      "assert": "字段联动归 formily-linkage-effects，不触发本 skill。"
+    },
+    {
+      "id": "near-miss-step",
+      "prompt": "分步表单怎么做",
+      "should_trigger": false,
+      "assert": "分步表单归 formily-step-flow，不触发本 skill。"
+    },
+    {
+      "id": "near-miss-edit-table",
+      "prompt": "表格行内编辑的校验",
+      "should_trigger": false,
+      "assert": "可编辑表格校验归 yedit-table-usage，不触发本 skill。"
+    }
+  ]
+}

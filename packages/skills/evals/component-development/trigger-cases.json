@@ -1,0 +1,30 @@
+{
+  "skill": "component-development",
+  "purpose": "触发行为规约：组件库源码开发的确定性词法路由。",
+  "cases": [
+    {
+      "id": "new-library-component",
+      "prompt": "在 yss-ui 组件库源码里新建一个组件并导出",
+      "should_trigger": true,
+      "assert": "按组件源码规范新建目录、类型、导出与文档 Demo。"
+    },
+    {
+      "id": "refactor-types-hooks",
+      "prompt": "重构组件的 TypeScript 类型和 hooks 拆分",
+      "should_trigger": true,
+      "assert": "重构时保持 API 兼容，hooks 单一职责。"
+    },
+    {
+      "id": "near-miss-business-component",
+      "prompt": "业务页面里封装一个私有组件",
+      "should_trigger": false,
+      "assert": "业务私有组件归 page-skeleton，不触发本 skill。"
+    },
+    {
+      "id": "near-miss-docs",
+      "prompt": "写 Dumi 文档和 demo",
+      "should_trigger": false,
+      "assert": "纯文档工作归 documentation，不触发本 skill。"
+    }
+  ]
+}

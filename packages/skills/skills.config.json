@@ -1,0 +1,69 @@
+{
+  "primaryTarget": ".agents/skills",
+  "symbolicLinks": [".agent/skills", ".cursor/skills", ".claude/skills", ".trae/skills"],
+  "globalTargets": {
+    "agents": ".agents/skills",
+    "cursor": ".cursor/skills",
+    "claude": ".claude/skills",
+    "trae": ".trae/skills"
+  },
+  "deprecatedGlobalTargets": {
+    "codexLegacy": ".codex/skills"
+  },
+  "deprecatedSkills": ["microapp-commit"],
+  "categories": {
+    "library": [
+      "release-management",
+      "changelog-generation",
+      "commit-linting",
+      "component-development",
+      "component-testing",
+      "documentation",
+      "release-workflow",
+      "yss-create-microapp",
+      "sync-internal-dev",
+      "skill-development"
+    ],
+    "hooks": ["use-table-height", "use-tree-height"],
+    "app": [
+      "yss-ui-business-page-generation",
+      "theme-token-usage",
+      "component-selection-imports",
+      "page-module-development",
+      "page-skeleton",
+      "page-list-module",
+      "page-form-module",
+      "ytable-usage",
+      "yedit-table-usage",
+      "ytree-usage",
+      "prototype-page-acceptance",
+      "api-integration",
+      "file-export-download",
+      "vue3-best-practices",
+      "frontend-commit",
+      "java-backend-commit",
+      "use-table-height",
+      "use-tree-height",
+      "yss-formily",
+      "formily-foundation",
+      "formily-linkage-effects",
+      "formily-mode-slot-detail",
+      "formily-step-flow",
+      "i18n-locale-management"
+    ],
+    "universal": []
+  },
+  "defaultSync": ["app"],
+  "excludeFromDefaultSync": [
+    "release-management",
+    "changelog-generation",
+    "component-development",
+    "component-testing",
+    "commit-linting",
+    "documentation",
+    "release-workflow",
+    "yss-create-microapp",
+    "sync-internal-dev",
+    "skill-development"
+  ]
+}

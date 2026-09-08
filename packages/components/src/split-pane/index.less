@@ -1,0 +1,574 @@
+@prefix: y-split-pane;
+
+.@{prefix} {
+  position: relative;
+  display: flex;
+  width: 100%;
+  height: 100%;
+}
+
+.@{prefix}.is-vertical {
+  flex-direction: column;
+}
+
+.@{prefix}__left {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  flex: 0 0 auto;
+  min-width: 0;
+  overflow: hidden;
+  background: var(--y-split-left-bg, transparent);
+
+  /* 性能优化：隔离布局计算 */
+  contain: layout style;
+}
+
+.@{prefix}.is-vertical .@{prefix}__left {
+  min-height: 0;
+}
+
+.@{prefix}__left-inner {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+  opacity: 1;
+  transition: opacity 0.16s ease;
+}
+
+.@{prefix}.is-vertical .@{prefix}__left-inner {
+  width: 100%;
+}
+
+.@{prefix}.is-collapsed > .@{prefix}__left .@{prefix}__left-inner {
+  opacity: 0;
+}
+
+.@{prefix}__left-inner > *,
+.@{prefix}__right > * {
+  flex: 1 1 auto;
+  min-width: 0;
+  min-height: 0;
+}
+
+.@{prefix}__right {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+
+  /* 性能优化：隔离布局计算 */
+  contain: layout style;
+}
+
+.@{prefix}.is-vertical .@{prefix}__right {
+  min-height: 0;
+}
+
+.@{prefix}__divider {
+  position: relative;
+  width: var(--y-split-gutter, 8px);
+  cursor: col-resize;
+  background: transparent;
+  transition: background-color 0.2s ease;
+
+  /* 确保切换按钮可以溢出并保持在相邻元素之上 */
+  overflow: visible;
+  z-index: 2;
+}
+
+.@{prefix}.is-vertical .@{prefix}__divider {
+  width: auto;
+  height: var(--y-split-gutter, 8px);
+  cursor: row-resize;
+  transition: background-color 0.2s ease;
+}
+
+/*
+  deferred 拖拽代理线：绝对定位后仅通过 transform 移动，
+  不改变左右面板的真实 flex 尺寸，也不会触发重内容重新布局。
+*/
+.@{prefix}__drag-preview {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 2px;
+  border-radius: 1px;
+  background: var(--y-split-divider-active-color, var(--primary-color, #3371ff));
+  box-shadow: 0 0 12px color-mix(in srgb, var(--primary-color, #3371ff) 40%, transparent);
+  pointer-events: none;
+  will-change: transform;
+  contain: layout style paint;
+  z-index: 5;
+}
+
+.@{prefix}.is-vertical .@{prefix}__drag-preview {
+  inset: 0 0 auto;
+  width: auto;
+  height: 2px;
+}
+
+/* 兼容模式：保持原有 width/height 尺寸过渡。 */
+.@{prefix}.is-collapse-size .@{prefix}__left {
+  transition: width 0.3s cubic-bezier(0.25, 0.8, 0.5, 1);
+}
+
+.@{prefix}.is-collapse-size.is-vertical .@{prefix}__left {
+  transition: height 0.3s cubic-bezier(0.25, 0.8, 0.5, 1);
+}
+
+.@{prefix}.is-collapse-size .@{prefix}__divider {
+  transition:
+    width 0.3s cubic-bezier(0.25, 0.8, 0.5, 1),
+    background-color 0.2s ease;
+}
+
+.@{prefix}.is-collapse-size.is-vertical .@{prefix}__divider {
+  transition:
+    height 0.3s cubic-bezier(0.25, 0.8, 0.5, 1),
+    background-color 0.2s ease;
+}
+
+/* 无动画模式：一次性提交最终布局。 */
+.@{prefix}.is-collapse-none .@{prefix}__left,
+.@{prefix}.is-collapse-none .@{prefix}__left-inner,
+.@{prefix}.is-collapse-none .@{prefix}__divider,
+.@{prefix}.is-collapse-none .@{prefix}__right,
+.@{prefix}.is-collapse-none .@{prefix}__toggle {
+  transition: none !important;
+}
+
+/*
+  重内容模式：动画期间保持起始 flex 布局，通过合成层 transform 完成视觉过渡，
+  动画结束时再一次性提交最终布局尺寸。
+*/
+.@{prefix}.is-collapse-transform.is-transitioning {
+  overflow: hidden;
+}
+
+.@{prefix}.is-collapse-transform.is-transitioning .@{prefix}__left-inner,
+.@{prefix}.is-collapse-transform.is-transitioning .@{prefix}__divider,
+.@{prefix}.is-collapse-transform.is-transitioning .@{prefix}__right {
+  transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.5, 1);
+  will-change: transform;
+}
+
+/* 折叠时右侧预先使用最终完整尺寸，但仍从原位置开始显示。 */
+.@{prefix}.is-collapse-transform.is-collapsing .@{prefix}__right {
+  flex: 0 0 auto;
+  width: 100%;
+}
+
+.@{prefix}.is-collapse-transform.is-collapsing.is-transition-active .@{prefix}__left-inner {
+  transform: translateX(var(--y-split-pane-negative-size));
+}
+
+.@{prefix}.is-collapse-transform.is-collapsing.is-transition-active .@{prefix}__divider,
+.@{prefix}.is-collapse-transform.is-collapsing.is-transition-active .@{prefix}__right {
+  transform: translateX(var(--y-split-pane-negative-offset));
+}
+
+/* 展开时左侧内容作为覆盖层滑入，右侧保持完整尺寸并同步让出视觉空间。 */
+.@{prefix}.is-collapse-transform.is-expanding .@{prefix}__left {
+  overflow: visible;
+  z-index: 1;
+}
+
+.@{prefix}.is-collapse-transform.is-expanding .@{prefix}__left-inner {
+  opacity: 1;
+  transform: translateX(var(--y-split-pane-negative-size));
+}
+
+.@{prefix}.is-collapse-transform.is-expanding .@{prefix}__right {
+  flex: 0 0 auto;
+  width: 100%;
+}
+
+.@{prefix}.is-collapse-transform.is-expanding.is-transition-active .@{prefix}__left-inner {
+  transform: translateX(0);
+}
+
+.@{prefix}.is-collapse-transform.is-expanding.is-transition-active .@{prefix}__divider,
+.@{prefix}.is-collapse-transform.is-expanding.is-transition-active .@{prefix}__right {
+  transform: translateX(var(--y-split-pane-offset));
+}
+
+/* vertical 与 horizontal 共用同一状态机，仅切换运动轴。 */
+.@{prefix}.is-collapse-transform.is-vertical.is-collapsing .@{prefix}__right,
+.@{prefix}.is-collapse-transform.is-vertical.is-expanding .@{prefix}__right {
+  width: 100%;
+  height: 100%;
+}
+
+.@{prefix}.is-collapse-transform.is-vertical.is-collapsing.is-transition-active .@{prefix}__left-inner {
+  transform: translateY(var(--y-split-pane-negative-size));
+}
+
+.@{prefix}.is-collapse-transform.is-vertical.is-collapsing.is-transition-active .@{prefix}__divider,
+.@{prefix}.is-collapse-transform.is-vertical.is-collapsing.is-transition-active .@{prefix}__right {
+  transform: translateY(var(--y-split-pane-negative-offset));
+}
+
+.@{prefix}.is-collapse-transform.is-vertical.is-expanding .@{prefix}__left-inner {
+  transform: translateY(var(--y-split-pane-negative-size));
+}
+
+.@{prefix}.is-collapse-transform.is-vertical.is-expanding.is-transition-active .@{prefix}__left-inner {
+  transform: translateY(0);
+}
+
+.@{prefix}.is-collapse-transform.is-vertical.is-expanding.is-transition-active .@{prefix}__divider,
+.@{prefix}.is-collapse-transform.is-vertical.is-expanding.is-transition-active .@{prefix}__right {
+  transform: translateY(var(--y-split-pane-offset));
+}
+
+/* 禁用拖拽：不显示拖拽光标与悬停动画反馈 */
+.@{prefix}__divider.is-disabled,
+.@{prefix}.is-vertical .@{prefix}__divider.is-disabled {
+  cursor: default;
+}
+
+.@{prefix}__divider.is-disabled:hover::before,
+.@{prefix}.is-near .@{prefix}__divider.is-disabled::before,
+.@{prefix}.is-vertical .@{prefix}__divider.is-disabled:hover::before,
+.@{prefix}.is-vertical.is-near .@{prefix}__divider.is-disabled::before,
+.@{prefix}.is-dragging .@{prefix}__divider.is-disabled::before,
+.@{prefix}.is-vertical.is-dragging .@{prefix}__divider.is-disabled::before {
+  opacity: 0 !important;
+  transform: none !important;
+  width: 2px;
+  height: 2px;
+  box-shadow: none !important;
+}
+
+/* 
+   视觉指示器重新设计 - "精致优雅"
+   使用更细的线条（2px）以获得更专业的外观，在激活状态使用发光效果而非粗线条。
+*/
+.@{prefix}__divider::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+
+  /* 将宽度减少到 2px 以获得更锐利、更轻盈的感觉 */
+  width: 2px;
+  border-radius: 1px;
+
+  /* 居中并垂直略微缩小，以在进入时产生"呼吸"效果 */
+  transform: translateX(-50%) scaleY(0.5);
+  background: var(--y-split-divider-hover-color, color-mix(in srgb, var(--primary-color, #3371ff) 50%, transparent));
+  opacity: 0;
+
+  /* 流畅的复杂过渡效果 */
+  transition:
+    opacity 0.2s ease,
+    transform 0.25s cubic-bezier(0.34, 1, 0.64, 1),
+    width 0.2s ease,
+    height 0.2s ease,
+    background-color 0.2s ease,
+    box-shadow 0.2s ease;
+  pointer-events: none;
+}
+
+.@{prefix}.is-vertical .@{prefix}__divider::before {
+  inset: 50% 0 auto;
+  width: auto;
+  height: 2px;
+  transform: translateY(-50%) scaleX(0.5);
+}
+
+.@{prefix}__toggle {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 30px;
+  border: 0;
+  border-radius: 10px;
+  padding: 0;
+  font-size: 14px;
+  background: linear-gradient(180deg, rgb(255 255 255 / 84%), rgb(255 255 255 / 36%));
+  color: var(--y-split-toggle-color, rgb(0 0 0 / 65%));
+  box-shadow:
+    0 6px 16px rgb(0 0 0 / 10%),
+    inset 0 1px 0 rgb(255 255 255 / 48%),
+    inset 0 -1px 0 rgb(255 255 255 / 36%);
+  backdrop-filter: blur(10px) saturate(140%);
+  cursor: pointer;
+  transition:
+    left 0.3s cubic-bezier(0.25, 0.8, 0.5, 1),
+    transform 0.3s cubic-bezier(0.25, 0.8, 0.5, 1),
+    width 0.3s ease,
+    border-radius 0.3s ease,
+    background-color 0.2s ease,
+    box-shadow 0.2s ease,
+    color 0.2s ease;
+  z-index: 3;
+}
+
+/* 
+   展开状态切换按钮悬停
+   添加 'scale(1.1)' 以实现微妙的弹出效果
+*/
+.@{prefix}__toggle:hover {
+  background: linear-gradient(180deg, rgb(255 255 255 / 92%), rgb(255 255 255 / 58%));
+  box-shadow:
+    0 8px 24px rgb(0 0 0 / 12%),
+    inset 0 1px 0 rgb(255 255 255 / 52%),
+    inset 0 -1px 0 rgb(255 255 255 / 42%);
+  transform: translate(-50%, -50%) scale(1.1);
+}
+
+.@{prefix}__toggle:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--primary-color, #3371ff) 60%, transparent);
+  outline-offset: 2px;
+}
+
+/* 悬停/接近状态：显示精致的分割线 */
+.@{prefix}__divider:hover::before,
+.@{prefix}.is-near .@{prefix}__divider::before {
+  opacity: 1;
+  transform: translateX(-50%) scaleY(1);
+  box-shadow: 0 0 8px color-mix(in srgb, var(--primary-color, #3371ff) 30%, transparent);
+}
+
+.@{prefix}.is-vertical .@{prefix}__divider:hover::before,
+.@{prefix}.is-vertical.is-near .@{prefix}__divider::before {
+  transform: translateY(-50%) scaleX(1);
+}
+
+/* 拖拽状态：高对比度但保持细线 */
+.@{prefix}.is-dragging .@{prefix}__divider::before {
+  opacity: 1;
+  width: 2px;
+  background: var(--y-split-divider-active-color, var(--primary-color, #3371ff));
+  transform: translateX(-50%);
+  box-shadow: 0 0 6px color-mix(in srgb, var(--primary-color, #3371ff) 24%, transparent);
+}
+
+.@{prefix}.is-vertical.is-dragging .@{prefix}__divider::before {
+  width: auto;
+  height: 2px;
+  transform: translateY(-50%);
+}
+
+/* 
+  拖动优化：在拖拽期间禁用过渡效果，启用 will-change。
+*/
+.@{prefix}.is-dragging {
+  user-select: none;
+  cursor: col-resize;
+}
+
+.@{prefix}.is-dragging .@{prefix}__left,
+.@{prefix}.is-dragging .@{prefix}__right,
+.@{prefix}.is-dragging .@{prefix}__divider,
+.@{prefix}.is-dragging .@{prefix}__toggle {
+  transition: none !important;
+}
+
+/* realtime 兼容模式仍需更新真实尺寸，仅在拖拽期提示浏览器。 */
+.@{prefix}.is-resize-realtime.is-dragging .@{prefix}__left {
+  will-change: width;
+}
+
+/* deferred 使用独立代理线，隐藏停留在原位置的分割线指示器。 */
+.@{prefix}.is-resize-deferred.is-dragging .@{prefix}__divider::before {
+  opacity: 0;
+  box-shadow: none;
+}
+
+.@{prefix}.is-resize-deferred.is-dragging .@{prefix}__divider {
+  will-change: transform;
+}
+
+/* 折叠状态覆盖 */
+.@{prefix}.is-collapsed > .@{prefix}__left {
+  width: 0 !important;
+  pointer-events: none;
+  padding: 0;
+  border: 0;
+}
+
+.@{prefix}.is-vertical.is-collapsed > .@{prefix}__left {
+  width: auto !important;
+  height: 0 !important;
+}
+
+.@{prefix}.is-collapsed > .@{prefix}__divider {
+  width: 0;
+  cursor: default;
+}
+
+.@{prefix}.is-vertical.is-collapsed > .@{prefix}__divider {
+  width: auto;
+  height: 0;
+}
+
+.@{prefix}.is-collapsed > .@{prefix}__divider::before {
+  display: none;
+}
+
+.@{prefix}.is-collapsed > .@{prefix}__divider .@{prefix}__toggle {
+  left: 0;
+  transform: translate(0, -50%);
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+  width: 24px;
+  box-shadow:
+    4px 0 16px rgb(0 0 0 / 10%),
+    inset -1px 0 0 rgb(255 255 255 / 48%),
+    inset -1px -1px 0 rgb(255 255 255 / 36%);
+}
+
+.@{prefix}.is-vertical .@{prefix}__toggle-vertical {
+  width: 30px;
+  height: 16px;
+}
+
+.@{prefix}.is-vertical.is-collapsed > .@{prefix}__divider .@{prefix}__toggle {
+  left: 50%;
+  top: 0;
+  transform: translate(-50%, 0);
+  width: 30px;
+  height: 16px;
+  border-radius: 0 0 10px 10px;
+  box-shadow: 0 2px 8px rgb(0 0 0 / 12%);
+  transition:
+    height 0.2s ease,
+    background-color 0.2s ease;
+}
+
+.@{prefix}__toggle-icon {
+  transform: rotate(90deg);
+}
+
+.@{prefix}__quick-actions {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  z-index: 3;
+}
+
+.@{prefix}.is-vertical .@{prefix}__quick-actions {
+  top: 0;
+  left: 50%;
+  transform: translate(-50%, 0);
+}
+
+.@{prefix}__quick-btn {
+  width: 22px;
+  height: 18px;
+  border: 0;
+  border-radius: 8px;
+  background: linear-gradient(180deg, rgb(255 255 255 / 92%), rgb(255 255 255 / 58%));
+  color: var(--y-split-toggle-color, rgb(0 0 0 / 65%));
+  box-shadow: 0 4px 12px rgb(0 0 0 / 10%);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.@{prefix}__quick-btn--bottom {
+  transform: rotate(180deg);
+}
+
+.@{prefix}.is-collapsed > .@{prefix}__divider .@{prefix}__quick-btn--bottom {
+  bottom: 10px;
+}
+.@{prefix}.is-collapsed > .@{prefix}__divider .@{prefix}__toggle:hover {
+  width: 28px;
+  box-shadow:
+    6px 0 20px rgb(0 0 0 / 14%),
+    inset -1px 0 0 rgb(255 255 255 / 60%);
+}
+
+.@{prefix}.is-vertical.is-collapsed > .@{prefix}__divider .@{prefix}__toggle:hover {
+  width: 30px;
+  height: 28px;
+  box-shadow:
+    0 6px 20px rgb(0 0 0 / 14%),
+    inset 0 -1px 0 rgb(255 255 255 / 60%);
+}
+
+/* ==========================================================
+ * 暗色模式适配 (Dark Mode)
+ * dumi / yss-ui 通用暗色属性：[data-prefers-color='dark'], [data-theme='dark']
+ * ========================================================== */
+[data-prefers-color="dark"] .@{prefix},
+:root[data-prefers-color="dark"] .@{prefix},
+[data-theme="dark"] .@{prefix},
+:root[data-theme="dark"] .@{prefix} {
+  --y-split-toggle-color: rgb(255 255 255 / 75%);
+  --y-split-toggle-hover-color: #fff;
+
+  .@{prefix}__toggle {
+    background: linear-gradient(180deg, rgb(52 58 70 / 92%), rgb(30 35 44 / 85%));
+    color: var(--y-split-toggle-color, rgb(255 255 255 / 75%));
+    box-shadow:
+      0 6px 16px rgb(0 0 0 / 40%),
+      inset 0 1px 0 rgb(255 255 255 / 15%),
+      inset 0 -1px 0 rgb(0 0 0 / 30%);
+
+    &:hover {
+      background: linear-gradient(180deg, rgb(68 75 89 / 96%), rgb(44 50 62 / 90%));
+      color: var(--y-split-toggle-hover-color, #fff);
+      box-shadow:
+        0 8px 24px rgb(0 0 0 / 50%),
+        inset 0 1px 0 rgb(255 255 255 / 22%),
+        inset 0 -1px 0 rgb(0 0 0 / 40%);
+    }
+  }
+
+  .@{prefix}__quick-btn {
+    background: linear-gradient(180deg, rgb(52 58 70 / 92%), rgb(30 35 44 / 85%));
+    color: var(--y-split-toggle-color, rgb(255 255 255 / 75%));
+    box-shadow:
+      0 4px 12px rgb(0 0 0 / 40%),
+      inset 0 1px 0 rgb(255 255 255 / 15%);
+
+    &:hover {
+      background: linear-gradient(180deg, rgb(68 75 89 / 96%), rgb(44 50 62 / 90%));
+      color: var(--y-split-toggle-hover-color, #fff);
+      box-shadow:
+        0 6px 16px rgb(0 0 0 / 50%),
+        inset 0 1px 0 rgb(255 255 255 / 22%);
+    }
+  }
+
+  &.is-collapsed > .@{prefix}__divider .@{prefix}__toggle {
+    box-shadow:
+      4px 0 16px rgb(0 0 0 / 40%),
+      inset -1px 0 0 rgb(255 255 255 / 15%),
+      inset -1px -1px 0 rgb(0 0 0 / 30%);
+
+    &:hover {
+      box-shadow:
+        6px 0 20px rgb(0 0 0 / 50%),
+        inset -1px 0 0 rgb(255 255 255 / 22%);
+    }
+  }
+
+  &.is-vertical.is-collapsed > .@{prefix}__divider .@{prefix}__toggle {
+    box-shadow: 0 2px 8px rgb(0 0 0 / 40%);
+
+    &:hover {
+      box-shadow:
+        0 6px 20px rgb(0 0 0 / 50%),
+        inset 0 -1px 0 rgb(255 255 255 / 22%);
+    }
+  }
+}

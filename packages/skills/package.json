@@ -1,0 +1,13 @@
+{
+  "name": "@yss-ui/skills",
+  "version": "1.4.0",
+  "description": "Centralized AI Skills for YSS Micro-Applications",
+  "private": false,
+  "scripts": {
+    "build": "echo 'No build needed for skills content'"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": ["**/*", "!package.json"]
+}

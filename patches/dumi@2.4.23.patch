@@ -1,0 +1,621 @@
+diff --git a/dist/client/theme-api/DumiDemo/index.js b/dist/client/theme-api/DumiDemo/index.js
+index 62dacc6354ff94587097dbc92cbc8e02febde512..b804a55fc3c92ea657f35b855432879031fdc490 100644
+--- a/dist/client/theme-api/DumiDemo/index.js
++++ b/dist/client/theme-api/DumiDemo/index.js
+@@ -1,11 +1,123 @@
+-function _extends() { _extends = Object.assign ? Object.assign.bind() : function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
+ import { SP_ROUTE_PREFIX } from "../../../constants";
+-import { useAppData, useDemo, useSiteData } from 'dumi';
+-import React, { createElement } from 'react';
++import { useAppData, useDemo, useLocation, useSiteData } from 'dumi';
++import React, { Suspense, createElement, useEffect, useMemo, useRef, useState } from 'react';
+ import Previewer from 'dumi/theme/builtins/Previewer';
+ import { useRenderer } from "../useRenderer";
+ import DemoErrorBoundary from "./DemoErrorBoundary";
+-var InternalDumiDemo = function InternalDumiDemo(props) {
++
++var DEMO_ACTIVATION_ROOT_MARGIN = '320px 0px';
++var DEMO_ACTIVATION_DELAY = 80;
++
++function isHashMatched(hash, id) {
++  return decodeURIComponent(hash || '').slice(1) === id;
++}
++
++function getPlaceholderHeight(previewerProps) {
++  var iframe = previewerProps.iframe;
++  var numericIframeHeight = Number(iframe);
++  if (!Number.isNaN(numericIframeHeight) && numericIframeHeight > 0) {
++    return numericIframeHeight;
++  }
++  if (iframe) {
++    return 360;
++  }
++  if (previewerProps.compact) {
++    return 220;
++  }
++  return 340;
++}
++
++function DemoPlaceholder(props) {
++  var placeholderRef = props.placeholderRef,
++    previewerProps = props.previewerProps;
++  var height = getPlaceholderHeight(previewerProps);
++  return /*#__PURE__*/React.createElement("div", {
++    ref: placeholderRef,
++    "data-yss-demo-placeholder": true,
++    style: {
++      minHeight: height,
++      padding: 24,
++      borderRadius: 20,
++      border: '1px solid rgba(148, 163, 184, 0.24)',
++      background: 'linear-gradient(180deg, rgba(248, 250, 252, 0.96), rgba(241, 245, 249, 0.92))',
++      boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.9)'
++    }
++  }, /*#__PURE__*/React.createElement("div", {
++    style: {
++      display: 'grid',
++      gap: 14
++    }
++  }, /*#__PURE__*/React.createElement("div", {
++    style: {
++      width: '32%',
++      height: 16,
++      borderRadius: 999,
++      background: 'rgba(148, 163, 184, 0.26)'
++    }
++  }), /*#__PURE__*/React.createElement("div", {
++    style: {
++      width: '100%',
++      height: 14,
++      borderRadius: 999,
++      background: 'rgba(148, 163, 184, 0.22)'
++    }
++  }), /*#__PURE__*/React.createElement("div", {
++    style: {
++      width: '84%',
++      height: 14,
++      borderRadius: 999,
++      background: 'rgba(148, 163, 184, 0.18)'
++    }
++  }), /*#__PURE__*/React.createElement("div", {
++    style: {
++      width: '100%',
++      minHeight: Math.max(height - 108, 140),
++      borderRadius: 16,
++      background: 'linear-gradient(135deg, rgba(226, 232, 240, 0.72), rgba(241, 245, 249, 0.96))'
++    }
++  })));
++}
++
++function PlaceholderPreviewer(props) {
++  var id = props.id,
++    previewerProps = props.previewerProps,
++    placeholderRef = props.placeholderRef,
++    hash = props.hash;
++  var hasMeta = previewerProps.title || previewerProps.debug;
++  return /*#__PURE__*/React.createElement("div", {
++    id: id,
++    className: ['dumi-default-previewer', previewerProps.className].filter(Boolean).join(' '),
++    style: previewerProps.style,
++    "data-debug": previewerProps.debug,
++    "data-active": isHashMatched(hash, id) || undefined,
++    "data-yss-demo-pending": true
++  }, /*#__PURE__*/React.createElement("div", {
++    className: "dumi-default-previewer-demo",
++    style: {
++      background: previewerProps.background
++    },
++    "data-compact": previewerProps.compact || undefined,
++    "data-transform": previewerProps.transform || undefined,
++    "data-iframe": previewerProps.iframe || undefined,
++    "data-loading": true
++  }, /*#__PURE__*/React.createElement(DemoPlaceholder, {
++    placeholderRef: placeholderRef,
++    previewerProps: previewerProps
++  })), /*#__PURE__*/React.createElement("div", {
++    className: "dumi-default-previewer-meta"
++  }, hasMeta && /*#__PURE__*/React.createElement("div", {
++    className: "dumi-default-previewer-desc"
++  }, /*#__PURE__*/React.createElement("h5", null, /*#__PURE__*/React.createElement("a", {
++    href: "#".concat(id)
++  }, previewerProps.debug && /*#__PURE__*/React.createElement("strong", null, "DEV ONLY"), previewerProps.title)), previewerProps.description && /*#__PURE__*/React.createElement("div", {
++    className: "markdown",
++    dangerouslySetInnerHTML: {
++      __html: previewerProps.description
++    }
++  }))));
++}
++
++function ResolvedDumiDemo(props) {
+   var _useSiteData = useSiteData(),
+     historyType = _useSiteData.historyType;
+   var _useAppData = useAppData(),
+@@ -22,27 +134,104 @@ var InternalDumiDemo = function InternalDumiDemo(props) {
+     }),
+     canvasRef = _useRenderer.canvasRef;
+ 
+-  // hide debug demo in production
+   if (process.env.NODE_ENV === 'production' && props.previewerProps.debug) return null;
++
+   var demoNode = /*#__PURE__*/React.createElement(DemoErrorBoundary, null, renderOpts !== null && renderOpts !== void 0 && renderOpts.renderer ? /*#__PURE__*/React.createElement("div", {
+     ref: canvasRef
+   }) : /*#__PURE__*/createElement(component));
++
+   if (props.demo.inline) {
+     return demoNode;
+   }
++
+   var isHashRoute = historyType === 'hash';
+-  return /*#__PURE__*/React.createElement(Previewer, _extends({
++  return /*#__PURE__*/React.createElement(Previewer, Object.assign({
+     asset: asset,
+-    demoUrl:
+-    // allow user override demoUrl by frontmatter
+-    props.previewerProps.demoUrl || // when use hash route, browser can automatically handle relative paths starting with #
+-    "".concat(isHashRoute ? "#" : '').concat(basename).concat(SP_ROUTE_PREFIX, "demos/").concat(props.demo.id)
++    demoUrl: props.previewerProps.demoUrl || "".concat(isHashRoute ? "#" : '').concat(basename).concat(SP_ROUTE_PREFIX, "demos/").concat(props.demo.id)
+   }, props.previewerProps), props.previewerProps.iframe ? null : demoNode);
++}
++
++var InternalDumiDemo = function InternalDumiDemo(props) {
++  var _useSiteData2 = useSiteData(),
++    historyType = _useSiteData2.historyType;
++  var _useAppData2 = useAppData(),
++    basename = _useAppData2.basename;
++  var _useLocation = useLocation(),
++    hash = _useLocation.hash;
++  var id = props.demo.id;
++  var placeholderRef = useRef(null);
++  var isHashTarget = isHashMatched(hash, id);
++  var _useState = useState(function () {
++      return !!props.demo.inline || isHashTarget;
++    }),
++    activated = _useState[0],
++    setActivated = _useState[1];
++  var isHashRoute = historyType === 'hash';
++  var fallback = useMemo(function () {
++    return /*#__PURE__*/React.createElement(PlaceholderPreviewer, {
++      id: id,
++      hash: hash,
++      previewerProps: props.previewerProps,
++      placeholderRef: placeholderRef,
++      demoUrl: props.previewerProps.demoUrl || "".concat(isHashRoute ? "#" : '').concat(basename).concat(SP_ROUTE_PREFIX, "demos/").concat(id)
++    });
++  }, [basename, hash, id, isHashRoute, props.previewerProps]);
++
++  useEffect(function () {
++    if (isHashTarget) {
++      setActivated(true);
++    }
++  }, [isHashTarget]);
++
++  useEffect(function () {
++    if (activated || props.demo.inline) return;
++    var node = placeholderRef.current;
++    if (!node) return;
++    var timer = 0;
++    var activate = function activate() {
++      window.clearTimeout(timer);
++      timer = window.setTimeout(function () {
++        return setActivated(true);
++      }, DEMO_ACTIVATION_DELAY);
++    };
++
++    if (typeof IntersectionObserver === 'undefined') {
++      activate();
++      return function () {
++        return window.clearTimeout(timer);
++      };
++    }
++
++    var observer = new IntersectionObserver(function (entries) {
++      if (entries[0] && entries[0].isIntersecting) {
++        activate();
++        observer.disconnect();
++      }
++    }, {
++      rootMargin: DEMO_ACTIVATION_ROOT_MARGIN
++    });
++    observer.observe(node);
++    return function () {
++      window.clearTimeout(timer);
++      observer.disconnect();
++    };
++  }, [activated, props.demo.inline, id]);
++
++  if (process.env.NODE_ENV === 'production' && props.previewerProps.debug) return null;
++
++  if (!activated) {
++    return fallback;
++  }
++
++  return /*#__PURE__*/React.createElement(Suspense, {
++    fallback: fallback
++  }, /*#__PURE__*/React.createElement(ResolvedDumiDemo, props));
+ };
++
+ export var DumiDemo = /*#__PURE__*/React.memo(InternalDumiDemo, function (prev, next) {
+-  // compare length for performance
+   return JSON.stringify(prev).length === JSON.stringify(next).length;
+ });
++
+ if (process.env.NODE_ENV !== 'production') {
+   InternalDumiDemo.displayName = 'DumiDemo';
+ }
+\ No newline at end of file
+diff --git a/dist/client/theme-api/index.d.ts b/dist/client/theme-api/index.d.ts
+index a583921f22414b75958835cf597da13c376dc356..5328317aa16c3edfeecf9e0003fe76a97feb3023 100644
+--- a/dist/client/theme-api/index.d.ts
++++ b/dist/client/theme-api/index.d.ts
+@@ -4,8 +4,6 @@ export { DumiDemo } from './DumiDemo';
+ export { DumiDemoGrid } from './DumiDemoGrid';
+ export { DumiPage } from './DumiPage';
+ export { useSiteData } from './context';
+-export { openCodeSandbox } from './openCodeSandbox';
+-export { openStackBlitz } from './openStackBlitz';
+ export type { IDemoCancelableFn, IPreviewerProps } from './types';
+ export { useAtomAssets } from './useAtomAssets';
+ export { useLiveDemo } from './useLiveDemo';
+diff --git a/dist/client/theme-api/index.js b/dist/client/theme-api/index.js
+index 7dbbd3a49af371ad275a29f14e811a2490acb650..3d07874bb868d773f0de59940a72e75cafbacd74 100644
+--- a/dist/client/theme-api/index.js
++++ b/dist/client/theme-api/index.js
+@@ -4,8 +4,6 @@ export { DumiDemo } from "./DumiDemo";
+ export { DumiDemoGrid } from "./DumiDemoGrid";
+ export { DumiPage } from "./DumiPage";
+ export { useSiteData } from "./context";
+-export { openCodeSandbox } from "./openCodeSandbox";
+-export { openStackBlitz } from "./openStackBlitz";
+ export { useAtomAssets } from "./useAtomAssets";
+ export { useLiveDemo } from "./useLiveDemo";
+ export { useLocale } from "./useLocale";
+diff --git a/dist/client/theme-api/types.d.ts b/dist/client/theme-api/types.d.ts
+index 1e1b30752ce9469060d4790f6bc7ca8694611305..794e9e92fde5379335243c2e07728bfcf885231f 100644
+--- a/dist/client/theme-api/types.d.ts
++++ b/dist/client/theme-api/types.d.ts
+@@ -231,6 +231,7 @@ export type AgnosticComponentModule = {
+ export type AgnosticComponentType = Promise<AgnosticComponentModule> | AgnosticComponentModule;
+ export type IDemoCompileFn = (code: string, opts: {
+     filename: string;
++    sources?: Record<string, string>;
+ }) => Promise<string>;
+ export type IDemoCancelableFn = (canvas: HTMLElement, component: AgnosticComponentModule) => (() => void) | Promise<() => void>;
+ export type IDemoPreflightFn = (component: AgnosticComponentModule) => Promise<void>;
+diff --git a/dist/client/theme-api/useLiveDemo.js b/dist/client/theme-api/useLiveDemo.js
+index 2da47b2b77b6c70c3e72600cff233e649e59270c..3079a4b1b35db59f2a28110a9cbb0aa51a3939bc 100644
+--- a/dist/client/theme-api/useLiveDemo.js
++++ b/dist/client/theme-api/useLiveDemo.js
+@@ -58,7 +58,7 @@ export var useLiveDemo = function useLiveDemo(id, opts) {
+   var setSource = useCallback(throttle( /*#__PURE__*/function () {
+     var _ref2 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(source) {
+       var _opts$containerRef;
+-      var iframeWindow, entryFileName, liveRequire, token, entryFileCode, liveExports, liveModule, component, renderToStaticMarkupDeferred, _liveExports, _liveModule, newDemoNode, oError, shouldSkipError;
++      var iframeWindow, entryFileName, liveRequire, token, sources, entryFileCode, liveExports, liveModule, component, renderToStaticMarkupDeferred, _liveExports, _liveModule, newDemoNode, oError, shouldSkipError;
+       return _regeneratorRuntime().wrap(function _callee$(_context) {
+         while (1) switch (_context.prev = _context.next) {
+           case 0:
+@@ -102,6 +102,16 @@ export var useLiveDemo = function useLiveDemo(id, opts) {
+               throw new Error("Cannot find module: ".concat(v));
+             };
+             token = taskToken.current = Math.random();
++            sources = Object.entries(asset.dependencies).reduce(function (ret, _ref3) {
++              var _ref4 = _slicedToArray(_ref3, 2),
++                filename = _ref4[0],
++                dependency = _ref4[1];
++              if (dependency.type === 'FILE') {
++                ret[filename] = dependency.value;
++              }
++              return ret;
++            }, {});
++            Object.assign(sources, source);
+             entryFileCode = source[entryFileName];
+             if (!(renderOpts !== null && renderOpts !== void 0 && renderOpts.compile)) {
+               _context.next = 23;
+@@ -110,7 +120,8 @@ export var useLiveDemo = function useLiveDemo(id, opts) {
+             _context.prev = 12;
+             _context.next = 15;
+             return renderOpts.compile(entryFileCode, {
+-              filename: "".concat(id, "-").concat(entryFileName)
++              filename: "".concat(id, "/").concat(entryFileName),
++              sources: sources
+             });
+           case 15:
+             entryFileCode = _context.sent;
+diff --git a/dist/features/compile/utils.js b/dist/features/compile/utils.js
+index 274737b2168d3136d16459dd94e69ca07e9fd4ff..aeeb0834a6050ddc992ee9aa6cd72d543407fb33 100644
+--- a/dist/features/compile/utils.js
++++ b/dist/features/compile/utils.js
+@@ -26,15 +26,16 @@ var import_utils = require("@umijs/utils");
+ var import_lodash = require("@umijs/utils/compiled/lodash");
+ var shouldDisabledLiveDemo = (api) => {
+   const extraBabelPlugins = api.userConfig.extraBabelPlugins;
+-  const disableFlag = (0, import_lodash.isArray)(extraBabelPlugins) && extraBabelPlugins.some(
++  const disableByConfig = api.userConfig.live === false;
++  const disableByBabelPlugin = (0, import_lodash.isArray)(extraBabelPlugins) && extraBabelPlugins.some(
+     (p) => /^import$|babel-plugin-import/.test(p[0])
+   );
+-  if (disableFlag) {
++  if (disableByBabelPlugin) {
+     import_utils.logger.warn(
+       "live demo feature has been automatically disabled since babel-plugin-import be registered, if you want to enable live demo feature, checkout: https://d.umijs.org/guide/faq"
+     );
+   }
+-  return disableFlag;
++  return disableByConfig || disableByBabelPlugin;
+ };
+ // Annotate the CommonJS export names for ESM import in node:
+ 0 && (module.exports = {
+diff --git a/dist/features/derivative.js b/dist/features/derivative.js
+index 9b80dcc2d3b6020442f9c96e97783b5922fc292a..88d886442beb7e0970f1a1ce78633ffaacf34202 100644
+--- a/dist/features/derivative.js
++++ b/dist/features/derivative.js
+@@ -158,9 +158,9 @@ var derivative_default = (api) => {
+       }
+     } catch {
+     }
+-    if ("live" in api.config) {
++    if ("live" in api.config && api.config.live !== false) {
+       import_plugin_utils.logger.warn(
+-        "`live` config is deprecated and live demo is always enabled now, please remove it."
++        "`live: true` is already the default behavior, please remove it."
+       );
+     }
+   });
+@@ -189,7 +189,9 @@ var derivative_default = (api) => {
+       memo.ssr = Object.assign(memo.ssr || {}, { builder: "webpack" });
+     }
+     memo.hash = true;
+-    memo.exportStatic || (memo.exportStatic = {});
++    if (api.userConfig.exportStatic !== false) {
++      memo.exportStatic || (memo.exportStatic = {});
++    }
+     memo.esbuildMinifyIIFE = true;
+     return memo;
+   });
+diff --git a/dist/features/theme/index.js b/dist/features/theme/index.js
+index 80325ddbcc5c5265437bb9c82cd1eb00b09c6e23..1a1c05306b2b1a7b2e263106ed4473dc0075120d 100644
+--- a/dist/features/theme/index.js
++++ b/dist/features/theme/index.js
+@@ -409,10 +409,6 @@ export default DumiLoading;
+     }
+   ]);
+   api.addEntryCode(() => "setDumiPluginManager(getDumiPluginManager());");
+-  api.addRuntimePluginKey(() => [
+-    "modifyCodeSandboxData",
+-    "modifyStackBlitzData"
+-  ]);
+   if (
+     /*isTnpm*/
+     require("@umijs/core/package").__npminstall_done && import_fs.default.existsSync(localThemePath) && import_fs.default.lstatSync(localThemePath).isSymbolicLink()
+diff --git a/dist/loaders/markdown/index.js b/dist/loaders/markdown/index.js
+index 1645bc8b755949362f5c4dde6bcd9f747968095c..ea1f3850f2f18741ac3a310b9f62adace6f54bd4 100644
+--- a/dist/loaders/markdown/index.js
++++ b/dist/loaders/markdown/index.js
+@@ -115,7 +115,7 @@ function emitDemo(opts, ret) {
+             demoDepsMap[demo.id][normalizedKey] = shareDepsMap[normalizedKey];
+           }
+           if (isRelative) {
+-            relativeDepsMap[demo.id][key] = `{{{${shareDepsMap[normalizedKey] || specifier}}}}`;
++            relativeDepsMap[demo.id][key] = normalizedKey;
+           }
+         }
+       });
+@@ -135,9 +135,6 @@ function emitDemo(opts, ret) {
+   return import_plugin_utils.Mustache.render(
+     `import React from 'react';
+ import '${(0, import_plugin_utils.winPath)(this.getDependencies()[0])}?watch=parent';
+-{{#dedupedDemosDeps}}
+-import * as {{{specifier}}} from '{{{key}}}';
+-{{/dedupedDemosDeps}}
+ export const demos = {
+   {{#demos}}
+   '{{{id}}}': {
+@@ -174,22 +171,40 @@ export const demos = {
+       renderContext: function renderContext() {
+         if (!("resolveMap" in this) || !("asset" in this) || opts.disableLiveDemo)
+           return "undefined";
+-        const context = Object.entries(demoDepsMap[this.id]).reduce(
+-          (acc, [key, specifier]) => ({
+-            ...acc,
+-            ...{ [key]: `{{{${specifier}}}}` }
+-          }),
+-          relativeDepsMap[this.id]
+-        );
+-        return JSON.stringify(context, null, 2).replace(/"{{{|}}}"/g, "");
++        const loaders = Object.keys(demoDepsMap[this.id]).map((key) => {
++          return `${JSON.stringify(key)}: () => require('${(0, import_plugin_utils.winPath)(key)}')`;
++        });
++        const aliases = Object.entries(relativeDepsMap[this.id]).map(([key, target]) => {
++          return `${JSON.stringify(key)}: ${JSON.stringify(target)}`;
++        });
++        return `(() => {
++          const cache = {};
++          const loaders = {
++            ${loaders.join(",\n")}
++          };
++          const aliases = {
++            ${aliases.join(",\n")}
++          };
++          return new Proxy({}, {
++            has(_target, key) {
++              return key in loaders || key in aliases;
++            },
++            get(_target, key) {
++              const targetKey = aliases[key] || key;
++              if (!(targetKey in loaders)) return undefined;
++              if (!(targetKey in cache)) cache[targetKey] = loaders[targetKey]();
++              return cache[targetKey];
++            }
++          });
++        })()`;
+       },
+       renderRenderOpts: function renderRenderOpts() {
+-        if (!("renderOpts" in this) || opts.disableLiveDemo) {
++        if (!("renderOpts" in this)) {
+           return "undefined";
+         }
+         const renderOpts = this.renderOpts;
+         const propertyArray = [];
+-        if (renderOpts.compilePath) {
++        if (!opts.disableLiveDemo && renderOpts.compilePath) {
+           propertyArray.push(`
+           compile: async (...args) => {
+             return (await import('${(0, import_plugin_utils.winPath)(
+diff --git a/dist/loaders/markdown/transformer/rehypeDemo.js b/dist/loaders/markdown/transformer/rehypeDemo.js
+index 9e8e1404d28aeae475be8b63da2478265af05615..454974e2b9dfbd5f46cab32fa04189f1bd990cb5 100644
+--- a/dist/loaders/markdown/transformer/rehypeDemo.js
++++ b/dist/loaders/markdown/transformer/rehypeDemo.js
+@@ -222,7 +222,7 @@ function rehypeDemo(opts) {
+                 parseOpts.fileAbsPath
+               )}?techStack=${techStack.name}')`;
+               if (runtimeOpts == null ? void 0 : runtimeOpts.rendererPath) {
+-                component = `(async () => ${importChunk})()`;
++                component = `() => ${importChunk}`;
+               } else {
+                 component = `React.memo(React.lazy(() => ${importChunk}))`;
+               }
+diff --git a/theme-default/layouts/DocLayout/index.js b/theme-default/layouts/DocLayout/index.js
+index a87796b618c6e9be0df3a7f478c1fce64eb89453..4ef39d8123a6bbb9c79b834e9b22003081dcc9a3 100644
+--- a/theme-default/layouts/DocLayout/index.js
++++ b/theme-default/layouts/DocLayout/index.js
+@@ -40,6 +40,8 @@ var DocLayout = function DocLayout() {
+     var id = hash.replace('#', '');
+     if (id) {
+       setTimeout(function () {
++        var skipUntil = window.__YSS_TOC_HANDLED_HASH_SCROLL_UNTIL__ || 0;
++        if (skipUntil > Date.now()) return;
+         var elm = document.getElementById(decodeURIComponent(id));
+         if (elm) {
+           // animated-scroll-to instead of native scroll
+diff --git a/theme-default/locales/en-US.json b/theme-default/locales/en-US.json
+index 7063b49df8d87793520593952b9a893ef0de7b69..a2c8510738265016a25eb473216eec035ef467c8 100644
+--- a/theme-default/locales/en-US.json
++++ b/theme-default/locales/en-US.json
+@@ -21,9 +21,7 @@
+   "previewer.actions.sketch.symbol": "Copy as Sketch Symbol",
+   "previewer.actions.sketch.divider": "------------------------",
+   "previewer.actions.sketch.guide": "How to paste to Sketch?",
+-  "previewer.actions.codesandbox": "Open in CodeSandbox",
+   "previewer.actions.codepen": "Open in CodePen (Not implemented)",
+-  "previewer.actions.stackblitz": "Open in StackBlitz",
+   "previewer.actions.separate": "Open in separate page",
+   "404.title": "PAGE NOT FOUND",
+   "404.back": "Back to homepage",
+diff --git a/theme-default/locales/zh-CN.json b/theme-default/locales/zh-CN.json
+index cd7085697d47ed21b74d924dcc9e0a6b52e958d0..0ab287bdede833f68234f308b45050c0be75530b 100644
+--- a/theme-default/locales/zh-CN.json
++++ b/theme-default/locales/zh-CN.json
+@@ -16,13 +16,11 @@
+   "previewer.actions.code.shrink": "收起代码",
+   "previewer.actions.code.editable": "编辑代码可实时预览",
+   "previewer.actions.code.readonly": "仅 index 可编辑",
+-  "previewer.actions.codesandbox": "在 CodeSandbox 中打开",
+   "previewer.actions.sketch": "拷贝到 Sketch",
+   "previewer.actions.sketch.group": "拷贝为 Sketch Group",
+   "previewer.actions.sketch.symbol": "拷贝为 Sketch Symbol",
+   "previewer.actions.sketch.divider": "----------------------",
+   "previewer.actions.sketch.guide": "如何粘贴到 SKetch？",
+-  "previewer.actions.stackblitz": "在 StackBlitz 中打开",
+   "previewer.actions.separate": "在独立页面中打开",
+   "404.title": "页面未找到",
+   "404.back": "返回首页",
+diff --git a/theme-default/slots/PreviewerActions/index.js b/theme-default/slots/PreviewerActions/index.js
+index a4cd726f88dadd956860c26c3c2b1b682f3b8f3b..c7729052ce2789e35c88b435daec6961efb9115b 100644
+--- a/theme-default/slots/PreviewerActions/index.js
++++ b/theme-default/slots/PreviewerActions/index.js
+@@ -14,16 +14,13 @@ function _objectWithoutProperties(source, excluded) { if (source == null) return
+ function _objectWithoutPropertiesLoose(source, excluded) { if (source == null) return {}; var target = {}; var sourceKeys = Object.keys(source); var key, i; for (i = 0; i < sourceKeys.length; i++) { key = sourceKeys[i]; if (excluded.indexOf(key) >= 0) continue; target[key] = source[key]; } return target; }
+ import Tabs from "../Tabs";
+ import { ReactComponent as IconCheck } from '@ant-design/icons-svg/inline-svg/outlined/check.svg';
+-import { ReactComponent as IconCodeSandbox } from '@ant-design/icons-svg/inline-svg/outlined/code-sandbox.svg';
+ import { ReactComponent as IconEdit } from '@ant-design/icons-svg/inline-svg/outlined/edit.svg';
+ import { ReactComponent as IconSketch } from '@ant-design/icons-svg/inline-svg/outlined/sketch.svg';
+-import { ReactComponent as IconStackBlitz } from '@ant-design/icons-svg/inline-svg/outlined/thunderbolt.svg';
+ import classNames from 'classnames';
+ import copy from 'copy-to-clipboard';
+-import { getSketchJSON, openCodeSandbox, openStackBlitz, useDemo, useIntl } from 'dumi';
++import { getSketchJSON, useIntl } from 'dumi';
+ import SourceCode from 'dumi/theme/builtins/SourceCode';
+ import PreviewerActionsExtra from 'dumi/theme/slots/PreviewerActionsExtra';
+-import SourceCodeEditor from 'dumi/theme/slots/SourceCodeEditor';
+ import RcTooltip from 'rc-tooltip';
+ import React, { useRef, useState } from 'react';
+ import "./index.less";
+@@ -63,15 +60,13 @@ var IconExternalLink = function IconExternalLink() {
+   }));
+ };
+ var PreviewerActions = function PreviewerActions(props) {
+-  var _files$activeKey$0$ma, _props$disabledAction, _props$disabledAction2, _props$disabledAction3, _props$disabledAction4;
++  var _files$activeKey$0$ma, _props$disabledAction3, _props$disabledAction4;
+   var intl = useIntl();
+   var files = Object.entries(props.asset.dependencies).filter(function (_ref) {
+     var _ref2 = _slicedToArray(_ref, 2),
+       type = _ref2[1].type;
+     return type === 'FILE';
+   });
+-  var _ref3 = useDemo(props.asset.id),
+-    renderOpts = _ref3.renderOpts;
+   var _useState = useState(0),
+     _useState2 = _slicedToArray(_useState, 2),
+     activeKey = _useState2[0],
+@@ -89,25 +84,7 @@ var PreviewerActions = function PreviewerActions(props) {
+   var lang = ((_files$activeKey$0$ma = files[activeKey][0].match(/\.([^.]+)$/)) === null || _files$activeKey$0$ma === void 0 ? void 0 : _files$activeKey$0$ma[1]) || 'text';
+   return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
+     className: "dumi-default-previewer-actions"
+-  }, !((_props$disabledAction = props.disabledActions) !== null && _props$disabledAction !== void 0 && _props$disabledAction.includes('CSB')) && /*#__PURE__*/React.createElement("button", {
+-    className: "dumi-default-previewer-action-btn",
+-    type: "button",
+-    "data-dumi-tooltip": intl.formatMessage({
+-      id: 'previewer.actions.codesandbox'
+-    }),
+-    onClick: function onClick() {
+-      return openCodeSandbox(props);
+-    }
+-  }, /*#__PURE__*/React.createElement(IconCodeSandbox, null)), !((_props$disabledAction2 = props.disabledActions) !== null && _props$disabledAction2 !== void 0 && _props$disabledAction2.includes('STACKBLITZ')) && /*#__PURE__*/React.createElement("button", {
+-    className: "dumi-default-previewer-action-btn",
+-    type: "button",
+-    "data-dumi-tooltip": intl.formatMessage({
+-      id: 'previewer.actions.stackblitz'
+-    }),
+-    onClick: function onClick() {
+-      return openStackBlitz(props);
+-    }
+-  }, /*#__PURE__*/React.createElement(IconStackBlitz, null)), !((_props$disabledAction3 = props.disabledActions) !== null && _props$disabledAction3 !== void 0 && _props$disabledAction3.includes('HTML2SKETCH')) && getSketchJSON && /*#__PURE__*/React.createElement("span", {
++  }, !((_props$disabledAction3 = props.disabledActions) !== null && _props$disabledAction3 !== void 0 && _props$disabledAction3.includes('HTML2SKETCH')) && getSketchJSON && /*#__PURE__*/React.createElement("span", {
+     className: "dumi-default-previewer-action-btn dumi-default-previewer-action-sketch",
+     "data-dumi-tooltip": intl.formatMessage({
+       id: 'previewer.actions.sketch'
+@@ -191,32 +168,9 @@ var PreviewerActions = function PreviewerActions(props) {
+         key: String(i),
+         // remove leading ./ prefix
+         label: filename.replace(/^\.\//, ''),
+-        // only support to edit entry file currently
+-        children: i === 0 && renderOpts !== null && renderOpts !== void 0 && renderOpts.compile ? /*#__PURE__*/React.createElement(SourceCodeEditor, {
++        children: /*#__PURE__*/React.createElement(SourceCode, {
+           lang: lang,
+-          initialValue: files[i][1].value.trim(),
+-          onChange: function onChange(code) {
+-            var _props$onSourceChange, _props$onSourceTransp;
+-            (_props$onSourceChange = props.onSourceChange) === null || _props$onSourceChange === void 0 ? void 0 : _props$onSourceChange.call(props, _defineProperty({}, files[i][0], code));
+-            // FIXME: remove before publish
+-            (_props$onSourceTransp = props.onSourceTranspile) === null || _props$onSourceTransp === void 0 ? void 0 : _props$onSourceTransp.call(props, {
+-              source: _defineProperty({}, files[i][0], code)
+-            });
+-          },
+           extra: /*#__PURE__*/React.createElement(Tooltip, {
+-            title: intl.formatMessage({
+-              id: 'previewer.actions.code.editable'
+-            })
+-          }, /*#__PURE__*/React.createElement("button", {
+-            type: "button",
+-            className: "dumi-default-previewer-editor-tip-btn"
+-          }, /*#__PURE__*/React.createElement(IconEdit, null)))
+-        }) : /*#__PURE__*/React.createElement(SourceCode, {
+-          lang: lang,
+-          extra:
+-          // only show readonly tip for non-entry files
+-          // because readonly entry file means live compile is not available for this demo tech stack
+-          i !== 0 && /*#__PURE__*/React.createElement(Tooltip, {
+             title: intl.formatMessage({
+               id: 'previewer.actions.code.readonly'
+             })

@@ -1,0 +1,477 @@
+.condition-builder {
+  .condition-group {
+    position: relative;
+
+    &:not(.is-root) {
+      border: 1px solid #f6f6f6;
+      border-radius: 6px;
+      background: #fafafa;
+      margin: 6px 0;
+      padding: 8px 12px;
+      margin-left: 32px;
+
+      // 条件组的连接线背景
+      &::before {
+        content: "";
+        position: absolute;
+        left: -20px; // 连接线位置
+        top: 0;
+        bottom: 0;
+        width: 2px;
+        z-index: 1;
+        transition: background-color 0.2s cubic-bezier(0.645, 0.045, 0.355, 1);
+      }
+
+      // 且状态的连接线颜色
+      &.operator-and::before {
+        background: var(--primary-color, #3371ff);
+      }
+
+      // 或状态的连接线颜色
+      &.operator-or::before {
+        background: var(--warning-color, #faad14);
+      }
+    }
+
+    &.is-root {
+      // 根级别没有边框和背景
+      background: transparent;
+      border: none;
+
+      &.has-multiple-conditions {
+        padding-left: 46px;
+      }
+
+      // 根级别的连接线
+      &::before {
+        content: "";
+        position: absolute;
+        left: -26px; // 根级别连接线位置
+        top: 0;
+        bottom: 0;
+        width: 2px;
+        z-index: 1;
+        transition: background-color 0.2s cubic-bezier(0.645, 0.045, 0.355, 1);
+        display: none; // 默认隐藏
+      }
+
+      // 当根级别有多个条件时显示连接线
+      &.has-multiple-conditions::before {
+        display: block;
+        left: 19px;
+      }
+
+      // 且状态的连接线颜色
+      &.operator-and::before {
+        background: var(--primary-color, #3371ff);
+      }
+
+      // 或状态的连接线颜色
+      &.operator-or::before {
+        background: var(--warning-color, #faad14);
+      }
+    }
+  }
+
+  .logic-operator {
+    position: absolute;
+    left: 5px;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 10;
+
+    // 根级别的且/或按钮样式调整
+    .condition-group.is-root & {
+      left: -34px;
+    }
+
+    .condition-group.is-root.has-multiple-conditions & {
+      left: -33px;
+    }
+
+    .logic-btn {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      border: 2px solid #fff; // 白色边框，让按钮从连接线上突出
+      background: #fff;
+      color: var(--primary-color, #3371ff);
+      transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+      box-shadow: 0 2px 8px rgb(0 0 0 / 15%);
+      position: relative;
+      z-index: 20; // 确保按钮在连接线之上
+      overflow: hidden;
+
+      &:hover {
+        transform: scale(1.15);
+        box-shadow: 0 6px 16px rgb(0 0 0 / 25%);
+      }
+
+      &:active {
+        transform: scale(1.15);
+        transition: transform 0.1s;
+      }
+
+      &.logic-and {
+        background: var(--primary-color, #3371ff);
+        color: #fff;
+        border-color: #fff;
+        box-shadow: 0 2px 8px rgb(22 119 255 / 30%);
+
+        &:hover {
+          background: var(--primary-color, #3371ff);
+          box-shadow: 0 6px 16px rgb(22 119 255 / 40%);
+        }
+      }
+
+      &.logic-or {
+        background: var(--warning-color, #faad14);
+        color: #fff;
+        border-color: #fff;
+        box-shadow: 0 2px 8px rgb(250 173 20 / 30%);
+
+        &:hover {
+          background: #ffc53d;
+          box-shadow: 0 6px 16px rgb(250 173 20 / 40%);
+        }
+      }
+    }
+  }
+
+  .condition-content {
+    width: 100%;
+  }
+
+  .condition-items {
+    .condition-item {
+      margin-bottom: 6px;
+      position: relative;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+
+      &.is-group {
+        margin-bottom: 0;
+      }
+    }
+  }
+
+  .simple-condition {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 32px;
+
+    .field-select {
+      flex: 2;
+      min-width: 120px;
+    }
+
+    .operator-select {
+      flex: 1;
+      max-width: 120px;
+    }
+
+    .value-input {
+      flex: 2;
+      min-width: 120px;
+    }
+
+    .condition-actions {
+      display: flex;
+      align-items: center;
+      gap: 2px;
+      margin-left: 8px;
+
+      .action-btn {
+        padding: 4px 6px;
+        min-height: 24px;
+        height: 24px;
+        font-size: 12px;
+        border-radius: 4px;
+        transition: all 0.2s cubic-bezier(0.645, 0.045, 0.355, 1);
+        position: relative;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        &:hover {
+          transform: translateY(-1px);
+          box-shadow: 0 2px 4px rgb(0 0 0 / 10%);
+        }
+
+        &:active {
+          transform: translateY(0);
+          transition: transform 0.1s;
+        }
+
+        &.add-btn {
+          color: var(--success-color, #52c41a);
+          background: rgb(82 196 26 / 8%);
+          border: 1px solid rgb(82 196 26 / 20%);
+          border-radius: 4px;
+          font-weight: 500;
+          transition: all 0.2s cubic-bezier(0.645, 0.045, 0.355, 1);
+
+          &:hover {
+            color: #fff;
+            background: var(--success-color, #52c41a);
+            border-color: var(--success-color, #52c41a);
+            transform: translateY(-1px);
+            box-shadow: 0 2px 8px rgb(82 196 26 / 30%);
+          }
+        }
+
+        &.remove-btn {
+          color: var(--error-color, #ff4d4f);
+          background: rgb(255 77 79 / 8%);
+          border: 1px solid rgb(255 77 79 / 20%);
+          border-radius: 4px;
+          font-weight: 500;
+          transition: all 0.2s cubic-bezier(0.645, 0.045, 0.355, 1);
+
+          &:hover {
+            color: #fff;
+            background: var(--error-color, #ff4d4f);
+            border-color: var(--error-color, #ff4d4f);
+            transform: translateY(-1px);
+            box-shadow: 0 2px 8px rgb(255 77 79 / 30%);
+          }
+        }
+
+        &.group-btn {
+          color: var(--primary-color, #3371ff);
+          background: rgb(51 113 255 / 8%);
+          border: 1px solid rgb(51 113 255 / 20%);
+          border-radius: 4px;
+          font-weight: 500;
+          padding: 4px 12px;
+          transition: all 0.2s cubic-bezier(0.645, 0.045, 0.355, 1);
+
+          &:hover {
+            color: #fff;
+            background: var(--primary-color, #3371ff);
+            border-color: var(--primary-color, #3371ff);
+            transform: translateY(-1px);
+            box-shadow: 0 2px 8px rgb(51 113 255 / 30%);
+          }
+        }
+      }
+    }
+  }
+
+  .root-actions {
+    text-align: left;
+    padding: 8px 0;
+  }
+
+  .group-actions {
+    position: absolute;
+    right: -8px;
+    top: -8px;
+    z-index: 15;
+    opacity: 0;
+    transform: translateY(-2px);
+    transition:
+      opacity 0.2s ease,
+      transform 0.2s ease;
+    pointer-events: none;
+
+    .condition-group:hover & {
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: auto;
+    }
+
+    .delete-group-btn {
+      width: 24px;
+      height: 24px;
+      padding: 0;
+      border-radius: 50%;
+      background: #fff;
+      color: var(--error-color, #ff4d4f);
+      border: 1px solid rgb(255 77 79 / 35%);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition:
+        background-color 0.2s ease,
+        color 0.2s ease,
+        transform 0.1s ease,
+        box-shadow 0.2s ease,
+        border-color 0.2s ease;
+      box-shadow: 0 2px 6px rgb(0 0 0 / 8%);
+
+      &:hover {
+        background: var(--error-color, #ff4d4f);
+        color: #fff;
+        border-color: var(--error-color, #ff4d4f);
+        transform: scale(1.05);
+        box-shadow: 0 4px 12px rgb(255 77 79 / 25%);
+      }
+
+      &:active {
+        transform: scale(0.98);
+        box-shadow: 0 2px 6px rgb(255 77 79 / 35%);
+      }
+
+      &:focus-visible {
+        outline: none;
+        box-shadow: 0 0 0 3px rgb(255 77 79 / 25%);
+      }
+
+      svg {
+        fill: currentcolor;
+        width: 12px;
+        height: 12px;
+      }
+    }
+  }
+
+  // BETWEEN操作符样式
+  .between-inputs {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+    flex: 2; // 继承value-input的flex比例
+    min-width: 240px; // 增加最小宽度以容纳两个更宽的输入框
+
+    .between-input {
+      flex: 1; // 让两个输入框平分可用空间
+      min-width: 100px; // 增加最小宽度，确保输入体验良好
+      max-width: none; // 移除最大宽度限制，允许自适应
+    }
+
+    .between-separator {
+      color: var(--demo-text-secondary, var(--text-color-secondary, rgb(0 0 0 / 65%)));
+      font-size: 12px;
+      white-space: nowrap;
+      flex-shrink: 0;
+      margin: 0 4px;
+      font-weight: 500;
+      user-select: none; // 防止选中文字
+    }
+  }
+
+  // 错误状态样式
+  /* stylelint-disable-next-line selector-pseudo-class-no-unknown */
+  :deep(.is-error) {
+    .ant-input,
+    .ant-select-selector {
+      border-color: var(--error-color, #ff4d4f) !important;
+
+      &:focus,
+      &:focus-within {
+        border-color: var(--error-color, #ff4d4f) !important;
+        box-shadow: 0 0 0 2px rgb(255 77 79 / 20%) !important;
+      }
+    }
+  }
+
+  /* --- 暗色模式适配 --- */
+  [data-prefers-color="dark"] &,
+  :root[data-prefers-color="dark"] &,
+  [data-theme="dark"] &,
+  :root[data-theme="dark"] & {
+    .condition-group {
+      &:not(.is-root) {
+        background: var(--demo-bg-surface, rgb(255 255 255 / 4%));
+        border-color: var(--demo-border, #303030);
+      }
+    }
+
+    .logic-operator {
+      .logic-btn {
+        background: var(--demo-bg-container, #141414);
+        border-color: var(--demo-bg-container, #141414);
+
+        &.logic-and {
+          color: rgb(255 255 255 / 90%);
+          background: var(--primary-color, #3371ff);
+          border-color: var(--demo-bg-container, #141414);
+
+          &:hover {
+            box-shadow: 0 6px 16px rgb(0 0 0 / 40%);
+          }
+        }
+
+        &.logic-or {
+          color: rgb(255 255 255 / 90%);
+          background: var(--warning-color, #faad14);
+          border-color: var(--demo-bg-container, #141414);
+
+          &:hover {
+            box-shadow: 0 6px 16px rgb(0 0 0 / 40%);
+          }
+        }
+      }
+    }
+
+    .simple-condition {
+      .condition-actions {
+        .action-btn {
+          &.add-btn {
+            background: rgb(82 196 26 / 15%);
+            border-color: rgb(82 196 26 / 35%);
+            color: #73d13d;
+
+            &:hover {
+              background: var(--success-color, #52c41a);
+              color: #fff;
+              border-color: var(--success-color, #52c41a);
+            }
+          }
+
+          &.remove-btn {
+            background: rgb(255 77 79 / 15%);
+            border-color: rgb(255 77 79 / 35%);
+            color: #ff7875;
+
+            &:hover {
+              background: var(--error-color, #ff4d4f);
+              color: #fff;
+              border-color: var(--error-color, #ff4d4f);
+            }
+          }
+
+          &.group-btn {
+            background: rgb(51 113 255 / 15%);
+            border-color: rgb(51 113 255 / 35%);
+            color: #85a5ff;
+
+            &:hover {
+              background: var(--primary-color, #3371ff);
+              color: #fff;
+              border-color: var(--primary-color, #3371ff);
+            }
+          }
+        }
+      }
+    }
+
+    .group-actions {
+      .delete-group-btn {
+        background: var(--demo-bg-container, #141414);
+        border-color: rgb(255 77 79 / 35%);
+        color: #ff7875;
+
+        &:hover {
+          background: var(--error-color, #ff4d4f);
+          color: rgb(255 255 255 / 90%);
+          border-color: var(--error-color, #ff4d4f);
+          box-shadow: 0 4px 12px rgb(0 0 0 / 40%);
+        }
+      }
+    }
+  }
+}

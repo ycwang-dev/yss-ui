@@ -1,0 +1,133 @@
+.y-table-wrapper {
+  width: 100%;
+
+  /* 将 vxe-ui 的主色映射 to 组件库主题变量 */
+  --vxe-ui-font-primary-color: var(--primary-color, #3371ff);
+
+  /* 工具栏自定义按钮激活态背景，基于主题色的轻度填充 */
+  --vxe-ui-toolbar-custom-active-background-color: color-mix(in srgb, var(--primary-color, #3371ff) 12%, transparent);
+}
+
+.y-table-pagination {
+  display: flex;
+  justify-content: flex-end;
+  padding: 12px 0;
+}
+
+.y-table-pagination :deep(.ant-pagination-options-size-changer) {
+  min-width: 112px;
+}
+
+.y-table-pagination :deep(.ant-pagination-options-size-changer .ant-select-selector) {
+  min-width: 112px;
+}
+
+.y-table-pagination :deep(.ant-pagination-options .ant-select-dropdown) {
+  min-width: 112px !important;
+  width: max-content !important;
+}
+
+.y-table-pagination :deep(.ant-pagination-options .ant-select-item-option-content) {
+  overflow: visible;
+  text-overflow: clip;
+}
+
+.y-table-action-list {
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.y-table-action-btn,
+.y-table-action-link {
+  color: var(--primary-color, #3371ff);
+  cursor: pointer;
+  padding: 0 2px;
+  user-select: none;
+
+  &:hover:not(:disabled, .ant-btn-disabled),
+  &:focus:not(:disabled, .ant-btn-disabled) {
+    color: var(--primary-color, #3371ff);
+    opacity: 0.85;
+  }
+
+  /* 禁用态需覆盖主色，否则 disabled 只拦点击、视觉仍是可点主色 */
+  &:disabled,
+  &.ant-btn-disabled {
+    color: var(--ant-disabled-color, rgb(0 0 0 / 25%));
+    cursor: not-allowed;
+    opacity: 1;
+
+    &:hover,
+    &:focus {
+      color: var(--ant-disabled-color, rgb(0 0 0 / 25%));
+      opacity: 1;
+    }
+  }
+}
+
+/* 拖拽手柄样式入口（具体 C4D 玻璃拟态 3D 颗粒样式在 global.less 中统一定义） */
+.y-table-drag-handle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* 与旧组件库对齐的 vxe 自定义区域主题色（使用主题变量） */
+:deep(.vxe-table-custom--checkbox-option.is--checked),
+:deep(.vxe-table-custom--checkbox-option.is--indeterminate) {
+  color: var(--primary-color, #3371ff);
+}
+
+:deep(.vxe-table-custom--checkbox-option.is--checked) .vxe-checkbox--icon,
+:deep(.vxe-table-custom--checkbox-option.is--indeterminate) .vxe-checkbox--icon {
+  color: var(--primary-color, #3371ff);
+}
+
+/* vxe 自定义弹层按钮描边颜色 */
+:deep(.vxe-custom--wrapper) .vxe-button.is--circle {
+  color: var(--primary-color, #3371ff);
+  border-color: var(--primary-color, #3371ff);
+  border-radius: 3px;
+}
+
+/* 工具栏圆形按钮（含“列设置”）统一改为方角，保证与按钮风格一致 */
+:deep(.vxe-toolbar .vxe-button.is--circle) {
+  border-radius: 6px;
+}
+
+/* 空状态高度与行高联动 */
+:deep(.vxe-table--empty-block) {
+  min-height: var(--rowHeight);
+}
+
+:deep(.yss-custom-vxe-table .vxe-table--header-inner-wrapper) {
+  background-color: rgb(245 248 255);
+}
+
+/* 自定义表头文字颜色 */
+:deep(.vxe-table .vxe-table--header-wrapper) {
+  color: #11192a;
+}
+
+/* 自定义表格内容文字颜色 */
+:deep(.vxe-table--render-default) {
+  color: #323847;
+}
+
+/* ==========================================================
+ * 暗色模式适配 (Dark Mode)
+ * dumi / yss-ui 通用暗色属性：[data-prefers-color='dark']
+ * 恢复 vxe-table 自带的暗色变量替代本组件强行指定的亮色
+ * ========================================================== */
+:root[data-prefers-color="dark"] .y-table-wrapper :deep(.yss-custom-vxe-table .vxe-table--header-inner-wrapper) {
+  background-color: var(--vxe-ui-table-header-background-color);
+}
+
+:root[data-prefers-color="dark"] .y-table-wrapper :deep(.vxe-table .vxe-table--header-wrapper) {
+  color: var(--vxe-ui-table-header-font-color);
+}
+
+:root[data-prefers-color="dark"] .y-table-wrapper :deep(.vxe-table--render-default) {
+  color: var(--vxe-ui-font-color);
+}

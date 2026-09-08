@@ -1,0 +1,43 @@
+{
+  "skill": "page-form-module",
+  "purpose": "触发行为规约：新增/编辑/查看表单模块闭环（含回显丢失、表单被清空等高频故障话术）。",
+  "cases": [
+    {
+      "id": "edit-echo-missing",
+      "prompt": "编辑弹窗打开后表单数据回显不出来",
+      "should_trigger": true,
+      "assert": "排查详情接口、setValues 时机与 mode 传递，修复回显链路。"
+    },
+    {
+      "id": "shared-modal-three-modes",
+      "prompt": "新增编辑查看共用一个弹窗表单模块",
+      "should_trigger": true,
+      "accept_route_to": ["formily-mode-slot-detail", "yss-formily"],
+      "assert": "给出 mode 驱动的表单模块骨架与弹窗销毁策略。"
+    },
+    {
+      "id": "form-cleared-unexpectedly",
+      "prompt": "表单值莫名被清空了",
+      "should_trigger": true,
+      "assert": "排查弹窗销毁重建、reset 时机与 initialValues 覆盖导致的清空。"
+    },
+    {
+      "id": "submit-refresh-close",
+      "prompt": "表单提交成功后关闭弹窗并刷新列表",
+      "should_trigger": true,
+      "assert": "提交 loading、成功回调关闭弹窗、触发列表刷新（不重复 message.error）。"
+    },
+    {
+      "id": "near-miss-query-layout",
+      "prompt": "查询表单布局怎么排",
+      "should_trigger": false,
+      "assert": "查询表单布局归 formily-foundation，不触发本 skill。"
+    },
+    {
+      "id": "near-miss-step-flow",
+      "prompt": "分步流程录入",
+      "should_trigger": false,
+      "assert": "分步表单归 formily-step-flow，不触发本 skill。"
+    }
+  ]
+}

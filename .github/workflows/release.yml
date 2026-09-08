@@ -1,0 +1,111 @@
+name: Release Packages to npm
+
+on:
+  workflow_dispatch:
+    inputs:
+      bump:
+        description: "Semver bump type (patch, minor, major)"
+        required: true
+        default: "patch"
+        type: choice
+        options:
+          - patch
+          - minor
+          - major
+      dry_run:
+        description: "Dry-run mode (preview version bumps and publish without executing)"
+        required: false
+        default: false
+        type: boolean
+
+permissions:
+  contents: write
+  id-token: write
+
+jobs:
+  release:
+    name: Release Changed Packages
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          registry-url: "https://registry.npmjs.org"
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: 8.10.0
+          run_install: false
+
+      - name: Get pnpm store directory
+        shell: bash
+        run: |
+          echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
+
+      - name: Setup pnpm cache
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
+
+      - name: Configure npm authentication
+        run: |
+          echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" >> ~/.npmrc
+          echo "always-auth=true" >> ~/.npmrc
+
+      - name: Configure Git User
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Run Quality Gate Checks
+        run: pnpm quality
+
+      - name: Execute Release Scripts
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NPM_PUBLISH_REGISTRY: "https://registry.npmjs.org/"
+        run: |
+          BUMP_TYPE="${{ inputs.bump }}"
+          if [ "${{ inputs.dry_run }}" = "true" ]; then
+            echo "🔍 Running release in dry-run mode..."
+            node scripts/release-changed.js "$BUMP_TYPE" --dry
+          else
+            echo "🚀 Executing release..."
+            node scripts/release-changed.js "$BUMP_TYPE"
+          fi
+
+      - name: Commit, Push & Tag Version Bumps
+        if: ${{ inputs.dry_run != true }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REF_NAME: ${{ github.ref_name }}
+          BUMP: ${{ inputs.bump }}
+        run: |
+          node scripts/ci-post-release.js
+
+      - name: Send Notification (Optional)
+        if: ${{ inputs.dry_run != true }}
+        env:
+          WECOM_WEBHOOK_KEY: ${{ secrets.WECOM_WEBHOOK_KEY }}
+          DOCS_BASE_URL: "https://yss-ui.github.io"
+        run: |
+          if [ -n "$WECOM_WEBHOOK_KEY" ]; then
+            node scripts/wecom-notify.js || echo "Notification failed"
+          else
+            echo "No WECOM_WEBHOOK_KEY provided, skip notification."
+          fi

@@ -1,0 +1,261 @@
+/* 全局：为 vxe-ui 绑定主题主色，解决 Teleport 到 body 的弹层不继承 scoped 变量的问题 */
+:root {
+  --vxe-ui-font-primary-color: var(--primary-color, #3371ff);
+  --vxe-ui-toolbar-custom-active-background-color: color-mix(in srgb, var(--primary-color, #3371ff) 12%, transparent);
+  --vxe-ui-table-row-hover-background-color: color-mix(in srgb, var(--primary-color, #3371ff) 8%, transparent);
+  --vxe-ui-table-row-current-background-color: color-mix(in srgb, var(--primary-color, #3371ff) 14%, transparent);
+  --vxe-ui-table-row-checkbox-checked-background-color: color-mix(
+    in srgb,
+    var(--primary-color, #3371ff) 12%,
+    transparent
+  );
+  --vxe-ui-table-row-radio-checked-background-color: color-mix(in srgb, var(--primary-color, #3371ff) 12%, transparent);
+  --vxe-ui-table-row-hover-current-background-color: color-mix(in srgb, var(--primary-color, #3371ff) 18%, transparent);
+  --vxe-ui-table-row-hover-checkbox-checked-background-color: color-mix(
+    in srgb,
+    var(--primary-color, #3371ff) 16%,
+    transparent
+  );
+  --vxe-ui-table-row-hover-radio-checked-background-color: color-mix(
+    in srgb,
+    var(--primary-color, #3371ff) 16%,
+    transparent
+  );
+
+  /* 筛选下拉面板选项列表的默认最大高度，业务层可覆盖此变量以自定义高度 */
+  --y-table-filter-max-height: 180px;
+}
+
+/*
+ * vxe-table 在 :root 定义表头/表尾派生变量。主题属性挂在局部容器时，
+ * 派生值会保留根节点的亮色结果，因此需要在实际主题作用域内重新计算。
+ */
+[data-vxe-ui-theme] {
+  --vxe-ui-table-header-font-color: var(--vxe-ui-font-color);
+  --vxe-ui-table-footer-font-color: var(--vxe-ui-font-color);
+}
+
+/* 明确覆盖自定义列弹窗/抽屉容器（由 vxe-ui Teleport 到 body） */
+.vxe-table-custom-modal-wrapper,
+.vxe-table-custom-drawer-wrapper {
+  --vxe-ui-font-primary-color: var(--primary-color, #3371ff);
+  --vxe-ui-toolbar-custom-active-background-color: color-mix(in srgb, var(--primary-color, #3371ff) 12%, transparent);
+  --vxe-ui-table-row-hover-background-color: color-mix(in srgb, var(--primary-color, #3371ff) 8%, transparent);
+  --vxe-ui-table-row-current-background-color: color-mix(in srgb, var(--primary-color, #3371ff) 14%, transparent);
+  --vxe-ui-table-row-checkbox-checked-background-color: color-mix(
+    in srgb,
+    var(--primary-color, #3371ff) 12%,
+    transparent
+  );
+  --vxe-ui-table-row-radio-checked-background-color: color-mix(in srgb, var(--primary-color, #3371ff) 12%, transparent);
+  --vxe-ui-table-row-hover-current-background-color: color-mix(in srgb, var(--primary-color, #3371ff) 18%, transparent);
+  --vxe-ui-table-row-hover-checkbox-checked-background-color: color-mix(
+    in srgb,
+    var(--primary-color, #3371ff) 16%,
+    transparent
+  );
+  --vxe-ui-table-row-hover-radio-checked-background-color: color-mix(
+    in srgb,
+    var(--primary-color, #3371ff) 16%,
+    transparent
+  );
+}
+
+/* vxe-tooltip 使用视口坐标计算位置，YTable 内部溢出提示需用 fixed 承接该坐标系 */
+.vxe-tooltip--wrapper.y-table-vxe-tooltip {
+  position: fixed;
+}
+
+/* 覆盖筛选下拉面板的选项列表高度限制，避免表格高度较小时限制了下拉列表的展示 */
+.vxe-table--filter-wrapper .vxe-table--filter-body,
+.vxe-table--filter-wrapper .vxe-table--filter-template {
+  max-height: var(--y-table-filter-max-height) !important;
+}
+
+/* ==========================================================
+ * C4D 玻璃拟态 3D 拖拽手柄颗粒 (高级横向 3列 x 2行 颗粒矩阵)
+ * - 不依赖 iconfont（WKWebView 下易空白）
+ * - 横向 3x2 点阵（更符合表格行上下拖拽的国际化 UI 视觉习惯）
+ * - 绝对居中对齐 + 支持 24px ~ 60px+ 行高 (rowHeight) 边界自适应
+ * ========================================================== */
+
+/* 1. 拖拽手柄专用容器：满宽度 + flex 居中 */
+.vxe-cell--wrapper:has(> .vxe-cell--drag-handle),
+.vxe-cell--wrapper:has(> .y-table-drag-handle) {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 100% !important;
+}
+
+/* 2. 隐藏 vxe-table 为拖拽手柄生成的相邻 .vxe-cell--label / .vxe-cell--title 节点（解决该节点带 padding-left 将手柄推向左侧的问题） */
+.vxe-cell--drag-handle + .vxe-cell--label,
+.vxe-cell--drag-handle + .vxe-cell--title,
+.vxe-cell--drag-handle + span,
+.y-table-drag-handle + .vxe-cell--label,
+.y-table-drag-handle + .vxe-cell--title,
+.y-table-drag-handle + span {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+/* 3. 拖拽手柄实体样式 (C4D 玻璃拟态 3D 胶囊按钮) */
+.vxe-cell--drag-handle,
+.y-table-drag-handle {
+  position: relative;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  vertical-align: middle !important;
+  box-sizing: border-box !important;
+
+  /* 尺寸自适应：在各种自定义行高 (rowHeight) 下自适应居中，不挤压表格边框 */
+  width: 24px !important;
+  height: 24px !important;
+  max-width: calc(100% - 4px) !important;
+  max-height: calc(100% - 4px) !important;
+  min-width: 18px !important;
+  min-height: 18px !important;
+  margin: 0 auto !important;
+  border-radius: 7px !important;
+  color: var(--text-color-secondary, #64748b) !important;
+  background: linear-gradient(
+    145deg,
+    rgb(255 255 255 / 98%) 0%,
+    rgb(244 245 248 / 85%) 50%,
+    rgb(235 238 245 / 75%) 100%
+  ) !important;
+  border: 1px solid rgb(255 255 255 / 90%) !important;
+  box-shadow:
+    inset 0 1px 1.5px rgb(255 255 255 / 100%),
+    inset 0 -1px 2px rgb(51 113 255 / 8%),
+    0 2px 6px rgb(15 23 42 / 8%),
+    0 1px 2px rgb(51 113 255 / 6%) !important;
+  cursor: grab !important;
+  user-select: none !important;
+  transition:
+    transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1),
+    box-shadow 0.2s ease,
+    background 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease !important;
+
+  /* 隐藏 vxe 默认 iconfont，统一用下方横向 3x2 颗粒 */
+  > i,
+  .vxe-table-icon-drag-handle,
+  .vxe-icon-drag-handle {
+    display: none !important;
+    font-size: 0 !important;
+    width: 0 !important;
+    height: 0 !important;
+    overflow: hidden !important;
+  }
+
+  &::before {
+    content: none !important;
+  }
+
+  /* 3x2 C4D 玻璃横向颗粒 (3列 x 2行，数学绝对精准居中: 12.5px x 7.5px 点阵) */
+  &::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    display: block;
+    width: 2.5px;
+    height: 2.5px;
+    border-radius: 50%;
+    background: currentcolor;
+    box-shadow:
+      5px 0 0 currentcolor,
+      10px 0 0 currentcolor,
+      0 5px 0 currentcolor,
+      5px 5px 0 currentcolor,
+      10px 5px 0 currentcolor;
+    transform: translate(-6.25px, -3.75px);
+    opacity: 0.72;
+    filter: drop-shadow(0 0.5px 0.5px rgb(255 255 255 / 85%));
+    transition:
+      opacity 0.2s ease,
+      color 0.2s ease;
+    pointer-events: none;
+  }
+
+  &:hover {
+    color: var(--primary-color, #3371ff) !important;
+    transform: translateY(-1px) scale(1.08) !important;
+    background: linear-gradient(145deg, rgb(235 240 255 / 98%) 0%, rgb(218 230 255 / 90%) 100%) !important;
+    border-color: rgb(51 113 255 / 40%) !important;
+    box-shadow:
+      inset 0 1px 1px rgb(255 255 255 / 95%),
+      0 4px 12px rgb(51 113 255 / 22%),
+      0 2px 4px rgb(51 113 255 / 12%) !important;
+
+    &::after {
+      opacity: 1;
+    }
+  }
+
+  &:active {
+    cursor: grabbing !important;
+    transform: scale(0.94) !important;
+    background: linear-gradient(145deg, rgb(220 230 255 / 98%) 0%, rgb(195 215 255 / 90%) 100%) !important;
+    box-shadow:
+      inset 0 1px 2px rgb(0 0 0 / 12%),
+      0 2px 8px rgb(51 113 255 / 28%) !important;
+  }
+}
+
+/* 4. 拖拽悬停目标行指示 */
+.vxe-body--row.row--drag-over,
+.vxe-body--row.is--drag-over {
+  background: linear-gradient(
+    90deg,
+    color-mix(in srgb, var(--primary-color, #3371ff) 8%, transparent) 0%,
+    transparent 100%
+  ) !important;
+  box-shadow: inset 0 2px 0 0 var(--primary-color, #3371ff) !important;
+}
+
+/* 5. 拖拽放置成功后放置行 0.8s 渐隐高亮动画 (Drop Highlight) */
+.vxe-body--row.row--drag-dropped {
+  animation: y-table-drop-highlight 0.85s cubic-bezier(0.25, 1, 0.5, 1) forwards !important;
+}
+
+@keyframes y-table-drop-highlight {
+  0% {
+    background-color: color-mix(in srgb, var(--primary-color, #3371ff) 14%, transparent);
+    box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--primary-color, #3371ff) 28%, transparent);
+  }
+
+  60% {
+    background-color: color-mix(in srgb, var(--primary-color, #3371ff) 6%, transparent);
+  }
+
+  100% {
+    background-color: transparent;
+    box-shadow: none;
+  }
+}
+
+/* 5. 暗色模式适配 (Dark Mode) */
+:root[data-prefers-color="dark"] {
+  .vxe-cell--drag-handle,
+  .y-table-drag-handle {
+    color: var(--vxe-ui-font-color, #94a3b8) !important;
+    background: linear-gradient(145deg, rgb(30 41 59 / 90%) 0%, rgb(15 23 42 / 80%) 100%) !important;
+    border-color: rgb(255 255 255 / 12%) !important;
+    box-shadow:
+      inset 0 1px 1px rgb(255 255 255 / 10%),
+      0 2px 6px rgb(0 0 0 / 40%) !important;
+
+    &:hover {
+      color: var(--primary-color, #3371ff) !important;
+      background: linear-gradient(145deg, rgb(30 41 59 / 98%) 0%, rgb(49 46 129 / 60%) 100%) !important;
+      border-color: var(--primary-color, #3371ff) !important;
+    }
+  }
+}

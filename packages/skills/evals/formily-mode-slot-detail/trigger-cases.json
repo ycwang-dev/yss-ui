@@ -1,0 +1,44 @@
+{
+  "skill": "formily-mode-slot-detail",
+  "purpose": "触发行为规约：新增/编辑/查看三态、mode 0/1/2、详情与插槽渲染的确定性词法路由。",
+  "cases": [
+    {
+      "id": "view-mode-still-editable",
+      "prompt": "YFormily mode 配了查看态字段还能编辑",
+      "should_trigger": true,
+      "accept_route_to": ["yss-formily"],
+      "assert": "核对 mode 0/1/2 取值与传递链路，修正查看态未生效的原因。"
+    },
+    {
+      "id": "three-modes-switch",
+      "prompt": "新增编辑查看三态怎么用同一份 schema 切换",
+      "should_trigger": true,
+      "accept_route_to": ["page-form-module", "yss-formily"],
+      "assert": "说明 mode 驱动三态渲染的机制与详情态差异。"
+    },
+    {
+      "id": "descriptions-detail",
+      "prompt": "详情页用 Descriptions 展示表单内容",
+      "should_trigger": true,
+      "assert": "给出 mode 2 + Descriptions 详情渲染与 detail-options 配置。"
+    },
+    {
+      "id": "detail-field-slot",
+      "prompt": "详情字段插槽怎么自定义渲染",
+      "should_trigger": true,
+      "assert": "给出 Schema Slot / 详情字段插槽的命名与写法。"
+    },
+    {
+      "id": "near-miss-form-module",
+      "prompt": "新增编辑表单弹窗提交后刷新列表",
+      "should_trigger": false,
+      "assert": "表单模块闭环归 page-form-module，不触发本 skill。"
+    },
+    {
+      "id": "near-miss-edit-table-view",
+      "prompt": "可编辑表格的查看态",
+      "should_trigger": false,
+      "assert": "可编辑表格查看态归 yedit-table-usage，不触发本 skill。"
+    }
+  ]
+}

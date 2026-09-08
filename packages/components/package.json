@@ -1,0 +1,110 @@
+{
+  "name": "@yss-ui/components",
+  "version": "1.6.0",
+  "description": "YSS UI 核心组件包",
+  "main": "dist/index.cjs",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.cjs"
+    },
+    "./lite": {
+      "types": "./dist/lite.d.ts",
+      "import": "./dist/lite.mjs",
+      "require": "./dist/lite.cjs"
+    },
+    "./sheet": {
+      "types": "./dist/sheet/docs-exports.d.ts",
+      "import": "./dist/sheet.mjs",
+      "require": "./dist/sheet.cjs"
+    },
+    "./locale": {
+      "types": "./dist/locale/index.d.ts",
+      "import": "./dist/locale/index.mjs",
+      "require": "./dist/locale/index.cjs"
+    },
+    "./locale/zh-CN": {
+      "types": "./dist/locale/zh-CN.d.ts",
+      "import": "./dist/locale/zh-CN.mjs",
+      "require": "./dist/locale/zh-CN.cjs"
+    },
+    "./locale/en-US": {
+      "types": "./dist/locale/en-US.d.ts",
+      "import": "./dist/locale/en-US.mjs",
+      "require": "./dist/locale/en-US.cjs"
+    },
+    "./locale/zh-TW": {
+      "types": "./dist/locale/zh-TW.d.ts",
+      "import": "./dist/locale/zh-TW.mjs",
+      "require": "./dist/locale/zh-TW.cjs"
+    },
+    "./style.css": "./dist/style.css",
+    "./dist/style.css": "./dist/style.css"
+  },
+  "files": ["dist"],
+  "sideEffects": ["*.css"],
+  "scripts": {
+    "build": "vite build",
+    "dev": "vite build --watch",
+    "build:umd": "vite build -c vite.config.umd.ts"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
+  "dependencies": {
+    "@ant-design/icons-vue": "^7.0.0",
+    "@formily/antdv": "2.0.1-beta.3",
+    "@formily/core": "^2.3.0",
+    "@formily/json-schema": "^2.3.0",
+    "@formily/validator": "^2.3.0",
+    "@formily/vue": "^2.3.0",
+    "@yss-ui/hooks": "workspace:^",
+    "@yss-ui/theme": "workspace:^",
+    "@yss-ui/utils": "workspace:^",
+    "diff": "^8.0.3",
+    "echarts": "^6.0.0",
+    "sql-formatter": "^15.7.2",
+    "sortablejs": "^1.15.6",
+    "monaco-editor": "0.54.0",
+    "monaco-editor-nls": "^3.1.0",
+    "prettier": "^3.8.3",
+    "prettier-plugin-nginx": "^1.0.3",
+    "vxe-pc-ui": "4.14.32",
+    "vxe-table": "4.19.10",
+    "xe-utils": "^3.7.9"
+  },
+  "optionalDependencies": {
+    "@univerjs/presets": "0.25.0",
+    "@univerjs/preset-sheets-core": "0.25.0",
+    "@univerjs/preset-sheets-data-validation": "0.25.0",
+    "@univerjs/preset-sheets-drawing": "0.25.0",
+    "@univerjs/preset-sheets-filter": "0.25.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "rxjs": "^7.8.1"
+  },
+  "peerDependencies": {
+    "dayjs": ">=1.11.0",
+    "vue": ">=3.3.0",
+    "ant-design-vue": "^4.0.7"
+  },
+  "devDependencies": {
+    "@univerjs/presets": "0.25.0",
+    "@univerjs/preset-sheets-core": "0.25.0",
+    "@univerjs/preset-sheets-data-validation": "0.25.0",
+    "@univerjs/preset-sheets-drawing": "0.25.0",
+    "@univerjs/preset-sheets-filter": "0.25.0",
+    "@vitejs/plugin-vue": "^5.0.5",
+    "ant-design-vue": "^4.0.7",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "rxjs": "^7.8.1",
+    "vite": "^5.4.10",
+    "vite-plugin-dts": "^3.9.1",
+    "vue": "^3.3.8"
+  }
+}

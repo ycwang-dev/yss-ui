@@ -1,0 +1,39 @@
+{
+  "skill": "yss-ui-business-page-generation",
+  "purpose": "触发行为规约：业务页面生成总入口（枢纽 skill，允许路由到细分模块技能）。",
+  "cases": [
+    {
+      "id": "full-crud-page",
+      "prompt": "生成一个完整的 CRUD 业务页",
+      "should_trigger": true,
+      "accept_route_to": ["page-list-module", "page-module-development"],
+      "assert": "按组件选型、模块拆分、API 对接的完整流程生成页面。"
+    },
+    {
+      "id": "manage-module",
+      "prompt": "生成用户管理的 CRUD 页面模块",
+      "should_trigger": true,
+      "accept_route_to": ["page-list-module", "page-module-development"],
+      "assert": "生成列表 + 表单闭环的管理模块。"
+    },
+    {
+      "id": "rebuild-old-page",
+      "prompt": "改造旧页面成 YSS UI 的列表加表单页",
+      "should_trigger": true,
+      "accept_route_to": ["page-list-module", "prototype-page-acceptance"],
+      "assert": "改造流程含原型验收对照与组件替换。"
+    },
+    {
+      "id": "near-miss-single-table",
+      "prompt": "只配一下表格的列",
+      "should_trigger": false,
+      "assert": "单点表格配置归 ytable-usage，不触发本 skill。"
+    },
+    {
+      "id": "near-miss-skeleton",
+      "prompt": "新建页面目录骨架",
+      "should_trigger": false,
+      "assert": "目录骨架归 page-skeleton，不触发本 skill。"
+    }
+  ]
+}

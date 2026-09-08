@@ -1,0 +1,43 @@
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "lib": ["ES2020", "DOM", "DOM.Iterable"],
+    "module": "ESNext",
+    "skipLibCheck": true,
+    "moduleResolution": "bundler",
+    "allowImportingTsExtensions": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": true,
+    "jsx": "preserve",
+    "strict": true,
+    "strictNullChecks": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true,
+    "baseUrl": ".",
+    "paths": {
+      "@yss-ui/components": ["./packages/components/src"],
+      "@yss-ui/components/*": ["./packages/components/src/*"],
+      "@yss-ui/components/lite": ["./packages/components/src/lite.ts"],
+      "@yss-ui/components/sheet": ["./packages/components/src/sheet/index.ts"],
+      "@yss-ui/utils": ["./packages/utils/src"],
+      "@yss-ui/utils/*": ["./packages/utils/src/*"],
+      "@yss-ui/hooks": ["./packages/hooks/src"],
+      "@yss-ui/hooks/*": ["./packages/hooks/src/*"],
+      "@yss-ui/theme": ["./packages/theme/src"],
+      "@yss-ui/theme/*": ["./packages/theme/src/*"]
+    }
+  },
+  "include": [
+    "env.d.ts",
+    "packages/**/*.ts",
+    "packages/**/*.vue",
+    "packages/**/*.tsx",
+    "docs/**/*.ts",
+    "docs/**/*.vue",
+    "docs/**/*.tsx",
+    ".dumirc.ts"
+  ],
+  "exclude": ["node_modules", "dist", "packages/skills"]
+}

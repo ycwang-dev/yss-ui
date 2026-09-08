@@ -1,0 +1,36 @@
+{
+  "skill": "formily-step-flow",
+  "purpose": "触发行为规约：分步表单与流程录入的确定性词法路由。",
+  "cases": [
+    {
+      "id": "step-validate-each",
+      "prompt": "分步表单每一步要单独校验",
+      "should_trigger": true,
+      "assert": "多 YFormily 实例按步独立校验，通过才允许下一步。"
+    },
+    {
+      "id": "steps-final-submit",
+      "prompt": "用 Steps 分步录入最后一步汇总提交",
+      "should_trigger": true,
+      "assert": "给出 Steps + 聚合提交的标准结构与确认预览。"
+    },
+    {
+      "id": "keep-data-across-steps",
+      "prompt": "分步表单切换步骤后数据要保留",
+      "should_trigger": true,
+      "assert": "跨步数据保留方案：实例常驻或值缓存，禁止销毁重建丢值。"
+    },
+    {
+      "id": "near-miss-single-form",
+      "prompt": "查询表单布局怎么排",
+      "should_trigger": false,
+      "assert": "普通查询表单归 formily-foundation，不触发本 skill。"
+    },
+    {
+      "id": "near-miss-linkage",
+      "prompt": "字段之间联动显隐",
+      "should_trigger": false,
+      "assert": "字段联动归 formily-linkage-effects，不触发本 skill。"
+    }
+  ]
+}

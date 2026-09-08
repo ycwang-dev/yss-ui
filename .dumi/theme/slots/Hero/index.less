@@ -1,0 +1,869 @@
+@import (reference) "~dumi/theme-default/styles/variables.less";
+
+// ================================================================
+// Hero 区域 — 日间高级玻璃拟态 + 夜间 C4D 风格深蓝宇宙
+// ================================================================
+
+.@{prefix}-hero {
+  --click-origin-x: 50%;
+  --click-origin-y: 58%;
+
+  font-family: var(--yss-doc-font-family, -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", sans-serif);
+
+  // ── 突破父容器，铺满视口宽度 ──
+  position: relative;
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  margin-top: -48px;
+  margin-bottom: -48px;
+  padding-top: calc(@s-header-height + 96px);
+  padding-bottom: 92px;
+  box-sizing: border-box;
+  text-align: center;
+  overflow: hidden;
+
+  // ── 默认：日间模式底色（新一代电光蓝紫 —— 更高色度的双侧扩散 + 中心青光） ──
+  background:
+    radial-gradient(
+      72% 58% at 50% 54%,
+      rgb(168 240 255 / 66%) 0%,
+      rgb(212 242 252 / 42%) 34%,
+      rgb(240 245 251 / 12%) 62%,
+      rgb(240 245 251 / 0%) 100%
+    ),
+    radial-gradient(
+      48% 74% at 0% 36%,
+      rgb(133 162 255 / 56%) 0%,
+      rgb(170 194 248 / 26%) 46%,
+      rgb(185 206 243 / 0%) 82%
+    ),
+    radial-gradient(
+      48% 74% at 100% 36%,
+      rgb(196 165 255 / 58%) 0%,
+      rgb(216 199 250 / 24%) 46%,
+      rgb(223 210 245 / 0%) 82%
+    ),
+    linear-gradient(180deg, #e7edf9 0%, #edf2f9 50%, #f3f6fc 100%);
+  transition: background 0.5s ease;
+
+  // ── 夜间模式：深蓝宇宙无缝融合页面 ──
+  // 底部颜色 #050709 对标 dumi 暗色模式的 body 背景色
+  [data-prefers-color="dark"] & {
+    background: linear-gradient(180deg, #020c1b 0%, #041224 45%, #050709 100%);
+  }
+
+  /* stylelint-disable-next-line media-query-no-invalid */
+  @media @mobile {
+    margin-top: -@s-header-height-m;
+    padding-top: calc(@s-header-height-m + 70px);
+    padding-bottom: 62px;
+    margin-bottom: -40px;
+  }
+
+  + * {
+    position: relative;
+    z-index: 1;
+  }
+
+  .hero-global-click-ripple {
+    position: absolute;
+    inset: -12% -10% -16%;
+    z-index: 1;
+    pointer-events: none;
+    mix-blend-mode: screen;
+    background: radial-gradient(
+      circle at var(--click-origin-x) var(--click-origin-y),
+      rgb(255 255 255 / 42%) 0%,
+      rgb(150 128 255 / 24%) 9%,
+      rgb(74 187 255 / 18%) 20%,
+      rgb(74 187 255 / 6%) 34%,
+      rgb(74 187 255 / 0%) 68%
+    );
+    animation: hero-global-ripple 1.15s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+
+  .hero-click-overlay-tint {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    background: radial-gradient(
+      480px 180px at var(--click-origin-x) calc(var(--click-origin-y) + 12%),
+      rgb(246 90 141 / 12%) 0%,
+      rgb(167 139 250 / 8%) 32%,
+      rgb(59 130 246 / 6%) 56%,
+      rgb(59 130 246 / 0%) 100%
+    );
+    animation: hero-click-tint 3.6s ease-in-out infinite;
+  }
+
+  // ── Aurora 极光容器 ──
+  .hero-aurora-wrap {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .hero-aurora {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(90px);
+    transition: background 0.5s ease;
+  }
+
+  // 主蓝色大光斑
+  .aurora-1 {
+    width: 680px;
+    height: 480px;
+    top: -80px;
+    left: -140px;
+    // 日间模式：电光靛蓝
+    background: radial-gradient(ellipse, rgb(64 106 255 / 48%) 0%, rgb(96 145 255 / 14%) 50%, transparent 75%);
+    animation: none;
+
+    // 夜间模式
+    [data-prefers-color="dark"] & {
+      background: radial-gradient(ellipse, rgb(37 99 235 / 55%) 0%, rgb(29 78 216 / 20%) 50%, transparent 75%);
+    }
+  }
+
+  // 紫晶色光斑
+  .aurora-2 {
+    width: 540px;
+    height: 430px;
+    top: -60px;
+    right: -100px;
+    // 日间模式：高色度电紫
+    background: radial-gradient(ellipse, rgb(147 104 255 / 46%) 0%, rgb(167 130 255 / 14%) 50%, transparent 75%);
+    animation: none;
+
+    // 夜间模式
+    [data-prefers-color="dark"] & {
+      background: radial-gradient(ellipse, rgb(109 40 217 / 40%) 0%, rgb(139 92 246 / 15%) 50%, transparent 75%);
+    }
+  }
+
+  // 青色小光斑
+  .aurora-3 {
+    width: 420px;
+    height: 320px;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    // 日间模式：明亮电青
+    background: radial-gradient(ellipse, rgb(23 205 255 / 36%) 0%, rgb(56 189 248 / 12%) 50%, transparent 75%);
+    filter: blur(70px);
+    animation: none;
+
+    // 夜间模式
+    [data-prefers-color="dark"] & {
+      background: radial-gradient(ellipse, rgb(6 182 212 / 25%) 0%, rgb(14 165 233 / 10%) 50%, transparent 75%);
+    }
+  }
+
+  // ── 鼠标追踪光晕 (RAF 驱动，更强烈的存在感) ──
+  .hero-cursor-glow {
+    position: absolute;
+    width: 460px; // 调大光晕
+    height: 460px;
+    top: 0;
+    left: 0;
+    border-radius: 50%;
+    // 日间模式（明显的水蓝色辉光）
+    background: radial-gradient(circle, rgb(59 130 246 / 25%) 0%, rgb(14 165 233 / 10%) 40%, transparent 70%);
+    pointer-events: none;
+    z-index: 1;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    will-change: transform;
+
+    // 夜间模式
+    [data-prefers-color="dark"] & {
+      background: radial-gradient(circle, rgb(96 165 250 / 18%) 0%, rgb(59 130 246 / 8%) 40%, transparent 70%);
+    }
+  }
+
+  // ── 网格线纹理（科技感） ──
+  .hero-grid-overlay {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    // 日间模式网格
+    background-image:
+      linear-gradient(rgb(51 65 130 / 6%) 1px, transparent 1px),
+      linear-gradient(90deg, rgb(51 65 130 / 6%) 1px, transparent 1px);
+    background-size: 60px 60px;
+    mask-image: radial-gradient(ellipse 80% 70% at 50% 30%, rgb(0 0 0 / 55%) 0%, transparent 82%);
+
+    // 夜间模式网格
+    [data-prefers-color="dark"] & {
+      background-image:
+        linear-gradient(rgb(59 130 246 / 6%) 1px, transparent 1px),
+        linear-gradient(90deg, rgb(59 130 246 / 6%) 1px, transparent 1px);
+    }
+  }
+
+  // ── 底部渐隐分割线（消除割裂感，完全融入页面背景） ──
+  .hero-bottom-shine {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 120px;
+    background: linear-gradient(to bottom, transparent 0%, #f7f9fb 100%);
+    pointer-events: none;
+    z-index: 1; // 降低层级，确保仅仅是背景的一部分，不截断卡片的边角发光
+
+    [data-prefers-color="dark"] & {
+      background: linear-gradient(to bottom, transparent 0%, #050709 100%);
+    }
+  }
+
+  &-title {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    z-index: 3;
+    margin: 0 0 22px;
+    user-select: none;
+
+    .hero-title-image {
+      max-width: 100%;
+      height: auto;
+      max-height: 190px;
+      object-fit: contain;
+      pointer-events: none;
+    }
+
+    /* stylelint-disable-next-line media-query-no-invalid */
+    @media @mobile {
+      .hero-title-image {
+        max-height: 104px;
+      }
+    }
+  }
+
+  // ── 描述文字 ──
+  &-desc {
+    position: relative;
+    z-index: 3;
+    display: flex;
+    width: min(720px, calc(100% - 40px));
+    margin: 0 auto;
+    flex-direction: column;
+    align-items: center;
+    color: rgb(17 24 39 / 84%);
+
+    .hero-value {
+      color: rgb(15 23 42 / 94%);
+      font-size: clamp(20px, 1.55vw, 26px);
+      font-weight: 760;
+      letter-spacing: -0.035em;
+      line-height: 1.35;
+    }
+
+    // SplitText 逐字入场的单字容器
+    .hero-value-char {
+      display: inline-block;
+      backface-visibility: hidden;
+    }
+
+    .hero-support {
+      max-width: 660px;
+      margin-top: 9px;
+      color: rgb(51 65 85 / 78%);
+      font-size: 14px;
+      font-weight: 480;
+      line-height: 1.7;
+    }
+
+    .hero-stack {
+      display: inline-flex;
+      gap: 7px;
+      align-items: center;
+      margin-top: 15px;
+
+      i {
+        padding: 4px 11px;
+        border: 1px solid rgb(100 116 139 / 20%);
+        border-radius: 999px;
+        background: rgb(255 255 255 / 42%);
+        color: rgb(71 85 105 / 86%);
+        font-family: SFMono-Regular, Consolas, "Liberation Mono", monospace;
+        font-size: 11px;
+        font-style: normal;
+        font-weight: 650;
+        letter-spacing: 0.04em;
+        line-height: 1.45;
+        backdrop-filter: blur(8px);
+      }
+    }
+
+    [data-prefers-color="dark"] & {
+      .hero-value {
+        color: rgb(241 245 249 / 96%);
+      }
+
+      .hero-support {
+        color: rgb(148 163 184 / 88%);
+      }
+
+      .hero-stack i {
+        border-color: rgb(148 163 184 / 18%);
+        background: rgb(15 23 42 / 42%);
+        color: rgb(191 219 254 / 78%);
+      }
+    }
+
+    /* stylelint-disable-next-line media-query-no-invalid */
+    @media @mobile {
+      width: calc(100% - 32px);
+
+      .hero-value {
+        font-size: 19px;
+      }
+
+      .hero-support {
+        font-size: 13px;
+      }
+
+      .hero-stack {
+        gap: 5px;
+        flex-wrap: wrap;
+        justify-content: center;
+
+        i {
+          font-size: 9px;
+        }
+      }
+    }
+  }
+
+  // ── 按钮区域 ──
+  &-actions {
+    position: relative;
+    z-index: 3;
+    margin-top: 21px;
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+
+    /* stylelint-disable-next-line media-query-no-invalid */
+    @media @mobile {
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+    }
+
+    // ─── 统一按钮基线：折射玻璃材质 + 清晰主次层级 ───
+    .hero-action-btn {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 184px;
+      min-height: 54px;
+      padding: 8px 11px 8px 9px;
+      box-sizing: border-box;
+      text-decoration: none;
+      color: rgb(15 23 42 / 92%);
+      border: 1px solid rgb(148 163 184 / 30%);
+      border-radius: 15px;
+      cursor: pointer;
+      overflow: hidden;
+      isolation: isolate;
+      transform: translateZ(0);
+      transition:
+        transform 300ms cubic-bezier(0.16, 1, 0.3, 1),
+        box-shadow 300ms ease,
+        border-color 300ms ease,
+        background 300ms ease;
+      backdrop-filter: blur(14px) saturate(148%);
+      will-change: transform, box-shadow;
+
+      /* stylelint-disable-next-line media-query-no-invalid */
+      @media @mobile {
+        width: 100%;
+        max-width: 276px;
+        min-width: 0;
+        min-height: 56px;
+      }
+
+      .btn-content {
+        position: relative;
+        z-index: 3;
+        display: flex;
+        min-width: 0;
+        flex: 1;
+        align-items: center;
+        gap: 9px;
+        text-align: left;
+      }
+
+      .btn-icon {
+        display: inline-flex;
+        width: 30px;
+        height: 30px;
+        flex: 0 0 30px;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid currentcolor;
+        border-radius: 10px;
+        background: rgb(255 255 255 / 13%);
+        opacity: 0.94;
+        transition:
+          transform 360ms cubic-bezier(0.34, 1.56, 0.64, 1),
+          background 240ms ease;
+
+        svg {
+          width: 16px;
+          height: 16px;
+          overflow: visible;
+          fill: none;
+          stroke: currentcolor;
+          stroke-linecap: round;
+          stroke-linejoin: round;
+          stroke-width: 1.7;
+        }
+      }
+
+      .btn-copy {
+        display: flex;
+        min-width: 0;
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .btn-label {
+        font-size: 13.5px;
+        font-weight: 720;
+        letter-spacing: -0.01em;
+        line-height: 1.35;
+        white-space: nowrap;
+      }
+
+      .btn-desc {
+        margin-top: 2px;
+        font-size: 10.5px;
+        font-weight: 520;
+        letter-spacing: 0.015em;
+        line-height: 1.35;
+        opacity: 0.76;
+      }
+
+      .btn-prismatic-shimmer {
+        position: absolute;
+        z-index: 2;
+        top: -46%;
+        bottom: -46%;
+        left: -36%;
+        width: 27%;
+        pointer-events: none;
+        background: linear-gradient(90deg, transparent, rgb(255 255 255 / 52%), transparent);
+        filter: blur(1px);
+        opacity: 0.52;
+        transform: rotate(14deg) translateX(0);
+      }
+
+      .btn-orbit {
+        position: absolute;
+        z-index: 2;
+        inset: -1px;
+        padding: 1px;
+        border-radius: inherit;
+        pointer-events: none;
+        background: conic-gradient(
+          from 90deg,
+          transparent 0deg,
+          rgb(186 230 253 / 88%) 52deg,
+          transparent 116deg,
+          transparent 250deg,
+          rgb(216 180 254 / 82%) 316deg,
+          transparent 360deg
+        );
+        opacity: 0.34;
+        mask:
+          linear-gradient(#000 0 0) content-box,
+          linear-gradient(#000 0 0);
+        mask-composite: exclude;
+        transition: opacity 240ms ease;
+      }
+
+      .btn-arrow {
+        position: relative;
+        z-index: 3;
+        display: inline-flex;
+        width: 19px;
+        height: 19px;
+        flex: 0 0 19px;
+        align-items: center;
+        justify-content: center;
+        margin-left: 3px;
+        border: 0;
+        opacity: 0.58;
+        transition:
+          transform 360ms cubic-bezier(0.34, 1.56, 0.64, 1),
+          opacity 240ms ease;
+
+        svg {
+          display: block;
+          width: 14px;
+          height: 14px;
+          overflow: visible;
+          fill: currentcolor;
+        }
+      }
+
+      &:hover {
+        transform: translateY(-2px) scale(1.006);
+
+        .btn-prismatic-shimmer {
+          animation: hero-button-shine 780ms cubic-bezier(0.16, 1, 0.3, 1) both;
+        }
+
+        .btn-orbit {
+          opacity: 1;
+          animation: hero-button-orbit 2.8s linear infinite;
+        }
+
+        .btn-icon {
+          background: rgb(255 255 255 / 20%);
+          transform: rotate(-3deg) scale(1.035);
+        }
+
+        .btn-arrow {
+          opacity: 1;
+          transform: translateX(2px);
+        }
+      }
+
+      &:active {
+        transform: translateY(-1px) scale(0.992);
+      }
+
+      &:focus-visible {
+        outline: none;
+        box-shadow:
+          0 0 0 3px var(--yss-search-focus-ring, rgb(59 130 246 / 32%)),
+          0 18px 32px -18px rgb(59 130 246 / 54%);
+      }
+    }
+
+    // 主按钮：深色流光面板
+    .primary-btn {
+      color: #fff;
+      background: linear-gradient(
+        128deg,
+        var(--yss-cta-primary-start, rgb(23 73 201 / 98%)) 0%,
+        var(--yss-cta-primary-mid, rgb(78 70 229 / 97%)) 52%,
+        var(--yss-cta-primary-end, rgb(8 158 187 / 96%)) 100%
+      );
+      border-color: rgb(186 230 253 / 42%);
+      box-shadow:
+        0 15px 28px -18px rgb(37 99 235 / 58%),
+        0 6px 14px -12px rgb(6 182 212 / 58%),
+        inset 0 1px 0 rgb(219 234 254 / 62%),
+        inset 0 -1px 0 rgb(30 64 175 / 38%);
+
+      [data-prefers-color="dark"] & {
+        background: linear-gradient(
+          128deg,
+          var(--yss-cta-primary-start, rgb(30 64 175 / 98%)) 0%,
+          var(--yss-cta-primary-mid, rgb(67 56 202 / 96%)) 50%,
+          var(--yss-cta-primary-end, rgb(8 145 178 / 94%)) 100%
+        );
+        border-color: rgb(125 211 252 / 38%);
+        box-shadow:
+          0 16px 30px -19px rgb(37 99 235 / 56%),
+          inset 0 1px 0 rgb(191 219 254 / 34%);
+      }
+
+      &:hover {
+        box-shadow:
+          0 19px 34px -19px rgb(37 99 235 / 68%),
+          0 7px 16px -13px rgb(6 182 212 / 64%),
+          inset 0 1px 0 rgb(219 234 254 / 78%);
+      }
+    }
+
+    // 次按钮：冷白玻璃面板
+    .secondary-btn {
+      color: rgb(30 41 59 / 92%);
+      background:
+        linear-gradient(145deg, rgb(255 255 255 / 82%), rgb(241 245 249 / 58%)),
+        var(--yss-cta-secondary-bg, rgb(255 255 255 / 72%));
+      border-color: var(--yss-cta-secondary-border, rgb(148 163 184 / 32%));
+      box-shadow:
+        0 14px 27px -22px rgb(15 23 42 / 52%),
+        inset 0 1px 0 rgb(255 255 255 / 96%),
+        inset 0 -1px 0 rgb(148 163 184 / 12%);
+
+      .btn-icon,
+      .btn-arrow {
+        color: rgb(51 93 216 / 92%);
+      }
+
+      [data-prefers-color="dark"] & {
+        color: rgb(226 232 240 / 96%);
+        background:
+          linear-gradient(145deg, rgb(30 41 59 / 80%), rgb(15 23 42 / 66%)),
+          var(--yss-cta-secondary-bg, rgb(15 23 42 / 76%));
+        border-color: var(--yss-cta-secondary-border, rgb(148 163 184 / 28%));
+        box-shadow:
+          0 14px 28px -21px rgb(2 6 23 / 72%),
+          inset 0 1px 0 rgb(255 255 255 / 12%);
+
+        .btn-icon,
+        .btn-arrow {
+          color: rgb(125 211 252 / 92%);
+        }
+      }
+
+      &:hover {
+        border-color: rgb(96 165 250 / 48%);
+        box-shadow:
+          0 17px 32px -23px rgb(37 99 235 / 44%),
+          inset 0 1px 0 rgb(255 255 255 / 100%);
+      }
+    }
+  }
+
+  .hero-action-cursor {
+    position: absolute;
+    left: calc(50% - 118px);
+    top: 61%;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    z-index: 4;
+    pointer-events: none;
+    border: 1px solid rgb(198 232 255 / 88%);
+    background: radial-gradient(
+      circle at 40% 40%,
+      rgb(255 255 255 / 95%) 0%,
+      rgb(178 227 255 / 88%) 26%,
+      rgb(126 182 255 / 42%) 54%,
+      rgb(126 182 255 / 2%) 100%
+    );
+    box-shadow:
+      0 0 0 6px rgb(148 207 255 / 20%),
+      0 0 30px rgb(109 184 255 / 62%);
+    animation: hero-cursor-ring 1.7s ease-in-out infinite;
+
+    &::before {
+      content: "";
+      position: absolute;
+      inset: -8px;
+      border-radius: 50%;
+      border: 1px solid rgb(165 224 255 / 56%);
+      opacity: 0.9;
+      animation: hero-cursor-ping 1.7s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+    }
+
+    /* stylelint-disable-next-line media-query-no-invalid */
+    @media @mobile {
+      display: none;
+    }
+  }
+}
+
+// ================================================================
+// 动画关键帧
+// ================================================================
+
+@keyframes hero-button-shine {
+  from {
+    transform: rotate(14deg) translateX(0);
+  }
+
+  to {
+    transform: rotate(14deg) translateX(790%);
+  }
+}
+
+@keyframes hero-button-orbit {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes aurora-drift-1 {
+  0% {
+    transform: translate(0, 0) scale(1);
+  }
+
+  100% {
+    transform: translate(60px, 40px) scale(1.1);
+  }
+}
+
+@keyframes aurora-drift-2 {
+  0% {
+    transform: translate(0, 0) scale(1);
+  }
+
+  100% {
+    transform: translate(-50px, 60px) scale(1.08);
+  }
+}
+
+@keyframes aurora-drift-3 {
+  0% {
+    opacity: 0.6;
+    transform: translateX(-50%) scale(0.9);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateX(-50%) scale(1.15);
+  }
+}
+
+@keyframes hero-global-ripple {
+  0% {
+    opacity: 0;
+    transform: scale(0.56);
+    filter: blur(0);
+  }
+
+  25% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+    transform: scale(1.28);
+    filter: blur(2px);
+  }
+}
+
+@keyframes hero-click-tint {
+  0%,
+  100% {
+    opacity: 0.78;
+  }
+
+  50% {
+    opacity: 1;
+  }
+}
+
+@keyframes title-refraction-drift {
+  0%,
+  100% {
+    filter: drop-shadow(0 0 30px rgb(108 154 242 / 35%));
+  }
+
+  50% {
+    filter: drop-shadow(0 0 40px rgb(127 177 255 / 46%));
+  }
+}
+
+@keyframes title-refraction-scan {
+  0% {
+    transform: translateX(-14%) skewX(-8deg);
+    opacity: 0.45;
+  }
+
+  42% {
+    opacity: 0.86;
+  }
+
+  100% {
+    transform: translateX(16%) skewX(8deg);
+    opacity: 0.48;
+  }
+}
+
+@keyframes title-light-burst {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.28);
+    filter: blur(0);
+  }
+
+  26% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(1.25);
+    filter: blur(2px);
+  }
+}
+
+@keyframes hero-prism-sweep {
+  0% {
+    transform: translateX(-58%) rotate(-7deg);
+    opacity: 0.18;
+  }
+
+  40% {
+    opacity: 0.9;
+  }
+
+  100% {
+    transform: translateX(62%) rotate(-7deg);
+    opacity: 0.24;
+  }
+}
+
+@keyframes hero-btn-pulse {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.2);
+  }
+
+  28% {
+    opacity: 0.84;
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+@keyframes hero-cursor-ring {
+  0%,
+  100% {
+    transform: translateY(0) scale(1);
+  }
+
+  50% {
+    transform: translateY(-2px) scale(1.03);
+  }
+}
+
+@keyframes hero-cursor-ping {
+  0% {
+    opacity: 0.9;
+    transform: scale(0.84);
+  }
+
+  100% {
+    opacity: 0;
+    transform: scale(1.42);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .@{prefix}-hero {
+    &-actions .hero-action-btn {
+      transition-duration: 0.01ms;
+
+      &:hover {
+        transform: none;
+      }
+
+      .btn-prismatic-shimmer,
+      .btn-orbit {
+        animation: none;
+      }
+    }
+  }
+}

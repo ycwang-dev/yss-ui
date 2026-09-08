@@ -1,0 +1,36 @@
+{
+  "skill": "use-table-height",
+  "purpose": "触发行为规约：useTableHeight 表格自适应高度（双滚动条、底部空白）的确定性词法路由。",
+  "cases": [
+    {
+      "id": "double-scrollbar",
+      "prompt": "表格出现双滚动条高度不对",
+      "should_trigger": true,
+      "assert": "用 useTableHeight 替换手写高度计算，消除双滚动条。"
+    },
+    {
+      "id": "modal-blank-bottom",
+      "prompt": "弹窗里的表格底部一大块空白",
+      "should_trigger": true,
+      "assert": "弹窗/抽屉内表格高度按容器计算，计入偏移。"
+    },
+    {
+      "id": "hook-usage",
+      "prompt": "用 useTableHeight 计算表格自适应高度",
+      "should_trigger": true,
+      "assert": "给出 useTableHeight 标准接入姿势与偏移参数。"
+    },
+    {
+      "id": "near-miss-tree-height",
+      "prompt": "树区域高度不对",
+      "should_trigger": false,
+      "assert": "树高度归 use-tree-height，不触发本 skill。"
+    },
+    {
+      "id": "near-miss-table-filter",
+      "prompt": "表格列头筛选",
+      "should_trigger": false,
+      "assert": "表格功能配置归 ytable-usage，不触发本 skill。"
+    }
+  ]
+}

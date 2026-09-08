@@ -1,0 +1,30 @@
+{
+  "skill": "changelog-generation",
+  "purpose": "触发行为规约：更新日志生成的确定性词法路由。",
+  "cases": [
+    {
+      "id": "release-changelog",
+      "prompt": "生成这次发版的更新日志",
+      "should_trigger": true,
+      "assert": "根据真实变更与待发包版本生成分包更新日志。"
+    },
+    {
+      "id": "from-git-history",
+      "prompt": "根据 Git 历史写更新日志",
+      "should_trigger": true,
+      "assert": "从 Git 历史归纳变更条目，遵循日志模板。"
+    },
+    {
+      "id": "near-miss-commit-message",
+      "prompt": "生成 commit message",
+      "should_trigger": false,
+      "assert": "提交信息归 commit-linting / frontend-commit，不触发本 skill。"
+    },
+    {
+      "id": "near-miss-release",
+      "prompt": "发布组件包",
+      "should_trigger": false,
+      "assert": "发版流程归 release-management / release-workflow，不触发本 skill。"
+    }
+  ]
+}

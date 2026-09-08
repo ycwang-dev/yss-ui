@@ -1,0 +1,39 @@
+{
+  "skill": "yss-formily",
+  "purpose": "触发行为规约：YFormily 总入口（枢纽 skill，允许路由到 formily 细分技能）。",
+  "cases": [
+    {
+      "id": "yformily-how-to-use",
+      "prompt": "YFormily 组件怎么引入和使用",
+      "should_trigger": true,
+      "accept_route_to": ["formily-foundation", "component-selection-imports"],
+      "assert": "给出正确导入来源与基础用法，并按需求路由到细分 formily skill。"
+    },
+    {
+      "id": "dynamic-schema",
+      "prompt": "用 YFormily 做动态 schema 表单",
+      "should_trigger": true,
+      "accept_route_to": ["formily-foundation"],
+      "assert": "动态 schema 生成与渲染边界，指向细分技能。"
+    },
+    {
+      "id": "umbrella-multi-mode",
+      "prompt": "表单要支持新增编辑查看和详情插槽",
+      "should_trigger": true,
+      "accept_route_to": ["formily-mode-slot-detail", "page-form-module"],
+      "assert": "识别三态 + 插槽需求，路由到 formily-mode-slot-detail。"
+    },
+    {
+      "id": "near-miss-antd-form",
+      "prompt": "ant-design-vue 的 Form 组件怎么用",
+      "should_trigger": false,
+      "assert": "非 YFormily 场景，由 component-selection-imports 判定组件选型。"
+    },
+    {
+      "id": "near-miss-edit-table",
+      "prompt": "表格里加一行编辑一行",
+      "should_trigger": false,
+      "assert": "可编辑表格归 yedit-table-usage，不触发本 skill。"
+    }
+  ]
+}

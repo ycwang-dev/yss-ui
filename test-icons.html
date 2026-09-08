@@ -1,0 +1,34 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <script src="https://unpkg.com/vue@3"></script>
+    <script src="./packages/components/dist-umd/yss-ui.umd.js"></script>
+    <link rel="stylesheet" href="./packages/components/dist-umd/yss-ui.css" />
+    <style>
+      body {
+        padding: 20px;
+      }
+
+      #app {
+        width: 800px;
+        height: 500px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="app">
+      <y-monaco v-model="code" language="sql"></y-monaco>
+    </div>
+    <script>
+      Vue.createApp({
+        setup() {
+          return { code: Vue.ref('SELECT * FROM test\n') };
+        },
+      })
+        .use(window.YssUI || window.YssUI.default)
+        .mount('#app');
+    </script>
+  </body>
+</html>

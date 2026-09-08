@@ -1,0 +1,42 @@
+{
+  "skill": "formily-linkage-effects",
+  "purpose": "触发行为规约：字段联动与表单级副作用的确定性词法路由。",
+  "cases": [
+    {
+      "id": "dynamic-visibility",
+      "prompt": "选了类型后另一个字段要动态显隐和禁用",
+      "should_trigger": true,
+      "assert": "用 x-reactions 或 effects 实现显隐/禁用联动，给出依赖收集写法。"
+    },
+    {
+      "id": "cascade-options",
+      "prompt": "省市区级联下拉选项联动",
+      "should_trigger": true,
+      "assert": "实现级联选项联动，含异步加载与清空下级值。"
+    },
+    {
+      "id": "x-reactions-async",
+      "prompt": "x-reactions 怎么写异步联动",
+      "should_trigger": true,
+      "assert": "给出 x-reactions 异步联动的标准写法与竞态处理。"
+    },
+    {
+      "id": "form-effects",
+      "prompt": "表单级 effects 副作用怎么组织",
+      "should_trigger": true,
+      "assert": "说明 effects 注册位置、onFieldValueChange 等钩子选择与清理。"
+    },
+    {
+      "id": "near-miss-basic-validation",
+      "prompt": "查询表单布局怎么排",
+      "should_trigger": false,
+      "assert": "查询表单布局归 formily-foundation，不触发本 skill。"
+    },
+    {
+      "id": "near-miss-edit-table-linkage",
+      "prompt": "编辑表格里行级候选联动",
+      "should_trigger": false,
+      "assert": "可编辑表格的行级联动归 yedit-table-usage，不触发本 skill。"
+    }
+  ]
+}

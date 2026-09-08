@@ -1,0 +1,45 @@
+{
+  "skill": "page-list-module",
+  "purpose": "触发行为规约：标准列表模块（查询重置、分页、工具栏、批量操作、左树右表）的确定性词法路由。",
+  "cases": [
+    {
+      "id": "standard-list",
+      "prompt": "标准列表页查询重置加远程分页",
+      "should_trigger": true,
+      "assert": "查询区 + YTable + 分页的标准列表闭环骨架。"
+    },
+    {
+      "id": "crud-list-loop",
+      "prompt": "列表页 CRUD 闭环带批量操作",
+      "should_trigger": true,
+      "accept_route_to": ["yss-ui-business-page-generation"],
+      "assert": "列表增删改查闭环，批量操作走标准确认流程。"
+    },
+    {
+      "id": "toolbar-batch",
+      "prompt": "表格工具栏放新增按钮和批量删除",
+      "should_trigger": true,
+      "accept_route_to": ["ytable-usage"],
+      "assert": "toolbar-left/right 插槽放置操作按钮与批量删除。"
+    },
+    {
+      "id": "tree-table-layout",
+      "prompt": "左树右表的列表模块怎么搭",
+      "should_trigger": true,
+      "accept_route_to": ["ytree-usage", "yss-ui-business-page-generation"],
+      "assert": "左树右表模块拆分与树表联动查询。"
+    },
+    {
+      "id": "near-miss-edit-table",
+      "prompt": "表格行内编辑保存",
+      "should_trigger": false,
+      "assert": "可编辑表格归 yedit-table-usage，不触发本 skill。"
+    },
+    {
+      "id": "near-miss-form-module",
+      "prompt": "新增编辑表单弹窗",
+      "should_trigger": false,
+      "assert": "表单模块归 page-form-module，不触发本 skill。"
+    }
+  ]
+}

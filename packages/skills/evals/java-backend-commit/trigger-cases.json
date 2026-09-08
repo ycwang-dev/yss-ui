@@ -1,0 +1,30 @@
+{
+  "skill": "java-backend-commit",
+  "purpose": "触发行为规约：Java 后端仓库 Git 提交的确定性词法路由（与 frontend-commit 成对）。",
+  "cases": [
+    {
+      "id": "springboot-commit",
+      "prompt": "Spring Boot 项目的改动提交一下",
+      "should_trigger": true,
+      "assert": "按服务/业务域 scope 生成规范提交并执行。"
+    },
+    {
+      "id": "maven-multi-module",
+      "prompt": "多模块 Maven 工程怎么拆分提交",
+      "should_trigger": true,
+      "assert": "按模块边界拆分原子提交。"
+    },
+    {
+      "id": "near-miss-vue",
+      "prompt": "Vue 项目提交代码",
+      "should_trigger": false,
+      "assert": "前端仓库提交归 frontend-commit，不触发本 skill。"
+    },
+    {
+      "id": "near-miss-changelog",
+      "prompt": "生成更新日志",
+      "should_trigger": false,
+      "assert": "更新日志归 changelog-generation，不触发本 skill。"
+    }
+  ]
+}

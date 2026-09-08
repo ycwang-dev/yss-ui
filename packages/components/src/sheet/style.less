@@ -1,0 +1,102 @@
+.y-sheet-container {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+
+  /* 视觉优化 */
+  border: 1px solid var(--border-color, #d9d9d9);
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgb(0 0 0 / 6%);
+  transition: box-shadow 0.3s ease;
+
+  /* 悬停效果 */
+  &:hover {
+    box-shadow: 0 4px 16px rgb(0 0 0 / 8%);
+  }
+
+  /* 暗色模式适配 */
+  [data-prefers-color="dark"] & {
+    border-color: var(--border-color-dark, #424242);
+    box-shadow: 0 2px 8px rgb(0 0 0 / 30%);
+
+    &:hover {
+      box-shadow: 0 4px 16px rgb(0 0 0 / 40%);
+    }
+  }
+
+  /* Univer 主题变量覆盖(可选) */
+  --univer-primary-color: var(--primary-color, #1677ff);
+  --univer-border-radius: 4px;
+}
+
+.y-sheet-canvas {
+  width: 100%;
+  height: 100%;
+}
+
+/* stylelint-disable selector-pseudo-class-no-unknown -- Vue scoped 样式使用 :global() 覆盖 Univer 全局浮层。 */
+:global(.univer-popup[style*="left: 2px"][style*="top: 2px"]) {
+  visibility: hidden;
+}
+/* stylelint-enable selector-pseudo-class-no-unknown */
+
+.y-sheet-loading,
+.y-sheet-error {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  color: var(--text-color-secondary, #8c8c8c);
+  background: var(--component-background, rgb(255 255 255 / 86%));
+  backdrop-filter: blur(2px);
+}
+
+.y-sheet-loading__spinner {
+  width: 28px;
+  height: 28px;
+  border: 3px solid var(--border-color, #d9d9d9);
+  border-top-color: var(--primary-color, #1677ff);
+  border-radius: 50%;
+  animation: y-sheet-loading-spin 0.8s linear infinite;
+}
+
+.y-sheet-loading__text {
+  font-size: 14px;
+  line-height: 22px;
+}
+
+.y-sheet-error {
+  padding: 24px;
+  text-align: center;
+}
+
+.y-sheet-error__title {
+  color: var(--error-color, #ff4d4f);
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 24px;
+}
+
+.y-sheet-error__message {
+  max-width: min(520px, calc(100% - 48px));
+  overflow-wrap: break-word;
+  font-size: 13px;
+  line-height: 20px;
+}
+
+[data-prefers-color="dark"] {
+  .y-sheet-loading,
+  .y-sheet-error {
+    background: var(--component-background-dark, rgb(20 20 20 / 84%));
+  }
+}
+
+@keyframes y-sheet-loading-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}

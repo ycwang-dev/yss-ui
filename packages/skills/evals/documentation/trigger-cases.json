@@ -1,0 +1,36 @@
+{
+  "skill": "documentation",
+  "purpose": "触发行为规约：Dumi 文档/Demo/API 表维护的确定性词法路由。",
+  "cases": [
+    {
+      "id": "new-component-docs",
+      "prompt": "给新组件写 Dumi 文档和 demo",
+      "should_trigger": true,
+      "assert": "新建组件文档、Demo 与导航注册。"
+    },
+    {
+      "id": "update-api-table",
+      "prompt": "更新组件文档的 API 表与导航",
+      "should_trigger": true,
+      "assert": "API 表与实际 props/events/slots 同步。"
+    },
+    {
+      "id": "docs-build-failed",
+      "prompt": "文档站构建失败了",
+      "should_trigger": true,
+      "assert": "排查文档构建/校验失败原因并修复。"
+    },
+    {
+      "id": "near-miss-changelog",
+      "prompt": "生成更新日志",
+      "should_trigger": false,
+      "assert": "更新日志归 changelog-generation，不触发本 skill。"
+    },
+    {
+      "id": "near-miss-business-page",
+      "prompt": "写一个业务页面",
+      "should_trigger": false,
+      "assert": "业务页面归 yss-ui-business-page-generation，不触发本 skill。"
+    }
+  ]
+}

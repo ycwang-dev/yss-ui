@@ -1,0 +1,36 @@
+{
+  "skill": "api-integration",
+  "purpose": "触发行为规约：Orval API 集成（mutator 契约、错误提示、精度）的确定性词法路由。",
+  "cases": [
+    {
+      "id": "orval-query",
+      "prompt": "列表页对接 Orval 生成的查询接口",
+      "should_trigger": true,
+      "assert": "使用真实生成产物对接查询，遵守 mutator 响应契约。"
+    },
+    {
+      "id": "mutator-contract",
+      "prompt": "mutator 的响应契约和错误提示怎么处理",
+      "should_trigger": true,
+      "assert": "失败由 mutator 统一 reject 并提示，业务层不重复 message.error。"
+    },
+    {
+      "id": "long-precision",
+      "prompt": "接口返回的 id 长整型精度丢失",
+      "should_trigger": true,
+      "assert": "id/主键按字符串透传，禁止任何数字转换。"
+    },
+    {
+      "id": "near-miss-export",
+      "prompt": "导出下载文件",
+      "should_trigger": false,
+      "assert": "文件导出下载归 file-export-download，不触发本 skill。"
+    },
+    {
+      "id": "near-miss-pure-frontend",
+      "prompt": "写一个纯前端的工具函数",
+      "should_trigger": false,
+      "assert": "与 API 集成无关，不触发本 skill。"
+    }
+  ]
+}

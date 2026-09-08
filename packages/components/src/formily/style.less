@@ -1,0 +1,32 @@
+/* stylelint-disable selector-pseudo-class-no-unknown -- Vue scoped 样式通过 :deep() 穿透子组件。 */
+.yss-formily {
+  width: 100%;
+  min-width: 0;
+
+  :deep(.ant-formily-form-item-control) {
+    min-width: 0;
+  }
+
+  &__actions {
+    display: flex;
+    width: 100%;
+    flex: 0 0 auto;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 8px;
+    margin-top: 16px;
+  }
+
+  :deep(.yss-formily__collapse-trigger) {
+    display: inline-flex;
+    align-items: center;
+    padding-inline: 4px;
+  }
+
+  :deep(.yss-formily__collapse-icon) {
+    margin-left: 4px;
+    font-size: 12px;
+  }
+}
+
+/* stylelint-enable selector-pseudo-class-no-unknown */

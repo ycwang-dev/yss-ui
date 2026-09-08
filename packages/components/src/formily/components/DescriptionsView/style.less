@@ -1,0 +1,51 @@
+/* stylelint-disable selector-pseudo-class-no-unknown */
+.yss-desc-group + .yss-desc-group {
+  margin-top: 12px;
+}
+
+.yss-desc-group__header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.yss-desc-group__title {
+  padding-left: 10px;
+  font-weight: 600;
+  color: var(--yss-color-primary-6, var(--ant-primary-color, #3371ff));
+  line-height: 20px;
+  border-left: 3px solid var(--yss-color-primary-6, var(--ant-primary-color, #3371ff));
+  font-size: 14px;
+}
+
+.yss-desc-group__desc {
+  margin-left: 12px;
+  opacity: 0.75;
+  font-size: 12px;
+  line-height: 20px;
+}
+
+:deep(.ant-descriptions-item-content) {
+  padding: 12px !important;
+}
+
+/* 保证 label 宽度不受内容挤压，长内容自动换行 */
+:deep(.yss-descriptions .ant-descriptions-view table) {
+  table-layout: fixed;
+  width: 100%;
+}
+
+:deep(.yss-descriptions .ant-descriptions-item-content) {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.yss-desc-ellipsis {
+  display: inline-block;
+  max-width: 100%;
+  vertical-align: top;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

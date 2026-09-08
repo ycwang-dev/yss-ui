@@ -1,0 +1,36 @@
+{
+  "skill": "i18n-locale-management",
+  "purpose": "触发行为规约：国际化多语言字典模块化设计、语义命名分层与自动化装配规范的确定性词法路由。",
+  "cases": [
+    {
+      "id": "write-i18n-module",
+      "prompt": "帮我为新页面编写中英文国际化字典",
+      "should_trigger": true,
+      "assert": "按模块成对生成 zh-CN 和 en-US 字典文件，语义化分层并复用 common。"
+    },
+    {
+      "id": "extract-hardcoded-text",
+      "prompt": "去除页面中的硬编码中文，改用国际化词条",
+      "should_trigger": true,
+      "assert": "提取文本到对应业务语言包，在视图使用 $t 或脚本使用 useI18n。"
+    },
+    {
+      "id": "i18n-architecture-rules",
+      "prompt": "页面模块多语言包怎么组织目录结构",
+      "should_trigger": true,
+      "assert": "遵循按模块独立文件拆分与 Vite import.meta.glob 自动装配规范。"
+    },
+    {
+      "id": "near-miss-dayjs-format",
+      "prompt": "用 dayjs 格式化表格里的创建时间",
+      "should_trigger": false,
+      "assert": "时间格式化属基础工具逻辑，不触发本 i18n 字典规范 skill。"
+    },
+    {
+      "id": "near-miss-api-error",
+      "prompt": "接口请求失败时弹出全局 message 错误提示",
+      "should_trigger": false,
+      "assert": "API 响应错误处理归 api-integration，不触发本 skill。"
+    }
+  ]
+}

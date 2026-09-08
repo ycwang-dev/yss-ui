@@ -1,0 +1,30 @@
+{
+  "skill": "release-workflow",
+  "purpose": "触发行为规约：完整发版流程编排的确定性词法路由。",
+  "cases": [
+    {
+      "id": "prepare-release",
+      "prompt": "准备发版",
+      "should_trigger": true,
+      "assert": "编排变更审查、changelog、校验、提交到 CI 发布的完整流程。"
+    },
+    {
+      "id": "commit-and-publish",
+      "prompt": "提交并发布,走完整发布流程",
+      "should_trigger": true,
+      "assert": "全流程执行并在每个门禁点核验。"
+    },
+    {
+      "id": "near-miss-changelog-only",
+      "prompt": "只生成 changelog",
+      "should_trigger": false,
+      "assert": "单独生成日志归 changelog-generation，不触发本 skill。"
+    },
+    {
+      "id": "near-miss-detect-packages",
+      "prompt": "检测待发包",
+      "should_trigger": false,
+      "assert": "待发包检测归 release-management，不触发本 skill。"
+    }
+  ]
+}

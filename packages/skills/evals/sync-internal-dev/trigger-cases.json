@@ -1,0 +1,36 @@
+{
+  "skill": "sync-internal-dev",
+  "purpose": "触发行为规约：内网最新 dev 代码一键同步至 GitHub main 分支的确定性词法路由。",
+  "cases": [
+    {
+      "id": "sync-internal-dev-prompt",
+      "prompt": "同步内网 dev",
+      "should_trigger": true,
+      "assert": "拉取内网最新代码并在临时分支清洗后推送到 github main 分支。"
+    },
+    {
+      "id": "sync-latest-code-prompt",
+      "prompt": "同步内网最新代码到 github",
+      "should_trigger": true,
+      "assert": "执行内网 dev 最新代码同步至 github main 流程。"
+    },
+    {
+      "id": "move-dev-to-github-prompt",
+      "prompt": "把内网 dev 搬到 github",
+      "should_trigger": true,
+      "assert": "执行内网代码一键同步至 github 流程。"
+    },
+    {
+      "id": "near-miss-frontend-commit",
+      "prompt": "提交本地前端业务代码",
+      "should_trigger": false,
+      "assert": "本地业务代码提交归 frontend-commit，不触发本 skill。"
+    },
+    {
+      "id": "near-miss-release-workflow",
+      "prompt": "准备发版走全流程",
+      "should_trigger": false,
+      "assert": "组件库发版归 release-workflow，不触发本 skill。"
+    }
+  ]
+}

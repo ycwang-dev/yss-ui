@@ -1,0 +1,8 @@
+node_modules/
+dist/
+dist-docs/
+coverage/
+packages/**/dist/
+*.log
+*.md
+**/*.md

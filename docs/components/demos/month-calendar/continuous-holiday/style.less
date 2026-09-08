@@ -1,0 +1,116 @@
+.continuous-holiday-demo {
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+}
+
+.continuous-holiday-demo__guide {
+  margin-bottom: 12px;
+  color: inherit;
+  font-size: 14px;
+  opacity: 0.65;
+}
+
+.continuous-holiday-demo__date {
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: space-between;
+  min-width: 0;
+}
+
+.continuous-holiday-demo__date strong {
+  color: var(--yss-month-calendar-text);
+  font-size: 15px;
+  line-height: 20px;
+  font-variant-numeric: tabular-nums;
+}
+
+.continuous-holiday-demo__date span {
+  color: var(--yss-month-calendar-text-secondary);
+  font-size: 11px;
+}
+
+.continuous-holiday-demo__date.is-outside {
+  opacity: 0.55;
+}
+
+.continuous-holiday-demo__date.is-today strong {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  color: #fff;
+  line-height: 28px;
+  border-radius: 50%;
+  background: var(--yss-month-calendar-primary);
+  box-shadow: 0 4px 10px color-mix(in srgb, var(--yss-month-calendar-primary) 28%, transparent);
+}
+
+.continuous-holiday-demo__events {
+  display: grid;
+  flex: 1;
+  align-content: start;
+  margin: 0 calc(var(--yss-month-calendar-cell-padding-inline) * -1) -9px;
+}
+
+.continuous-holiday-demo__event {
+  grid-column: 1;
+  align-self: center;
+  height: 16px;
+  min-width: 0;
+  overflow: hidden;
+  color: color-mix(in srgb, #c354db 72%, var(--yss-month-calendar-text));
+  font-size: 11px;
+  line-height: 16px;
+  background: color-mix(in srgb, #c354db 24%, transparent);
+  white-space: nowrap;
+}
+
+.continuous-holiday-demo__event span {
+  display: block;
+  padding: 0 6px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.continuous-holiday-demo__event b {
+  margin-right: 3px;
+  color: #c354db;
+  font-size: 10px;
+}
+
+.continuous-holiday-demo__event.is-single,
+.continuous-holiday-demo__event.is-start {
+  border-radius: 8px 0 0 8px;
+  margin-left: 6px;
+}
+
+.continuous-holiday-demo__event.is-single,
+.continuous-holiday-demo__event.is-end {
+  border-radius: 0 8px 8px 0;
+  margin-right: 6px;
+}
+
+.continuous-holiday-demo__event.is-single {
+  border-radius: 8px;
+}
+
+.continuous-holiday-demo__event.is-festival {
+  color: color-mix(in srgb, #d68a20 72%, var(--yss-month-calendar-text));
+  background: color-mix(in srgb, #d68a20 24%, transparent);
+}
+
+.continuous-holiday-demo__event.is-festival b {
+  color: #d68a20;
+}
+
+.continuous-holiday-demo__event.is-workday {
+  color: color-mix(in srgb, #2eaaa0 72%, var(--yss-month-calendar-text));
+  background: color-mix(in srgb, #2eaaa0 24%, transparent);
+}
+
+.continuous-holiday-demo__event.is-workday b {
+  color: #2eaaa0;
+}

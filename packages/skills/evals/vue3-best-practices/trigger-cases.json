@@ -1,0 +1,43 @@
+{
+  "skill": "vue3-best-practices",
+  "purpose": "触发行为规约：Vue3 响应式/通信/竞态/精度规范的确定性词法路由。",
+  "cases": [
+    {
+      "id": "reactivity-lost",
+      "prompt": "解构之后响应式丢失怎么排查",
+      "should_trigger": true,
+      "assert": "定位响应式丢失原因（解构/展开），给出 toRefs 等修复。"
+    },
+    {
+      "id": "component-communication",
+      "prompt": "组件之间通信 props emit 怎么规范",
+      "should_trigger": true,
+      "assert": "按单向数据流与显式 emits 规范组件通信。"
+    },
+    {
+      "id": "async-race",
+      "prompt": "查询接口异步竞态导致数据错乱",
+      "should_trigger": true,
+      "assert": "用请求序号/AbortController 处理竞态。"
+    },
+    {
+      "id": "big-number-precision",
+      "prompt": "大数精度丢失了",
+      "should_trigger": true,
+      "accept_route_to": ["api-integration"],
+      "assert": "id/金额按字符串透传，禁止 Number() 转换。"
+    },
+    {
+      "id": "near-miss-page-split",
+      "prompt": "页面模块怎么拆目录",
+      "should_trigger": false,
+      "assert": "目录拆分归 page-skeleton，不触发本 skill。"
+    },
+    {
+      "id": "near-miss-form-linkage",
+      "prompt": "表单联动副作用",
+      "should_trigger": false,
+      "assert": "表单联动归 formily-linkage-effects，不触发本 skill。"
+    }
+  ]
+}
