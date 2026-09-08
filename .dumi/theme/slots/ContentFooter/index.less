@@ -2,7 +2,7 @@
 
 /* ======================== */
 
-/* 贡献者 & 最后更新时间区域  */
+/* 贡献者 & 最后更新时间区域（图一经典单行高质感设计） */
 
 /* ======================== */
 
@@ -11,9 +11,9 @@
   align-items: center;
   justify-content: space-between;
   flex-wrap: wrap;
-  gap: 12px;
-  margin-top: 64px;
-  padding: 8px 0;
+  gap: 16px;
+  margin-top: 56px;
+  padding: 6px 0;
   border-top: 1px solid @c-border-light;
   font-family: var(--yss-doc-font-family, -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", sans-serif);
 
@@ -22,7 +22,7 @@
   }
 }
 
-/* ---- 贡献者列表 ---- */
+/* ---- 贡献者列表容器（Hover 撑开展开核心动效） ---- */
 
 .yss-contributors {
   display: flex;
@@ -30,9 +30,9 @@
   flex: 1;
   min-width: 0;
 
-  /* Hover 容器：展开所有头像 */
+  /* 鼠标悬停在整个头像组区域时：所有头像平滑向右撑开展开！ */
   &:hover .yss-contributors-list li {
-    margin-inline-end: 0;
+    margin-inline-end: 4px;
   }
 }
 
@@ -41,40 +41,67 @@
   flex-wrap: wrap;
   align-items: center;
   list-style: none;
-  padding: 0;
+  padding: 4px 0;
   margin: 0;
 
   li {
     height: 24px;
-    margin-inline-end: -8px;
-    transition: all 0.3s ease;
+    margin-inline-end: -8px; // 默认叠放紧贴
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
     cursor: pointer;
     position: relative;
     z-index: 1;
 
+    /* 单个头像被 hover 时：进一步向上浮动放大、高亮边框、层级提升最高 */
     &:hover {
-      z-index: 10;
+      z-index: 20 !important;
+      transform: translateY(-2px) scale(1.15);
+
+      .yss-contributor-avatar {
+        border-color: #1677ff;
+        box-shadow: 0 4px 12px rgb(22 119 255 / 30%);
+      }
     }
   }
 }
+
+/* ---- 最后更新时间 ---- */
+
+.yss-last-updated {
+  display: inline-flex;
+  align-items: center;
+  color: var(--yss-doc-link, #1677ff);
+  font-size: 13px;
+  white-space: nowrap;
+  flex-shrink: 0;
+
+  @{dark-selector} & {
+    color: var(--yss-doc-link, #1677ff);
+  }
+}
+
+/* ---- 气泡提示 (对齐 Ant Design Tooltip 视觉规范) ---- */
 
 .yss-contributor-tooltip {
   position: fixed;
   z-index: 9999;
   transform: translate(-50%, -100%);
   pointer-events: none;
-  padding: 6px 8px;
+  padding: 5px 10px;
   border-radius: 6px;
-  background: rgb(0 0 0 / 85%);
+  background: #1f1f1f;
   color: #fff;
-  box-shadow: 0 8px 20px rgb(0 0 0 / 16%);
+  box-shadow:
+    0 6px 16px 0 rgb(0 0 0 / 18%),
+    0 3px 6px -4px rgb(0 0 0 / 24%);
   font-size: 12px;
-  font-weight: normal;
-  line-height: 1.5;
+  font-weight: 500;
+  line-height: 1.4;
   white-space: nowrap;
   max-width: calc(100vw - 16px);
   overflow: hidden;
   text-overflow: ellipsis;
+  animation: yss-tooltip-fade 0.15s cubic-bezier(0, 0, 0.2, 1);
 
   &::after {
     content: "";
@@ -83,9 +110,33 @@
     top: 100%;
     transform: translateX(-50%);
     border: 5px solid transparent;
-    border-top-color: rgb(0 0 0 / 85%);
+    border-top-color: #1f1f1f;
+  }
+
+  @{dark-selector} & {
+    background: #262626;
+    color: rgb(255 255 255 / 90%);
+    box-shadow: 0 6px 16px 0 rgb(0 0 0 / 36%);
+
+    &::after {
+      border-top-color: #262626;
+    }
   }
 }
+
+@keyframes yss-tooltip-fade {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -85%) scale(0.95);
+  }
+
+  to {
+    opacity: 1;
+    transform: translate(-50%, -100%) scale(1);
+  }
+}
+
+/* ---- 头像本体 ---- */
 
 .yss-contributor-avatar {
   display: inline-flex;
@@ -94,39 +145,25 @@
   width: 24px;
   height: 24px;
   border-radius: 50%;
-  border: 1px solid #fff;
+  border: 1.5px solid #fff;
   box-shadow: 0 1px 2px rgb(0 0 0 / 8%);
   object-fit: cover;
   vertical-align: middle;
   background-color: #fff;
-  transition: all 0.3s ease;
+  transition: all 0.22s ease;
 
   @{dark-selector} & {
+    background-color: #141414;
     border-color: #1f1f1f;
-    box-shadow: 0 1px 2px rgb(0 0 0 / 30%);
+    box-shadow: 0 1px 2px rgb(0 0 0 / 35%);
   }
 }
 
 .yss-contributor-avatar--letter {
   color: #fff;
-  font-size: 12px;
-  font-weight: 500;
+  font-size: 11px;
+  font-weight: 600;
   line-height: 1;
-}
-
-/* ---- 最后更新时间 ---- */
-
-.yss-last-updated {
-  display: inline-flex;
-  align-items: center;
-  color: var(--yss-doc-link);
-  font-size: 14px;
-  white-space: nowrap;
-  flex-shrink: 0;
-
-  @{dark-selector} & {
-    color: var(--yss-doc-link);
-  }
 }
 
 /* ======================== */
@@ -136,7 +173,7 @@
 /* ======================== */
 
 .dumi-default-content-footer {
-  margin-top: 48px;
+  margin-top: 36px;
   color: var(--yss-doc-text-muted);
   font-size: 14px;
   line-height: 1;
@@ -146,7 +183,7 @@
   }
 
   > nav {
-    padding: 12px 0;
+    padding: 16px 0 12px;
     margin-bottom: 18px;
     border-block-start: 1px solid @c-border-light;
     overflow: hidden;

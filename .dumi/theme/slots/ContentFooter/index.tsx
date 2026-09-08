@@ -219,7 +219,7 @@ const ContentFooter: FC = () => {
     const position = getTooltipPosition(target);
 
     setContributorTooltip({
-      text: `GitHub 贡献者：@${contributor.name}`,
+      text: `文档贡献者：${contributor.name}`,
       ...position,
     });
   };
@@ -241,9 +241,9 @@ const ContentFooter: FC = () => {
 
   return (
     <footer className="dumi-default-content-footer">
-      {/* 贡献者 & 最后更新时间区域 */}
+      {/* 贡献者 & 最后更新时间区域（图一单行极简高雅设计） */}
       <div className="yss-contributors-section">
-        {/* 贡献者头像列表 */}
+        {/* 贡献者头像群（支持 Hover 平滑撑开展开） */}
         {contributors.length > 0 && (
           <div className="yss-contributors">
             <ul className="yss-contributors-list">
