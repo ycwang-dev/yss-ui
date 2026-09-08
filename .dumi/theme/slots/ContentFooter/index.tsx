@@ -111,20 +111,55 @@ const ContentFooter: FC = () => {
 
   const showLastUpdated = (themeConfig as any).lastUpdated !== false && frontmatter.lastUpdated;
 
-  // 加载 contributors.json（仅首次加载，兼容部署子路径）
+  // 加载 contributors.json（仅首次加载，兼容 GitHub Pages 等子路径部署环境）
   useEffect(() => {
-    const rawBasePath = (typeof process !== 'undefined' && process.env?.DOCS_BASE_PATH) || '/';
-    const normalizedBasePath = rawBasePath.endsWith('/') ? rawBasePath : `${rawBasePath}/`;
-    fetch(`${normalizedBasePath}contributors.json`)
-      .then(res => res.json())
+    const getBasePath = (): string => {
+      const envPath = (typeof process !== 'undefined' && (process.env.PUBLIC_PATH || process.env.DOCS_BASE_PATH)) || '';
+      if (envPath && envPath !== '/') {
+        return envPath.endsWith('/') ? envPath : `${envPath}/`;
+      }
+      if (typeof window !== 'undefined') {
+        const parts = window.location.pathname.split('/').filter(Boolean);
+        const DOC_TOP_LEVEL_ROUTES = ['guide', 'components', 'hooks', 'utils', 'skills', 'changelog', 'resources'];
+        if (parts.length > 0 && !DOC_TOP_LEVEL_ROUTES.includes(parts[0])) {
+          return `/${parts[0]}/`;
+        }
+      }
+      return '/';
+    };
+
+    const basePath = getBasePath();
+    const targetUrl = `${basePath}contributors.json`;
+
+    fetch(targetUrl)
+      .then(res => {
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        return res.json();
+      })
       .then((data: ContributorsMap) => setContributorsData(data))
-      .catch(() => setContributorsData({}));
+      .catch(() => {
+        if (basePath !== '/') {
+          fetch('/contributors.json')
+            .then(res => (res.ok ? res.json() : {}))
+            .then((data: ContributorsMap) => setContributorsData(data))
+            .catch(() => setContributorsData({}));
+        } else {
+          setContributorsData({});
+        }
+      });
   }, []);
 
   // 获取当前页面的贡献者
   const contributors: Contributor[] = useMemo(() => {
     const normalizedPath = pathname.replace(/\/$/, '') || '/';
-    return contributorsData[normalizedPath] || [];
+    if (contributorsData[normalizedPath]) {
+      return contributorsData[normalizedPath];
+    }
+    const strippedPath = normalizedPath.replace(/^\/[^\/]+/, '');
+    if (strippedPath && contributorsData[strippedPath]) {
+      return contributorsData[strippedPath];
+    }
+    return [];
   }, [pathname, contributorsData]);
 
   // 计算上一篇/下一篇
