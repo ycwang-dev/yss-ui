@@ -201,13 +201,19 @@ function createReleasePlan(changed, bump) {
 /**
  * 发布前校验 changelog 是否包含目标版本。
  *
- * @param {Array<{meta: object, newVersion: string}>} releasePlan - 待发布包计划
+ * @param {Array<{key: string, meta: object, newVersion: string}>} releasePlan - 待发布包计划
+ * @param {{ dryRun?: boolean, autoInsertedKeys?: string[] }} [options] - 校验选项
  */
-function validateReleaseChangelogs(releasePlan) {
+function validateReleaseChangelogs(releasePlan, options = {}) {
+  const { dryRun = false, autoInsertedKeys = [] } = options;
   const errors = [];
   for (const item of releasePlan) {
-    const { meta, newVersion } = item;
+    const { key, meta, newVersion } = item;
     if (!meta.changelog) {
+      // eslint-disable-next-line no-continue
+      continue;
+    }
+    if (dryRun && autoInsertedKeys.includes(key)) {
       // eslint-disable-next-line no-continue
       continue;
     }
@@ -296,9 +302,11 @@ async function main() {
   }
 
   const mcpItem = releasePlan.find(item => item.key === 'mcp');
+  const autoInsertedKeys = [];
   if (mcpItem && !isMcpRuntimeChange(files)) {
     const inserted = ensureMcpIndexChangelog(mcpItem.meta.changelog, mcpItem.newVersion, { dryRun });
     if (inserted) {
+      autoInsertedKeys.push('mcp');
       log(
         dryRun
           ? `@yss/mcp 索引同步将自动补充 changelog ## v${mcpItem.newVersion}`
@@ -307,7 +315,7 @@ async function main() {
     }
   }
 
-  validateReleaseChangelogs(releasePlan);
+  validateReleaseChangelogs(releasePlan, { dryRun, autoInsertedKeys });
   validateComponentRegistryArtifacts(releasePlan);
 
   // 依次处理每个包：版本号 + 构建 + 发布
