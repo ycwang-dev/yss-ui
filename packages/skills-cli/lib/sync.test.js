@@ -27,6 +27,19 @@ async function createSkill(root, name) {
   await fs.writeFile(path.join(skillDir, 'SKILL.md'), `---\nname: ${name}\ndescription: test\n---\n`, 'utf8');
 }
 
+const originalLog = console.log;
+const originalWarn = console.warn;
+
+test.beforeEach(() => {
+  console.log = () => {};
+  console.warn = () => {};
+});
+
+test.afterEach(() => {
+  console.log = originalLog;
+  console.warn = originalWarn;
+});
+
 test('用户级同步只替换 YSS 同名项并保留第三方 Skills', async () => {
   const tempRoot = await fs.mkdtemp(path.join(os.tmpdir(), 'yss-skills-sync-'));
   const sourceRoot = path.join(tempRoot, 'source');

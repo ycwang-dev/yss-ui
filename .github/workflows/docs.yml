@@ -68,7 +68,7 @@ jobs:
 
       - name: Build Documentation
         env:
-          DOCS_BASE_URL: ${{ steps.pages.outputs.base_url || 'https://ycwang-dev.github.io/yss-ui' }}
+          DOCS_BASE_URL: ${{ steps.pages.outputs.base_url || 'https://iamyancong.github.io/yss-ui' }}
           DOCS_BASE_PATH: ${{ steps.pages.outputs.base_path || '/yss-ui/' }}
         run: |
           pnpm prebuild

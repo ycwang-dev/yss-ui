@@ -92,7 +92,7 @@ const getTooltipPosition = (target: HTMLElement): Pick<ContributorTooltip, 'left
  * 自定义 ContentFooter 组件
  *
  * 功能：
- * 1. 展示文档贡献者头像列表 + Tooltip
+ * 1. 展示 GitHub 开源贡献者头像列表 + Tooltip + 链接
  * 2. 展示最后更新时间（来自 dumi 内置 frontmatter.lastUpdated）
  * 3. 保留上一篇/下一篇导航
  */
@@ -107,12 +107,15 @@ const ContentFooter: FC = () => {
   const [lastUpdated, setLastUpdated] = useState('');
   const [contributorsData, setContributorsData] = useState<ContributorsMap>({});
   const [contributorTooltip, setContributorTooltip] = useState<ContributorTooltip | null>(null);
+  const [failedAvatars, setFailedAvatars] = useState<Record<string, boolean>>({});
 
   const showLastUpdated = (themeConfig as any).lastUpdated !== false && frontmatter.lastUpdated;
 
-  // 加载 contributors.json（仅首次加载）
+  // 加载 contributors.json（仅首次加载，兼容部署子路径）
   useEffect(() => {
-    fetch('/contributors.json')
+    const rawBasePath = (typeof process !== 'undefined' && process.env?.DOCS_BASE_PATH) || '/';
+    const normalizedBasePath = rawBasePath.endsWith('/') ? rawBasePath : `${rawBasePath}/`;
+    fetch(`${normalizedBasePath}contributors.json`)
       .then(res => res.json())
       .then((data: ContributorsMap) => setContributorsData(data))
       .catch(() => setContributorsData({}));
@@ -181,7 +184,7 @@ const ContentFooter: FC = () => {
     const position = getTooltipPosition(target);
 
     setContributorTooltip({
-      text: `文档贡献者：${contributor.name}`,
+      text: `GitHub 贡献者：@${contributor.name}`,
       ...position,
     });
   };
@@ -191,6 +194,14 @@ const ContentFooter: FC = () => {
    */
   const hideContributorTooltip = (): void => {
     setContributorTooltip(null);
+  };
+
+  /**
+   * 头像图片加载失败回退处理
+   * @param name 贡献者用户名
+   */
+  const handleAvatarError = (name: string): void => {
+    setFailedAvatars(prev => ({ ...prev, [name]: true }));
   };
 
   return (
@@ -203,7 +214,7 @@ const ContentFooter: FC = () => {
             <ul className="yss-contributors-list">
               {contributors.map((contributor: Contributor) => (
                 <li
-                  key={contributor.email}
+                  key={contributor.name}
                   onMouseEnter={event => showContributorTooltip(event.currentTarget, contributor)}
                   onMouseLeave={hideContributorTooltip}
                   onFocus={event => showContributorTooltip(event.currentTarget, contributor)}
@@ -214,8 +225,14 @@ const ContentFooter: FC = () => {
                     }
                   }}
                 >
-                  {contributor.avatar ? (
-                    <img className="yss-contributor-avatar" src={contributor.avatar} alt={contributor.name} />
+                  {contributor.avatar && !failedAvatars[contributor.name] ? (
+                    <img
+                      className="yss-contributor-avatar"
+                      src={contributor.avatar}
+                      alt={contributor.name}
+                      loading="lazy"
+                      onError={() => handleAvatarError(contributor.name)}
+                    />
                   ) : (
                     <span
                       className="yss-contributor-avatar yss-contributor-avatar--letter"

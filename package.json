@@ -6,7 +6,7 @@
   "homepage": "https://github.com/your-org/yss-ui#readme",
   "license": "MIT",
   "scripts": {
-    "docs:prepare": "node scripts/generate-home-releases.js && node scripts/sync-skills-docs.js && node scripts/generate-llms.js",
+    "docs:prepare": "node scripts/generateContributors.js && node scripts/generate-home-releases.js && node scripts/sync-skills-docs.js && node scripts/generate-llms.js",
     "predev": "pnpm docs:prepare",
     "dev": "dumi dev",
     "prebuild": "pnpm docs:prepare && pnpm validate:skills && pnpm validate:docs",
@@ -21,7 +21,7 @@
     "test": "vitest",
     "test:unit": "vitest --run",
     "test:coverage": "vitest --run --coverage",
-    "test:node": "node --test packages/skills-cli/lib/sync.test.js scripts/check-registry-artifacts.test.mjs scripts/generate-home-releases.test.js scripts/lib/release-packages.test.js",
+    "test:node": "pnpm test:skills-sync && pnpm test:registry-artifacts && pnpm test:home-releases && pnpm test:release-detect",
     "test:package-consumer": "pnpm build:packages:publishable && node scripts/check-package-consumer.mjs",
     "test:registry-artifacts": "node --test scripts/check-registry-artifacts.test.mjs",
     "test:home-releases": "node --test scripts/generate-home-releases.test.js",
