@@ -16,7 +16,7 @@ const GITLAB_USER_NAME = process.env.GITLAB_USER_NAME || process.env.GITLAB_USER
 // 是否为 dry-run 模式（本地测试用）
 const DRY_RUN = process.argv.includes('--dry-run') || process.argv.includes('--dry');
 
-const DOCS_BASE = process.env.DOCS_BASE_URL || 'https://ycwang-dev.github.io/yss-ui';
+const DOCS_BASE = process.env.DOCS_BASE_URL || 'https://iamyancong.github.io/yss-ui';
 
 /**
  * 包配置映射

@@ -16,4 +16,4 @@ toc: content
 
 ## 内部平台
 
-- **雨燕 · 生成微应用脚手架**：[`https://yss-ui.github.io/`](https://yss-ui.github.io/)
+- **雨燕 · 生成微应用脚手架**：[`https://iamyancong.github.io/yss-ui/`](https://iamyancong.github.io/yss-ui/)

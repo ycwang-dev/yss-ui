@@ -29,12 +29,14 @@ toc: content
 
 ## 在 AI 工具中的使用
 
+> **内网环境提示**：若在公司内网离线环境开发，可直接替换为内网镜像地址：`http://192.168.164.27:3200/llms-full.txt`。
+
 ### Cursor
 
 在 Cursor 聊天窗口用 `@Docs` 引入文档站：
 
 ```
-@Docs https://yss-ui.github.io
+@Docs https://iamyancong.github.io/yss-ui/
 ```
 
 Cursor 会自动加载 llms.txt。之后可直接询问"如何使用 YTable 组件实现远程分页？"等问题。
@@ -48,7 +50,7 @@ Cursor 会自动加载 llms.txt。之后可直接询问"如何使用 YTable 组�
 **临时引用**：
 
 ```
-@ https://yss-ui.github.io/llms-full.txt
+@ https://iamyancong.github.io/yss-ui/llms-full.txt
 ```
 
 **持久化配置**：在项目根目录创建 `.windsurf/rules` 文件：
@@ -57,7 +59,7 @@ Cursor 会自动加载 llms.txt。之后可直接询问"如何使用 YTable 组�
 # YSS UI Documentation
 
 Always reference the YSS UI documentation when working with components:
-- https://yss-ui.github.io/llms-full.txt
+- https://iamyancong.github.io/yss-ui/llms-full.txt
 ```
 
 <a href="https://docs.windsurf.com/windsurf/cascade/memories" target="_blank">详细了解 Windsurf Memories 功能</a>
@@ -69,7 +71,7 @@ Always reference the YSS UI documentation when working with components:
 打开 Claude Code 设置，在 "Docs / Context Files" 配置中添加：
 
 ```
-https://yss-ui.github.io/llms-full.txt
+https://iamyancong.github.io/yss-ui/llms-full.txt
 ```
 
 <a href="https://code.claude.com/docs" target="_blank">详细了解 Claude Code 文档上下文配置</a>
@@ -81,14 +83,14 @@ https://yss-ui.github.io/llms-full.txt
 **命令行参数**：
 
 ```bash
-gemini --context https://yss-ui.github.io/llms-full.txt "如何使用 YTable 组件？"
+gemini --context https://iamyancong.github.io/yss-ui/llms-full.txt "如何使用 YTable 组件？"
 ```
 
 **配置文件**：在项目根目录创建 `.gemini/config.json`：
 
 ```json
 {
-  "context": ["https://yss-ui.github.io/llms-full.txt"]
+  "context": ["https://iamyancong.github.io/yss-ui/llms-full.txt"]
 }
 ```
 
@@ -103,20 +105,20 @@ gemini --context https://yss-ui.github.io/llms-full.txt "如何使用 YTable 组
 ```markdown
 ## 核心原则：文档优先
 在回答关于 YSS UI 问题时，必须优先读取以下文档：
-https://yss-ui.github.io/llms-full.txt
+https://iamyancong.github.io/yss-ui/llms-full.txt
 ```
 
 **方式 2：项目 README 配置** —— 在项目 `README.md` 中添加文档链接，Antigravity 读取项目概况时会自动发现：
 
 ```markdown
 ## 相关文档
-- YSS UI: https://yss-ui.github.io/llms-full.txt
+- YSS UI: https://iamyancong.github.io/yss-ui/llms-full.txt
 ```
 
 **方式 3：对话直接引用**：
 
 ```
-参考文档 https://yss-ui.github.io/llms-full.txt，帮我写一个表格。
+参考文档 https://iamyancong.github.io/yss-ui/llms-full.txt，帮我写一个表格。
 ```
 
 > **提示**：Antigravity 同时支持 [MCP 接入](/guide/mcp)，长期使用建议优先配置 MCP。
@@ -128,7 +130,7 @@ https://yss-ui.github.io/llms-full.txt
 打开 Trae 项目设置，在 "Knowledge Sources" 中添加并启用：
 
 ```
-https://yss-ui.github.io/llms-full.txt
+https://iamyancong.github.io/yss-ui/llms-full.txt
 ```
 
 <a href="https://trae.ai/docs" target="_blank">详细了解 Trae 的知识源功能</a>
@@ -142,14 +144,14 @@ https://yss-ui.github.io/llms-full.txt
 ```yaml
 knowledge:
   external_docs:
-    - url: https://yss-ui.github.io/llms-full.txt
+    - url: https://iamyancong.github.io/yss-ui/llms-full.txt
       name: YSS UI Documentation
 ```
 
 **临时引用**：
 
 ```
-@docs https://yss-ui.github.io/llms-full.txt
+@docs https://iamyancong.github.io/yss-ui/llms-full.txt
 ```
 
 <a href="https://docs.qoder.com/" target="_blank">详细了解 Qoder 配置方法</a>

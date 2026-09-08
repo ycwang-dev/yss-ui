@@ -7,7 +7,7 @@ register({ target: 'node16' });
 const dumiConfig = require('../.dumirc.ts').default;
 
 // 配置
-const BASE_URL = process.env.DOCS_BASE_URL || 'https://ycwang-dev.github.io/yss-ui'; // 默认适配 GitHub Pages
+const BASE_URL = process.env.DOCS_BASE_URL || 'https://iamyancong.github.io/yss-ui'; // 默认适配 GitHub Pages
 const DOCS_DIR = path.join(__dirname, '../docs');
 const OUTPUT_DIR = path.join(__dirname, '../public');
 const SKILLS_DIR = path.join(__dirname, '../packages/skills');

@@ -21,7 +21,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/ycwang-dev/yss-ui.git",
+    "url": "https://github.com/iamyancong/yss-ui.git",
     "directory": "packages/skills-cli"
   },
   "keywords": ["yss", "yss-ui", "ai", "skills", "cli"]
