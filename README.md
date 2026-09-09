@@ -1,545 +1,370 @@
-# YSS UI
-
 <p align="center">
-  <img src="https://gw.alipayobjects.com/zos/bmw-prod/d3e3eb39-1cd7-4aa5-827c-877deced6b7e/lalxt4g3_w256_h256.png" width="120" />
+  <img src="https://gw.alipayobjects.com/zos/bmw-prod/d3e3eb39-1cd7-4aa5-827c-877deced6b7e/lalxt4g3_w256_h256.png" width="100" alt="YSS UI Logo" />
 </p>
 
 <h1 align="center">YSS UI</h1>
 
 <p align="center">
-  基于 Vue 3、Ant Design Vue 与 VXE-Table 的企业级中后台组件库
+  <b>基于 Vue 3、Ant Design Vue 与 VXE-Table 的企业级中后台前端工程与组件库体系</b>
+</p>
+
+<p align="center">
+  内置高性能表格 / 动态表单 / 自适应布局 Hooks / 主题 Token 系统，并原生提供领先的 AI 研发智能体套件（MCP & Skills）
+</p>
+
+<p align="center">
+  <a href="https://github.com/iamyancong/yss-ui/actions/workflows/ci.yml">
+    <img src="https://github.com/iamyancong/yss-ui/actions/workflows/ci.yml/badge.svg" alt="CI / CD Pipeline" />
+  </a>
+  <a href="https://iamyancong.github.io/yss-ui">
+    <img src="https://img.shields.io/badge/docs-GitHub%20Pages-blue.svg" alt="GitHub Pages Docs" />
+  </a>
+  <a href="https://github.com/iamyancong/yss-ui/blob/main/LICENSE">
+    <img src="https://img.shields.io/github/license/iamyancong/yss-ui" alt="MIT License" />
+  </a>
+  <a href="https://nodejs.org">
+    <img src="https://img.shields.io/badge/node-%3E%3D22.10.0-brightgreen.svg" alt="Node.js Requirement" />
+  </a>
+  <a href="https://pnpm.io">
+    <img src="https://img.shields.io/badge/pnpm-%3E%3D8.6.0-orange.svg" alt="pnpm Requirement" />
+  </a>
+  <a href="https://github.com/iamyancong/yss-ui/pulls">
+    <img src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg" alt="PRs Welcome" />
+  </a>
 </p>
 
 <p align="center">
   <a href="https://iamyancong.github.io/yss-ui">📖 在线文档</a> •
-  <a href="#快速开始">🚀 快速开始</a> •
-  <a href="#开发流程">💻 开发流程</a> •
-  <a href="#发版流程">📦 发版流程</a>
+  <a href="#-核心特性">✨ 核心特性</a> •
+  <a href="#-模块架构">📦 模块架构</a> •
+  <a href="#-快速开始">🚀 快速开始</a> •
+  <a href="#-ai-原生生态集成">🤖 AI 生态</a> •
+  <a href="#-开源协作流程">💻 协作流程</a> •
+  <a href="#️-ci-自动化门禁与发版">🛡️ 门禁与发版</a>
 </p>
 
 ---
 
-## ✨ 特性
+## ✨ 核心特性
 
-- 🎨 **开箱即用** - 基于 Ant Design Vue 和 VXE-Table 封装的企业级组件
-- 📦 **Monorepo 架构** - 清晰的包结构：`@yss-ui/components`、`@yss-ui/hooks`、`@yss-ui/utils`
-- 🔧 **TypeScript 支持** - 完整的类型定义
-- 🎯 **模块化设计** - 组件、Hooks、工具函数独立发布
-- 📝 **完善的文档** - 详细的 API 文档和丰富的示例
-- 🔄 **自动化发版** - 基于 Conventional Commits 的自动化版本管理
-- 🚀 **CI/CD 集成** - GitHub Actions 自动化门禁与发版
+- 📊 **企业级表格与行内编辑**：基于 `vxe-table 4.x` 深度封装的 `YTable` 与 `YEditTable`，开箱即用支持海量数据虚拟滚动、服务端分页、行拖拽排序、单元格动态校验、下拉选项联动与列设置持久化。
+- 📝 **复杂表单与联动生态**：基于 `@formily/vue 2.x` + Ant Design Vue 深度整合的 `YFormily`，支持 JSON Schema 驱动、字段级异步联动（`x-reactions`）、新增/编辑/查看三态自由切换与自适应网格布局。
+- 📐 **自适应布局 Hooks**：提供 `@yss-ui/hooks`（如 `useTableHeight`、`useTreeHeight` 等），彻底解决中后台复杂嵌套布局中的双滚动条、高度塌陷与视口抖动问题。
+- 🎨 **企业级动态主题**：内置 `@yss-ui/theme`，支持 Ant Design 动态 Token 派生、CSS 变量映射、暗色模式及品牌主色即时切换。
+- 🤖 **领先的 AI 原生研发套件**：
+  - **Model Context Protocol (MCP)**：官方提供 `@yss-ui/mcp` Server，支持 AI 智能体实时精准检索组件 API 与真实代码示例，拒绝大模型幻觉。
+  - **AI Skills 规范注入**：通过 `@yss-ui/skills` 与 `@yss-ui/skills-cli`，一键将组件库开发规范、CRUD 模板与最佳实践注入 Cursor、Claude、Trae 等 AI 辅助工具。
+  - **LLMs.txt 标准支持**：原生导出符合标准的 `llms.txt` / `llms-full.txt` 上下文文档。
+- ⚡ **坚实的现代工程底座**：采用 TypeScript 严格模式、pnpm Workspaces Monorepo 多包管理、Vitest 单元测试覆盖与严苛的 CI 质量门禁。
 
-## 📦 包含的模块
+---
 
-```
-yss-ui/
-├── @yss-ui/components  # 组件库（Table、Formily、Monaco、Tree 等）
-├── @yss-ui/hooks       # Hooks 库（useFullscreen、useLoading 等）
-├── @yss-ui/utils       # 工具函数库（formatDate、downloadBlob 等）
-└── @yss-ui/theme       # 主题配置
-```
+## 📦 模块架构
+
+YSS UI 采用 **pnpm Monorepo** 架构管理各个独立子包，按职责分层解耦，支持独立构建与增量发布：
+
+| 子包目录 | npm 包名 | 职责与定位 |
+| :--- | :--- | :--- |
+| `packages/components` | [`@yss-ui/components`](packages/components) | **核心组件库**：包含 YTable、YFormily、YEditTable、YTree、YButton、YCard、YDescriptions、YMonacoEditor 等组件 |
+| `packages/hooks` | [`@yss-ui/hooks`](packages/hooks) | **组合式 API 库**：`useTableHeight`、`useTreeHeight`、`useFullscreen`、`useLoading`、`useModal` 等业务 Hooks |
+| `packages/utils` | [`@yss-ui/utils`](packages/utils) | **通用工具库**：格式化、日期处理、树形转换、Blob 文件下载（`handleBlobResponse`、`downloadBlob`）等 |
+| `packages/theme` | [`@yss-ui/theme`](packages/theme) | **主题与 Token 配置**：CSS 变量、Design Token 派生方案及主题样式规则 |
+| `packages/mcp` | [`@yss-ui/mcp`](packages/mcp) | **AI MCP 服务**：供智能体按需调用的 Model Context Protocol Server，提供组件文档与 Demo 精准检索 |
+| `packages/skills` | [`@yss-ui/skills`](packages/skills) | **AI 业务技能库**：涵盖 CRUD 规范、Formily 联动、表格开发、主题应用等全流程 AI 指引规范 |
+| `packages/skills-cli` | [`@yss-ui/skills-cli`](packages/skills-cli) | **AI 技能同步工具**：一键将官方 Skills 同步部署至业务项目或个人全局 AI IDE 的命令行工具 |
+
+---
 
 ## 🚀 快速开始
 
-### 环境要求
+### 运行环境准备
 
-- Node.js >= 22.10.0
-- pnpm >= 8.6.0
+在开始之前，请确保本地已满足以下环境要求：
+- **Node.js**：`>= 22.10.0`
+- **pnpm**：`>= 8.6.0`
 
-### 安装
+### 1. 在 Vue 3 业务项目中使用
+
+直接通过 npm / pnpm 安装所需的子包：
 
 ```bash
-# 克隆项目
-git clone https://github.com/iamyancong/yss-ui.git
+# 安装核心组件库、Hooks 与工具包
+pnpm add @yss-ui/components @yss-ui/hooks @yss-ui/utils @yss-ui/theme
+```
 
-# 进入项目目录
+在组件中引入并使用：
+
+```vue
+<script setup lang="ts">
+import { ref } from 'vue';
+import { YTable, YButton } from '@yss-ui/components';
+import { useTableHeight } from '@yss-ui/hooks';
+import { formatDate } from '@yss-ui/utils';
+
+// 自适应表格高度计算
+const { tableHeight } = useTableHeight({ extraOffset: 48 });
+
+const columns = [
+  { field: 'name', title: '名称', width: 200 },
+  { 
+    field: 'createTime', 
+    title: '创建时间', 
+    formatter: ({ cellValue }) => formatDate(cellValue, 'YYYY-MM-DD HH:mm:ss') 
+  }
+];
+
+const tableData = ref([
+  { id: '1', name: 'YSS UI Enterprise', createTime: Date.now() }
+]);
+</script>
+
+<template>
+  <div class="page-container">
+    <YTable
+      :columns="columns"
+      :data="tableData"
+      :height="tableHeight"
+    />
+  </div>
+</template>
+```
+
+---
+
+### 2. 参与源码开发与文档预览
+
+克隆仓库并启动本地 Dumi 文档开发环境：
+
+```bash
+# 1. 克隆代码仓库
+git clone https://github.com/iamyancong/yss-ui.git
 cd yss-ui
 
-# 安装依赖
+# 2. 安装项目全部依赖
 pnpm install
 
-# 启动开发服务器
+# 3. 启动开发文档服务
 pnpm dev
 ```
 
-访问 http://localhost:8000 查看文档。
-
-### 在项目中使用
-
-#### 1. 安装组件库
-
-可以直接通过公共 npm 源安装：
-
-```bash
-# 安装组件库与配套包
-pnpm add @yss-ui/components @yss-ui/hooks @yss-ui/utils
-```
-
-```typescript
-// 在 Vue 3 项目中使用
-import { YTable, YFormily } from '@yss-ui/components';
-import { useFullscreen, useLoading } from '@yss-ui/hooks';
-import { formatDate, downloadBlob } from '@yss-ui/utils';
-```
+本地服务启动后，在浏览器访问 `http://localhost:8000` 即可浏览全量组件交互文档与实时 Demo。
 
 ---
 
-## 💻 开发流程
+## 🤖 AI 原生生态集成
 
-### 完整开发流程图
+YSS UI 是业界首批为 **AI-Assisted Coding（智能体辅助编程）** 提供系统级支持的前端组件库。
 
 ```mermaid
-graph TD
-    A[开始开发] --> B[创建功能分支]
-    B --> C[本地开发]
-    C --> D{代码检查}
-    D -->|Lint 失败| C
-    D -->|通过| E[提交代码]
-    
-    E --> F[Commitlint 校验]
-    F -->|格式错误| G[修正 Commit Message]
-    G --> E
-    F -->|通过| H[推送到远程]
-    
-    H --> I[GitLab CI Pipeline]
-    I --> J[Docker 构建]
-    J --> K[自动部署到测试环境]
-    K --> L{测试通过?}
-    
-    L -->|否| M[修复问题]
-    M --> C
-    L -->|是| N[合并到 dev 分支]
-    
-    N --> O{需要发版?}
-    O -->|是| P[手动触发发版]
-    P --> Q[自动生成更新日志]
-    Q --> R[版本号 bump]
-    R --> S[创建 Git Tag]
-    S --> T[推送到仓库]
-    
-    O -->|否| U[开发完成]
-    T --> U
+flowchart LR
+    A[开发者 / AI Agent] -->|自然语言编程| B[Cursor / Claude / Trae / Antigravity]
+    B -->|精准查阅 API & Demo| C["@yss-ui/mcp (MCP Server)"]
+    B -->|注入最佳工程实践| D["@yss-ui/skills (Skills)"]
+    B -->|读取全量规范上下文| E["llms-full.txt (LLM Context)"]
+    C & D & E -->|零幻觉高质量代码| F[高质量业务交付]
 ```
 
-### 1. 创建功能分支
+### 1. AI 技能同步 (@yss-ui/skills-cli)
+将官方沉淀的企业级 CRUD 模板、Formily 规范与 Token 规则直接同步到业务项目或本机的 AI IDE 中：
 
 ```bash
-# 拉取最新代码
-git pull origin dev
+# 同步 Skills 到当前项目和支持的 AI IDE（Cursor、Trae、Claude 等）
+pnpm sync:skills
 
-# 创建功能分支（建议命名：feature-xxx 或 fix-xxx）
-git checkout -b feature-new-component
+# 仅同步到本机用户级全局 AI 目录
+pnpm sync:skills:ides
 ```
 
-### 2. 本地开发
+### 2. 官方 MCP Server (@yss-ui/mcp)
+配置 `@yss-ui/mcp` 服务后，AI 智能体即可在对话中调用内置工具（如 `get_component_docs`、`get_demo`、`search_docs`），实现 **“查阅为先，拒绝猜测”** 的可靠生成。
 
-```bash
-# 启动开发服务器
-pnpm dev
+### 3. LLMs 上下文支持
+可直接向大模型投喂在线全量文档：
+- **全量上下文文档**：[https://iamyancong.github.io/yss-ui/llms-full.txt](https://iamyancong.github.io/yss-ui/llms-full.txt)
+- **文档索引导航**：[https://iamyancong.github.io/yss-ui/llms.txt](https://iamyancong.github.io/yss-ui/llms.txt)
 
-# 在 packages/ 目录下进行开发
-# - packages/components/  组件开发
-# - packages/hooks/       Hooks 开发
-# - packages/utils/       工具函数开发
+---
 
-# 编写文档（docs/ 目录）
-# 编写 Demo（docs/*/demos/ 目录）
-```
+## 💻 开源协作流程
 
-**开发规范**：
-- 遵循 [组件开发规范](.agent/yss-ui-development-standards.md#组件开发规范)
-- 组件超过 150 行必须模块化拆分
-- 使用 TypeScript 严格模式
-- 为所有公共 API 编写 JSDoc 注释
-
-### 3. 代码检查
-
-```bash
-# 运行 Lint
-pnpm lint              # ESLint 检查
-pnpm lint:style        # Stylelint 检查
-pnpm type-check        # TypeScript 类型检查
-
-# 修复 Lint 错误
-pnpm lint --fix
-```
-
-### 4. 提交代码（重要 ⭐）
-
-**Commit Message 规范**（必须遵守）：
-
-```bash
-# 格式：<type>(<scope>): <subject>
-
-# ✅ 正确示例
-git commit -m "feat(@yss-ui/components): Table 新增虚拟滚动功能"
-git commit -m "fix(@yss-ui/hooks): useFullscreen 修复 iOS 兼容性"
-git commit -m "docs(components): 更新 Table API 文档"
-
-# ❌ 错误示例
-git commit -m "add new feature"        # 缺少 type 和 scope
-git commit -m "feat(table): 新功能。"   # scope 错误，有句号
-```
-
-**Type 类型**：
-- `feat` - 新功能
-- `fix` - Bug 修复
-- `docs` - 文档更新
-- `style` - 代码格式调整
-- `refactor` - 重构
-- `perf` - 性能优化
-- `test` - 测试相关
-- `build` - 构建相关
-- `ci` - CI 配置
-- `chore` - 其他杂项
-
-**Scope 范围**：
-- `@yss-ui/components` 或 `components`
-- `@yss-ui/hooks` 或 `hooks`
-- `@yss-ui/utils` 或 `utils`
-- `@yss-ui/theme` 或 `theme`
-- `docs`、`scripts`、`config`、`deps`
-
-**自动校验**：
-- Husky 会在 commit 时自动校验格式
-- 不符合规范的 commit 会被拒绝
-
-### 5. 推送代码
-
-```bash
-# 推送到远程
-git push origin feature-new-component
-
-# 在 GitLab 创建 Merge Request
-# 选择目标分支：dev
-```
-
-### 6. GitLab CI 自动化
+我们非常欢迎社区贡献者参与到 YSS UI 的建设中！推荐遵循标准的 GitHub 工作流：
 
 ```mermaid
 graph LR
-    A[Push 代码] --> B[Docker 构建]
-    B --> C[部署到测试环境]
-    C --> D[运行测试]
-    D --> E{测试通过?}
-    E -->|是| F[等待合并]
-    E -->|否| G[通知开发者]
-    G --> A
+    A[Fork 仓库] --> B[创建分支 feature/xxx]
+    B --> C[本地编码与规范拆分]
+    C --> D[运行本地质检门禁]
+    D --> E[提交 Conventional Commit]
+    E --> F[推送到 Fork 仓库]
+    F --> G[向 main 分支发起 Pull Request]
+    G --> H[GitHub Actions 自动跑 CI 门禁]
+    H --> I[Maintainer Code Review]
+    I --> J[Squash & Merge 合并到 main]
 ```
 
-**CI Pipeline 阶段**：
+### 1. 分支规范
+- 主开发分支统一为 **`main`**。
+- 贡献分支命名建议：
+  - 新功能：`feature/component-name` 或 `feat/xxx`
+  - 修复缺陷：`fix/issue-description`
+  - 文档调整：`docs/update-xxx`
 
-1. **docker** - 构建 Docker 镜像
-   - 使用 Node 22.19.0 环境
-   - 执行 `pnpm build`
-   - 推送镜像到 Harbor
+### 2. Commit Message 提交规范 (Conventional Commits)
+本项目配置了 Husky 与 Commitlint 强制门禁，提交信息必须严格遵循以下格式：
 
-2. **deploy** - 部署到测试环境
-   - 拉取最新镜像
-   - 启动容器
-   - 健康检查
+```
+<type>(<scope>): <subject>
+```
 
-3. **release** - 发版（手动触发）
-   - 生成更新日志
-   - 更新版本号
-   - 创建 Git Tag
+- **Type 类型**：
+  - `feat`: 新增功能 / 新组件
+  - `fix`: 修复缺陷
+  - `docs`: 文档变更
+  - `style`: 代码格式调整（不影响逻辑）
+  - `refactor`: 代码重构（非新增功能也非修复 bug）
+  - `perf`: 性能优化
+  - `test`: 单元测试补充或修复
+  - `build`: 构建打包或依赖配置
+  - `ci`: CI / CD 流程调整
+  - `chore`: 其他非源码变动的辅助事务
 
-### 7. 代码审查与合并
+- **Scope 范围**（对齐 Monorepo 包名）：
+  - `@yss-ui/components` (或 `components`)
+  - `@yss-ui/hooks` (或 `hooks`)
+  - `@yss-ui/utils` (或 `utils`)
+  - `@yss-ui/theme` (或 `theme`)
+  - `@yss-ui/mcp` (或 `mcp`)
+  - `@yss-ui/skills` (或 `skills`)
+  - `@yss-ui/skills-cli` (或 `skills-cli`)
+  - `docs`, `scripts`, `config`, `deps`
 
+**提交示例**：
 ```bash
-# 在 GitLab UI 中
-1. 创建 Merge Request
-2. 等待代码审查
-3. 通过后合并到 dev 分支
+# ✅ 正确提交示例
+git commit -m "feat(@yss-ui/components): YTable 新增行拖拽排序支持"
+git commit -m "fix(@yss-ui/hooks): useTableHeight 修复视口极值场景抖动"
+git commit -m "docs(components): 补充 YFormily 动态联动 demo"
+
+# ❌ 错误示例（将被 git hook 拦截拒绝）
+git commit -m "update table"          # 缺少 type 与 scope
+git commit -m "feat(table): 新功能。"  # 包含中文句号，scope 非标准包名
 ```
 
 ---
 
-## 📦 发版流程
+## 🛡️ CI 自动化门禁与发版
 
-### 自动化发版流程图
+### 1. GitHub Actions CI 质检网络
+
+每次向 `main` 分支提交代码或创建 Pull Request 时，[CI Pipeline](.github/workflows/ci.yml) 将自动并行触发 5 道严格的防护门禁：
 
 ```mermaid
-graph TD
-    A[功能开发完成] --> B[合并到 dev 分支]
-    B --> C[GitLab CI Pipeline]
-    C --> D[点击手动发版按钮]
-    
-    D --> E[执行 standard-version]
-    E --> F[分析 Git Commits]
-    F --> G[自动生成 CHANGELOG.md]
-    
-    G --> J{包含 Breaking Change?}
-    
-    J -->|是| K[Bump Major 版本<br/>1.0.0 → 2.0.0]
-    J -->|否| L{包含新功能?}
-    
-    L -->|是| M[Bump Minor 版本<br/>1.0.0 → 1.1.0]
-    L -->|否| N[Bump Patch 版本<br/>1.0.0 → 1.0.1]
-    
-    K --> O[更新所有 package.json]
-    M --> O
-    N --> O
-    
-    O --> P[创建 Git Commit]
-    P --> Q[创建 Git Tag<br/>v1.1.0]
-    Q --> R[推送到仓库]
-    
-    R --> S[触发 CI 构建新版本]
-    S --> T[发版完成 🎉]
-```
+flowchart TD
+    subgraph G1 [代码规范检查]
+        L1[ESLint & Stylelint 语法检查]
+    end
+    subgraph G2 [类型严格推导]
+        L2[vue-tsc 类型检查]
+    end
+    subgraph G3 [自动化测试套件]
+        L3[Vitest 单元测试 & 覆盖率]
+        L4[Node 测试套件]
+    end
+    subgraph G4 [安全审计与 AI 校验]
+        L5[敏感信息泄漏扫描]
+        L6[Skills 安全与触发率校验]
+    end
+    subgraph G5 [构建与集成验证]
+        L7[Monorepo 全包构建]
+        L8[下游包消费者集成消费测试]
+        L9[Dumi 文档契约验证]
+    end
+    subgraph G6 [持续部署]
+        D1[GitHub Pages 自动化在线部署]
+    end
 
-### 本地发版（推荐）
-
-```bash
-# 1. 确保在 dev 分支且代码最新
-git checkout dev
-git pull origin dev
-
-# 2. 选择发版类型
-pnpm release:patch   # 1.0.0 -> 1.0.1 (Bug 修复)
-pnpm release:minor   # 1.0.0 -> 1.1.0 (新功能)
-pnpm release:major   # 1.0.0 -> 2.0.0 (破坏性更新)
-
-# 3. 脚本自动执行：
-#    - 分析 commit 历史
-#    - 生成 docs/changelog.md
-#    - 更新所有 package.json 版本号
-#    - 创建 commit 和 tag
-
-# 4. 手动更新分包日志 (可选)
-#    - docs/changelog/hooks.md
-#    - docs/changelog/components.md
-#    - docs/changelog/utils.md
-
-# 5. 检查生成的日志
-git diff HEAD~1 docs/changelog.md
-
-# 5. 推送到远程
-git push --follow-tags origin dev
-```
-
-### GitLab CI 发版
-
-**前提条件**：配置环境变量
-- `GITLAB_USER_NAME` - Git 提交者名称
-- `GITLAB_USER_EMAIL` - Git 提交者邮箱
-- `GIT_LAB_PUSH_TOKEN` - GitLab 推送凭证
-
-**步骤**：
-
-1. 在 GitLab UI 进入项目的 CI/CD → Pipelines
-2. 找到最新的 pipeline
-3. 点击 `should_run_release_ci` 阶段的手动按钮
-4. 设置 `BUMP` 变量：
-   - `patch` - 补丁版本（默认）
-   - `minor` - 次版本
-   - `major` - 主版本
-   - `auto` - 自动检测
-5. 等待 CI 自动完成发版
-
-### 版本号规则（Semantic Versioning）
-
-```
-主版本号.次版本号.补丁版本号
-   |       |       |
-   |       |       └─ Bug 修复（向下兼容）
-   |       └───────── 新功能（向下兼容）
-   └───────────────── 破坏性更新（不兼容）
-
-示例：
-v1.0.0 -> v1.0.1  # 修复 bug
-v1.0.1 -> v1.1.0  # 新增功能
-v1.1.0 -> v2.0.0  # API 重大变更
+    G1 & G2 & G3 & G4 --> G5 --> D1
 ```
 
 ---
 
-## 🔧 常用命令
+### 2. 多包增量发版机制 (Release Packages to npm)
 
-### 开发相关
+YSS UI 采用 **自动化精准发版策略**，各子包独立维护语义化版本（Semantic Versioning）：
 
-```bash
-pnpm dev                    # 启动开发服务器
-pnpm build                  # 构建文档
-pnpm build:components       # 构建所有 packages
-pnpm preview                # 预览构建后的文档
-```
+#### 🚀 GitHub Actions 一键发版
+拥有发版权限的维护者可在 GitHub 页面直接触发发版工作流：
+1. 访问仓库 **Actions** ➔ **[Release Packages to npm](.github/workflows/release.yml)**。
+2. 点击 **Run workflow**。
+3. 选择版本升级步长：`patch`（补丁）、`minor`（次版本）或 `major`（主版本）。
+4. （可选）勾选 `dry_run` 进行试运行预览，检查版本变更与待发包清单而不实际推送。
+5. 工作流将自动执行：
+   - 运行 `pnpm quality` 全量质量门禁；
+   - 自动运行 `scripts/release-changed.js` 检测仅有改动的子包；
+   - 更新子包版本号与各自分包的 `changelog.md`；
+   - 构建并将对应子包公开发布到 npm 官方镜像源；
+   - 自动创建 Git Tag 与 Commit 推回仓库，并发送发版通知。
 
-### 代码质量
-
-```bash
-pnpm lint                   # 运行 ESLint
-pnpm lint:style             # 运行 Stylelint
-pnpm type-check             # TypeScript 类型检查
-pnpm test                   # 运行测试
-```
-
-### 工具脚本
+#### 💻 本地发版辅助命令
+在本地环境也可利用内置脚本进行便捷的变更检测与发版：
 
 ```bash
-pnpm generate:llms          # 生成 AI 工具集成文档
-```
+# 智能检测改动子包并进行 Patch 升级 (1.0.0 -> 1.0.1)
+pnpm release:smart:patch
 
-### 发版
+# 智能检测改动子包并进行 Minor 升级 (1.0.0 -> 1.1.0)
+pnpm release:smart:minor
 
-```bash
-pnpm release:patch          # 发布补丁版本
-pnpm release:minor          # 发布次版本
-pnpm release:major          # 发布主版本
+# 预览变更（Dry Run 模式，不影响任何实际文件）
+node scripts/release-changed.js patch --dry
 ```
 
 ---
 
-## 📚 文档
+## 🔧 常用开发命令清单
 
-### 开发文档
-
-- [开发规范](.agent/yss-ui-development-standards.md) - 完整的开发规范和最佳实践
-- [发版工作流](docs/guide/release-workflow.md) - 详细的发版流程和 Commit 规范
-- [GitLab CI 集成](docs/guide/gitlab-ci-integration.md) - CI/CD 配置说明
-- [AI 工具集成 · Skills 技能同步](docs/guide/ai-skills.md) - 把开发规范装进业务项目
-- [AI 工具集成 · MCP Server 查询](docs/guide/mcp.md) - AI 按需精准查询组件 API 与 Demo
-- [AI 工具集成 · LLMs.txt 全量文档](docs/guide/llms.md) - 全量文档喂给 AI（兜底）
-
-### 在线文档
-
-访问 [https://iamyancong.github.io/yss-ui](https://iamyancong.github.io/yss-ui) 查看：
-- 📖 组件文档和 API 说明
-- 🎯 实战示例和最佳实践
-- 🔧 配置指南
-- 📝 更新日志
-
----
-
-## 🤝 贡献指南
-
-### 开发流程总结
-
-```mermaid
-graph LR
-    A[Fork 项目] --> B[创建分支]
-    B --> C[开发功能]
-    C --> D[遵循 Commit 规范]
-    D --> E[Push 到远程]
-    E --> F[创建 MR]
-    F --> G[代码审查]
-    G --> H[合并代码]
-```
-
-### 提交规范检查清单
-
-- [ ] Commit message 遵循 Conventional Commits 规范
-- [ ] 类型（type）使用正确的枚举值
-- [ ] 范围（scope）指定了正确的包名
-- [ ] 描述（subject）简洁明了，不超过 100 字符
-- [ ] 没有以句号结尾
-- [ ] 通过了 Husky commit-msg hook 校验
-
-### 代码审查要点
-
-- [ ] 代码符合项目规范
-- [ ] 组件模块化拆分合理
-- [ ] TypeScript 类型定义完整
-- [ ] 有完善的文档和示例
-- [ ] 通过了所有 CI 检查
-- [ ] Commit message 规范正确
+| 命令 | 描述 |
+| :--- | :--- |
+| **本地开发与构建** | |
+| `pnpm dev` | 准备前置数据并启动 Dumi 开发文档服务（端口 8000） |
+| `pnpm build` | 构建并修复生产环境静态文档站点产物 |
+| `pnpm build:components` | 构建 Monorepo 下所有的 packages 子包源码 |
+| `pnpm preview` | 预览本地构建后的文档站点 |
+| **代码质量与测试** | |
+| `pnpm lint` | 运行 ESLint 并自动修复代码格式 |
+| `pnpm lint:style` | 运行 Stylelint 并自动修复样式格式 |
+| `pnpm type-check` | 运行 `vue-tsc` 进行严格 TypeScript 类型检查 |
+| `pnpm test:unit` | 运行 Vitest 单元测试 |
+| `pnpm test:coverage` | 运行单元测试并输出测试覆盖率报告 |
+| `pnpm test:package-consumer` | 构建组件并运行下游消费端模拟测试 |
+| `pnpm quality` | **全量质量门禁**：串行执行 Lint、类型、测试、消费端与文档校验 |
+| **AI 套件与技能维护** | |
+| `pnpm sync:skills` | 同步 Packages 内的官方 Skills 到仓库及支持的 AI IDE |
+| `pnpm sync:skills:ides` | 仅将 Skills 同步到本机的全局 IDE 配置目录 |
+| `pnpm validate:skills` | 验证 Skills 完整性、语法规范、触发准确度及安全性 |
+| `pnpm generate:llms` | 重新生成供大模型读取的 `llms.txt` 和 `llms-full.txt` |
+| **发版命令** | |
+| `pnpm release:smart:patch` | 智能检测改动并发布补丁版本（本地发版） |
+| `pnpm release:smart:minor` | 智能检测改动并发布次版本（本地发版） |
 
 ---
 
-## 🚨 常见问题
+## 🤝 贡献与社区
 
-### Q: Commit 被拒绝了怎么办？
+感谢所有参与 YSS UI 建设的贡献者！
 
-A: Commit message 格式不正确。请参考 [发版工作流](docs/guide/release-workflow.md) 中的规范。
-
-```bash
-# 查看错误信息
-# 通常会提示哪里不符合规范
-
-# 修正后重新提交
-git commit -m "feat(@yss-ui/components): 正确的格式"
-```
-
-### Q: 如何跳过 CI 检查？
-
-A: 在 commit message 中添加 `[skip ci]`：
-
-```bash
-git commit -m "chore: 更新 README [skip ci]"
-```
-
-### Q: 本地发版失败了怎么办？
-
-A: 检查以下几点：
-1. 是否在正确的分支（dev/main）
-2. 本地代码是否最新
-3. 是否有未提交的变更
-4. package.json 版本号是否正确
-
-回滚错误的发版：
-```bash
-git reset --hard HEAD~1
-git tag -d v1.0.1
-git push origin :refs/tags/v1.0.1
-```
-
-### Q: 如何查看 CI 日志？
-
-A: 在 GitLab 项目页面 → CI/CD → Pipelines → 点击相应的 job 查看日志。
+- **提交缺陷或建议**：如果在使用过程中遇到问题，欢迎提交 [GitHub Issues](https://github.com/iamyancong/yss-ui/issues)。
+- **贡献代码或文档**：详细的代码组织规则、组件 hooks 拆分要求与测试指引请参阅 [CONTRIBUTING.md](CONTRIBUTING.md)。
+- **安全问题反馈**：如发现敏感信息泄漏或严重安全隐患，请直接与项目负责人联系。
 
 ---
 
-## 📊 项目结构
+## 📄 开源协议
 
-```
-yss-ui/
-├── .agent/                      # AI 开发规范
-│   └── yss-ui-development-standards.md
-├── .husky/                      # Git Hooks
-│   └── commit-msg               # Commit 校验
-├── packages/                    # Monorepo 包
-│   ├── components/              # 组件库
-│   ├── hooks/                   # Hooks 库
-│   ├── utils/                   # 工具函数库
-│   └── theme/                   # 主题配置
-├── docs/                        # 文档
-│   ├── components/              # 组件文档
-│   ├── hooks/                   # Hooks 文档
-│   ├── utils/                   # 工具函数文档
-│   ├── guide/                   # 指南
-│   └── changelog/               # 更新日志
-│       ├── components.md        # 组件库日志
-│       ├── hooks.md             # Hooks 日志
-│       └── utils.md             # 工具库日志
-├── scripts/                     # 脚本
-│   ├── ci-release.sh            # CI 发版脚本
-│   └── generate-llms.js         # AI 文档生成
-├── .commitlintrc.js             # Commitlint 配置
-├── .versionrc.js                # Standard-version 配置
-├── .gitlab-ci.yml               # GitLab CI 配置
-└── README.md                    # 项目说明
-```
+本项目基于 [MIT License](LICENSE) 协议开源。
 
 ---
 
-## 🔗 相关链接
-
-- 📖 [在线文档](https://iamyancong.github.io/yss-ui)
-- 🔧 [GitHub 仓库](https://github.com/iamyancong/yss-ui)
-- 🎨 [Ant Design Vue](https://www.antdv.com/)
-- 📊 [VXE Table](https://vxetable.cn/)
-- 📝 [Conventional Commits](https://www.conventionalcommits.org/)
-- 🏷️ [Semantic Versioning](https://semver.org/lang/zh-CN/)
-
----
-
-## 📄 许可证
-
-MIT
-
----
-
-## 👥 维护团队
-
-如有问题，请联系项目维护者或在 GitLab 创建 Issue。
+<p align="center">
+  Made with ❤️ by <b>YSS UI Team</b> & Contributors
+</p>
