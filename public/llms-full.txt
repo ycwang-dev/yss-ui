@@ -8554,16 +8554,16 @@ app.mount('#app');
 
 <code id="guide-on-demand-import-button" src="./main/Button.vue" ></code>
 
-## 根入口按需裁剪（待发布）
+## 根入口按需裁剪
 
-升级后继续使用原来的公开根入口，不需要增加构建插件或修改为专用轻量路径：
+自 `@yss-ui/components@1.6.0` 起，组件库已正式支持根入口按需裁剪。业务升级后继续使用原来的公开根入口即可，不需要增加构建插件或修改为专用轻量路径：
 
 ```ts
 import { YCard, YTable, YFormily } from '@yss-ui/components';
 import '@yss-ui/components/dist/style.css';
 ```
 
-组件实现按职责保留构建边界，全量安装代码独立成模块。支持 tree-shaking 的生产构建会裁剪未使用的组件与安装代码。历史 `YssFormily` 别名、组件 Props/事件/类型、`lite`、`sheet`、locale 子路径和旧 CSS 路径保持兼容；根入口与 lite 共用组件，语言入口仍共用单例。
+组件实现按职责保留构建边界，全量安装代码独立成模块。支持 tree-shaking 的生产构建会自动裁剪未使用的组件与安装代码。历史 `YssFormily` 别名、组件 Props/事件/类型、`lite`、`sheet`、locale 子路径和旧 CSS 路径保持兼容；根入口与 lite 共用组件，语言入口仍共用单例。
 
 ```ts
 // 重型组件仍使用相同根入口，放在懒加载的业务页面中。
@@ -8578,14 +8578,14 @@ import { YEcharts } from '@yss-ui/components';
 
 组件库本地开发使用 `pnpm --filter @yss-ui/components dev`，单一监听流程依次更新传统产物和新根入口。可通过 `YSS_KEEP_CONSUMER=true pnpm test:package-consumer` 保留真实打包消费项目，再执行 `python3 scripts/check-package-consumer-browser.py <控制台输出的消费项目目录>` 验证页面渲染与全量安装。
 
-## 使用 Utils 和 Hooks（先保留）
+## 使用 Utils 和 Hooks
 
 ```typescript
 // 使用工具函数
-import { formatMoney, validateEmail } from '@yss-ui/utils';
+import { formatDate, formatMoney, downloadBlob } from '@yss-ui/utils';
 
 // 使用 Hooks
-import { useTable, useForm } from '@yss-ui/hooks';
+import { useTableHeight, useTreeHeight, usePollingTask } from '@yss-ui/hooks';
 ```
 
 ## TypeScript 支持
@@ -8598,20 +8598,20 @@ import type { ButtonProps, FormProps } from '@yss-ui/components';
 
 ## 配置
 
-### 全局配置
+### 国际化与全局配置
 
-```typescript
-import { createApp } from 'vue';
-import YssUI from '@yss-ui/components';
+推荐使用 `YConfigProvider` 包裹应用根节点进行语言与全局设置：
 
-const app = createApp(App);
+```vue
+<script setup lang="ts">
+import { YConfigProvider, zhCN } from '@yss-ui/components';
+</script>
 
-app.use(YssUI, {
-  // 全局配置
-  theme: {
-    primaryColor: '#1890ff',
-  },
-});
+<template>
+  <YConfigProvider :locale="zhCN">
+    <App />
+  </YConfigProvider>
+</template>
 ```
 
 ### 主题定制

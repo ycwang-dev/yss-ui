@@ -11,12 +11,12 @@ YSS UI Hooks 库提供了一系列常用的 Vue 3 Composition API Hooks，帮助
 ## 频道导航
 
 - DOM 场景：[`useFullscreen`](/hooks/use-fullscreen)、[`useTreeHeight`](/hooks/use-tree-height)、[`useTableHeight`](/hooks/use-table-height)
-- 状态场景：[`useLoading`](/hooks/use-loading)
+- 状态场景：[`useLoading`](/hooks/use-loading)、[`usePollingTask`](/hooks/use-polling-task)、[`useUrlState`](/hooks/use-url-state)
 
 ## 特性
 
-- 🎯 **统一规范**：后续将补充 `@yss-ui/hooks` 的使用指南与 API 列表
-- 🔧 **开箱即用**：提供类型完善、可组合的接口
+- 🎯 **统一规范**：沉淀中后台高频布局与状态编排最佳实践，提供完备的 TypeScript 类型
+- 🔧 **开箱即用**：提供类型完善、可组合的响应式接口
 - 📦 **按需引入**：支持 Tree Shaking，只打包使用的 Hooks
 - 🌟 **优先评估**：VueUse / Vue Hook Plus 能力，能用则不重复造轮子
 

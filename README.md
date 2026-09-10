@@ -65,8 +65,8 @@ YSS UI 采用 **pnpm Monorepo** 架构管理各个独立子包，按职责分层
 
 | 子包目录 | npm 包名 | 职责与定位 |
 | :--- | :--- | :--- |
-| `packages/components` | [`@yss-ui/components`](packages/components) | **核心组件库**：包含 YTable、YFormily、YEditTable、YTree、YButton、YCard、YDescriptions、YMonacoEditor 等组件 |
-| `packages/hooks` | [`@yss-ui/hooks`](packages/hooks) | **组合式 API 库**：`useTableHeight`、`useTreeHeight`、`useFullscreen`、`useLoading`、`useModal` 等业务 Hooks |
+| `packages/components` | [`@yss-ui/components`](packages/components) | **核心组件库**：包含 YTable、YFormily、YEditTable、YTree、YButton、YCard、YMonaco、YSheet、YEcharts 等组件 |
+| `packages/hooks` | [`@yss-ui/hooks`](packages/hooks) | **组合式 API 库**：`useTableHeight`、`useTreeHeight`、`useFullscreen`、`useLoading`、`usePollingTask`、`useUrlState` 等业务 Hooks |
 | `packages/utils` | [`@yss-ui/utils`](packages/utils) | **通用工具库**：格式化、日期处理、树形转换、Blob 文件下载（`handleBlobResponse`、`downloadBlob`）等 |
 | `packages/theme` | [`@yss-ui/theme`](packages/theme) | **主题与 Token 配置**：CSS 变量、Design Token 派生方案及主题样式规则 |
 | `packages/mcp` | [`@yss-ui/mcp`](packages/mcp) | **AI MCP 服务**：供智能体按需调用的 Model Context Protocol Server，提供组件文档与 Demo 精准检索 |

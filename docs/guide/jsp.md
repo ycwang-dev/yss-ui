@@ -16,7 +16,7 @@ toc: content
 
 必须保证以下顺序（同 Demo）：
 
-```38:63:/Users/wangyancong/Downloads/guangda/Sonorus/yss-ui-demo/index.html
+```html
   <!-- 依赖顺序：Vue3 -> xe-utils -> vxe-pc-ui -> vxe-table -> dayjs(+plugins) -> antd -> Formily -> yss-ui -->
   <script src="../resources/vue3/vue.global.js" defer></script>
   <script src="../resources/xe-utils/xe-utils.umd.min.js" defer></script>
@@ -169,9 +169,9 @@ echo "\n下载完成：请将 ${BASE} 目录发布到 Web 服务器可访问路�
 </html>
 ```
 
-> 插件注册方式与 Demo 一致：
+> 插件注册方式与标准规范一致：
 
-```90:95:/Users/wangyancong/Downloads/guangda/Sonorus/yss-ui-demo/main.js
+```javascript
   const plugins = [window.VXETable, window.antd, window.YssUI];
   plugins.forEach(p => { try { p && app.use(p); } catch (e) { console.warn('plugin use failed:', e); } });
   app.mount('#app');
@@ -209,9 +209,9 @@ HTML/JSP 等 DOM 模板会将属性名统一转为小写，这会影响具名插
 <script src="${ctx}/static/js/main.js" defer></script>
 ```
 
-脚本内容可参考 Demo：
+脚本内容示例：
 
-```75:95:/Users/wangyancong/Downloads/guangda/Sonorus/yss-ui-demo/main.js
+```javascript
       return { columns, tableData, formState, roleOptions, statusOptions, handleSearch, handleReset };
     },
   });
@@ -222,6 +222,6 @@ HTML/JSP 等 DOM 模板会将属性名统一转为小写，这会影响具名插
 
 ---
 
-如需示例静态资源与完整页面，可参考仓库中的 Demo 目录 `Sonorus/yss-ui-demo/`。
+如需完整的静态资源与示例页面模板，可参考上述目录结构直接组织部署。
 
 
