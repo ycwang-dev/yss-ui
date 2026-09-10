@@ -11,6 +11,18 @@ toc: content
 YSS UI 组件库（`@yss-ui/components`）的版本更新记录。
 
 ---
+## v1.6.1
+
+`2026-09-10`
+
+### 🔧 Build
+
+- **Root Entry**: 根入口具名导入直接使用按组件拆分的产物，全量安装独立隔离；无需专用轻量路径或业务插件。保留 lite、sheet、CSS 路径、历史别名及旧内部构建兼容性。
+- **Locale**: 新入口复用现有公开语言模块，避免混用入口导致 Provider 注入上下文分裂。
+- **Package Consumer**: 增加新入口类型与浏览器构建验证，检查普通表格页面未静态引入 Monaco、ECharts、Univer。
+
+---
+
 ## v1.6.0
 `2026-09-05`
 

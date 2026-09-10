@@ -555,12 +555,12 @@ export function getComponentPackageExports() {
 }
 
 /**
- * 从组件入口的安装数组读取公开组件标识符。
+ * 从独立全量安装模块的安装数组读取公开组件标识符。
  *
  * @returns {Set<string>} 安装组件名称
  */
 export function getInstalledComponentNames() {
-  const entryPath = path.join(COMPONENTS_SRC_DIR, 'index.ts');
+  const entryPath = path.join(COMPONENTS_SRC_DIR, 'install.ts');
   const source = createSourceUnit(entryPath).sourceFile;
   const result = new Set();
   for (const statement of source.statements) {

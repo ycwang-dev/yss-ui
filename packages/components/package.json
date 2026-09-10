@@ -2,19 +2,19 @@
   "name": "@yss-ui/components",
   "version": "1.6.0",
   "description": "YSS UI 核心组件包",
-  "main": "dist/index.cjs",
-  "module": "dist/index.mjs",
+  "main": "dist/root/index.cjs",
+  "module": "dist/root/index.mjs",
   "types": "dist/index.d.ts",
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
-      "import": "./dist/index.mjs",
-      "require": "./dist/index.cjs"
+      "import": "./dist/root/index.mjs",
+      "require": "./dist/root/index.cjs"
     },
     "./lite": {
       "types": "./dist/lite.d.ts",
-      "import": "./dist/lite.mjs",
-      "require": "./dist/lite.cjs"
+      "import": "./dist/root/lite.mjs",
+      "require": "./dist/root/lite.cjs"
     },
     "./sheet": {
       "types": "./dist/sheet/docs-exports.d.ts",
@@ -47,8 +47,8 @@
   "files": ["dist"],
   "sideEffects": ["*.css"],
   "scripts": {
-    "build": "vite build",
-    "dev": "vite build --watch",
+    "build": "vite build && vite build --config vite.config.root.ts",
+    "dev": "vite build --config vite.config.watch.ts",
     "build:umd": "vite build -c vite.config.umd.ts"
   },
   "publishConfig": {
@@ -106,5 +106,8 @@
     "vite": "^5.4.10",
     "vite-plugin-dts": "^3.9.1",
     "vue": "^3.3.8"
+  },
+  "yssUi": {
+    "treeShakableRoot": true
   }
 }

@@ -7,6 +7,7 @@ import path from 'node:path';
 import { createRequire } from 'node:module';
 import { fileURLToPath } from 'node:url';
 import { x as extractTarball } from 'tar';
+import ts from 'typescript';
 
 const ROOT_DIR = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const TEMP_PARENT = path.join(ROOT_DIR, 'tmp');
@@ -66,6 +67,25 @@ const collectExportTargets = value => {
   return Object.values(value).flatMap(collectExportTargets);
 };
 
+/** 比较新旧产物公开名称，防止根入口切换时遗漏运行时 API。 */
+const readRuntimeExportNames = file => {
+  const source = ts.createSourceFile(
+    file,
+    fs.readFileSync(file, 'utf8'),
+    ts.ScriptTarget.Latest,
+    true,
+    ts.ScriptKind.JS
+  );
+  return source.statements
+    .flatMap(statement => {
+      if (ts.isExportDeclaration(statement) && statement.exportClause && ts.isNamedExports(statement.exportClause)) {
+        return statement.exportClause.elements.map(element => element.name.text);
+      }
+      return ts.isExportAssignment(statement) ? ['default'] : [];
+    })
+    .sort();
+};
+
 /**
  * 检查 tarball 中的入口、类型和 workspace 依赖改写结果。
  *
@@ -85,6 +105,16 @@ const validatePackedManifest = packageDirectory => {
       `${manifest.name} 入口越界: ${target}`
     );
     assert.ok(fs.existsSync(resolved), `${manifest.name} 声明的入口不存在: ${target}`);
+  }
+
+  if (manifest.name === '@yss-ui/components') {
+    assert.equal(manifest.yssUi?.treeShakableRoot, true);
+    assert.notEqual(manifest.module, 'dist/index.mjs', '公开根入口仍指向传统公共构建');
+    assert.deepEqual(
+      readRuntimeExportNames(path.join(packageDirectory, manifest.module)),
+      readRuntimeExportNames(path.join(packageDirectory, 'dist/index.mjs')),
+      '根入口公开名称发生变化'
+    );
   }
 
   for (const section of ['dependencies', 'optionalDependencies', 'peerDependencies']) {
@@ -229,8 +259,85 @@ import { useLoading } from '@yss-ui/hooks';
 import * as utils from '@yss-ui/utils';
 import * as theme from '@yss-ui/theme';
 
-void [componentsPlugin, YButton, YFileImport, YTable, YSheet, useLoading, utils, theme];
+const registrations = new Map();
+componentsPlugin.install({ component: (name, component) => registrations.set(name, component), use() {} });
+if (!registrations.has('YssFormily') || !registrations.has('YDropdown') || !registrations.has('YSheet')) throw new Error('历史全局别名丢失');
+globalThis.yssLegacyConsumer = [componentsPlugin, YButton, YFileImport, YTable, YSheet, useLoading, utils, theme];
 `;
+
+  const rootSource = `
+import { createApp, h } from 'vue';
+import { ConfigProvider } from 'ant-design-vue';
+import '@yss-ui/components/dist/style.css';
+import { YCard, YTable, YFormily, YssFormily, useLocale } from '@yss-ui/components';
+import { YTable as LiteTable } from '@yss-ui/components/lite';
+import { useLocale as publicUseLocale } from '@yss-ui/components/locale';
+if (useLocale !== publicUseLocale) throw new Error('语言入口单例被复制');
+if (YFormily !== YssFormily) throw new Error('历史表单别名不一致');
+if (YTable !== LiteTable) throw new Error('根入口与 lite 组件实例不一致');
+(globalThis as any).yssRootConsumer = { YCard, YTable, YFormily };
+createApp({ render: () => h(ConfigProvider, null, { default: () => h(YCard, null, { default: () => [
+  h('h2', '根入口消费验证'),
+  h(YFormily, { schema: { type: 'object', properties: { name: { type: 'string', title: '姓名', 'x-decorator': 'FormItem', 'x-component': 'Input' } } } }),
+  h(YTable, { columns: [{ field: 'name', title: '姓名' }], data: [{ name: '张三' }], pageable: false }),
+] }) }) }).mount('#app');
+`;
+  const rootConfig = `
+import assert from 'node:assert/strict';
+export default {
+  build: { target: 'chrome90', manifest: true, rollupOptions: { input: 'root.html' } },
+  plugins: [{ name: 'verify-root-static-closure', generateBundle(_, bundle) {
+    const entry = Object.values(bundle).find(item => item.type === 'chunk' && item.isEntry);
+    assert.ok(entry, 'root entry missing');
+    const visited = new Set();
+    const visit = file => {
+      if (visited.has(file)) return;
+      visited.add(file);
+      const chunk = bundle[file];
+      if (!chunk || chunk.type !== 'chunk') return;
+      for (const id of Object.keys(chunk.modules)) {
+        assert.ok(!/node_modules\\/(?:@univerjs|monaco-editor|echarts)\\//.test(id), 'Heavy engine in table page: ' + id);
+      }
+      chunk.imports.forEach(visit);
+    };
+    visit(entry.fileName);
+  } }],
+};
+`;
+  fs.writeFileSync(path.join(consumerDirectory, 'root.ts'), rootSource);
+  fs.writeFileSync(
+    path.join(consumerDirectory, 'root.html'),
+    '<div id="app"></div><script type="module" src="./root.ts"></script>'
+  );
+  fs.writeFileSync(path.join(consumerDirectory, 'root.config.mjs'), rootConfig);
+  fs.writeFileSync(
+    path.join(consumerDirectory, 'card.ts'),
+    `import { YCard } from '@yss-ui/components'; globalThis.yssCardConsumer = YCard;`
+  );
+  fs.writeFileSync(path.join(consumerDirectory, 'card.html'), '<script type="module" src="./card.ts"></script>');
+  fs.writeFileSync(
+    path.join(consumerDirectory, 'card.config.mjs'),
+    rootConfig
+      .replace('root.html', 'card.html')
+      .replace('@univerjs|monaco-editor|echarts', '@formily|vxe-table|vxe-pc-ui|@univerjs|monaco-editor|echarts')
+  );
+
+  const installSource = `
+import { createApp } from 'vue';
+import UI, { AuthorityDropdown, YButton, YTable, YFormily, YSheet } from '@yss-ui/components';
+const app = createApp({ render: () => null });
+app.use(UI);
+for (const [name, component] of Object.entries({ YButton, YTable, YFormily, YssFormily: YFormily, YDropdown: AuthorityDropdown, YSheet })) {
+  if (app.component(name) !== component) throw new Error('全量安装兼容性失败: ' + name);
+}
+globalThis.yssInstallVerified = true;
+`;
+  fs.writeFileSync(path.join(consumerDirectory, 'install.ts'), installSource);
+  fs.writeFileSync(path.join(consumerDirectory, 'install.html'), '<script type="module" src="./install.ts"></script>');
+  fs.writeFileSync(
+    path.join(consumerDirectory, 'install.config.mjs'),
+    `export default { build: { target: 'chrome90', rollupOptions: { input: 'install.html' } } };`
+  );
 
   const localeSource = `
 import { setGlobalLocale, getGlobalLocale, useLocale, YConfigProvider } from '@yss-ui/components/locale';
@@ -273,7 +380,7 @@ export default {
       skipLibCheck: true,
       noEmit: true,
     },
-    include: ['./consumer.ts'],
+    include: ['./consumer.ts', './root.ts'],
   };
 
   fs.writeFileSync(path.join(consumerDirectory, 'runtime.mjs'), runtimeSource.trimStart());
@@ -345,6 +452,49 @@ const main = async () => {
       { cwd: consumerDirectory, stdio: 'inherit' }
     );
     run(
+      process.execPath,
+      [
+        VITE_CLI,
+        'build',
+        '--config',
+        'root.config.mjs',
+        '--outDir',
+        path.join(tempRoot, 'root-dist'),
+        '--logLevel',
+        'error',
+      ],
+      { cwd: consumerDirectory, stdio: 'inherit' }
+    );
+    run(
+      process.execPath,
+      [
+        VITE_CLI,
+        'build',
+        '--config',
+        'card.config.mjs',
+        '--outDir',
+        path.join(tempRoot, 'card-dist'),
+        '--logLevel',
+        'error',
+      ],
+      { cwd: consumerDirectory, stdio: 'inherit' }
+    );
+    run(
+      process.execPath,
+      [
+        VITE_CLI,
+        'build',
+        '--config',
+        'install.config.mjs',
+        '--outDir',
+        path.join(tempRoot, 'install-dist'),
+        '--logLevel',
+        'error',
+      ],
+      { cwd: consumerDirectory, stdio: 'inherit' }
+    );
+    console.log('Consumer artifacts: ' + tempRoot);
+    run(
       PNPM_COMMAND,
       ['exec', 'tsc', '--project', path.join(consumerDirectory, 'tsconfig.json'), '--pretty', 'false'],
       {
@@ -352,10 +502,10 @@ const main = async () => {
       }
     );
     console.log(
-      '✅ 发布包消费验证通过：4 个 tarball 的 Node 入口、Vite 浏览器构建、exports 与类型均可用；locale 三语子路径和静态依赖闭包通过。'
+      '✅ 发布包消费验证通过：4 个 tarball 的 Node 入口、Vite 浏览器构建、exports 与类型均可用；locale 三语子路径、根入口/卡片静态闭包与全量安装构建通过。'
     );
   } finally {
-    cleanupTempDirectory(tempRoot);
+    if (process.env.YSS_KEEP_CONSUMER !== 'true') cleanupTempDirectory(tempRoot);
   }
 };
 
