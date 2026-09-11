@@ -120,6 +120,6 @@ defineExpose<YConditionExpose>({
   </div>
 </template>
 
-<style scoped lang="less">
+<style lang="less">
 @import url('./style.less');
 </style>
