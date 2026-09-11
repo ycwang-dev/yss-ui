@@ -1,0 +1,149 @@
+.y-edit-table-wrapper {
+  width: 100%;
+
+  /* 将 vxe-ui 的主色映射到组件库主题变量 */
+  --vxe-ui-font-primary-color: var(--primary-color, #3371ff);
+  --vxe-ui-toolbar-custom-active-background-color: color-mix(in srgb, var(--primary-color, #3371ff) 12%, transparent);
+  --vxe-ui-table-row-hover-background-color: color-mix(in srgb, var(--primary-color, #3371ff) 8%, transparent);
+  --vxe-ui-table-row-current-background-color: color-mix(in srgb, var(--primary-color, #3371ff) 14%, transparent);
+  --vxe-ui-table-row-checkbox-checked-background-color: color-mix(
+    in srgb,
+    var(--primary-color, #3371ff) 12%,
+    transparent
+  );
+  --vxe-ui-table-row-radio-checked-background-color: color-mix(in srgb, var(--primary-color, #3371ff) 12%, transparent);
+  --vxe-ui-table-row-hover-current-background-color: color-mix(in srgb, var(--primary-color, #3371ff) 18%, transparent);
+  --vxe-ui-table-row-hover-checkbox-checked-background-color: color-mix(
+    in srgb,
+    var(--primary-color, #3371ff) 16%,
+    transparent
+  );
+  --vxe-ui-table-row-hover-radio-checked-background-color: color-mix(
+    in srgb,
+    var(--primary-color, #3371ff) 16%,
+    transparent
+  );
+}
+
+.y-edit-table-pagination {
+  display: flex;
+  justify-content: flex-end;
+  padding: 12px 0;
+}
+
+.y-edit-table-pagination :deep(.ant-pagination-options-size-changer) {
+  min-width: 112px;
+}
+
+.y-edit-table-pagination :deep(.ant-pagination-options-size-changer .ant-select-selector) {
+  min-width: 112px;
+}
+
+.y-edit-table-pagination :deep(.ant-pagination-options .ant-select-dropdown) {
+  min-width: 112px !important;
+  width: max-content !important;
+}
+
+.y-edit-table-pagination :deep(.ant-pagination-options .ant-select-item-option-content) {
+  overflow: visible;
+  text-overflow: clip;
+}
+
+.y-edit-table-add {
+  width: 100%;
+  margin-top: 8px;
+}
+
+.y-edit-table-add__btn {
+  width: 100%;
+  height: 28px;
+  border-radius: 4px;
+  border: 1px dashed var(--border-color, #d9d9d9);
+  color: var(--text-color-secondary, rgb(0 0 0 / 65%));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 14px;
+  user-select: none;
+  transition: all 0.2s cubic-bezier(0.645, 0.045, 0.355, 1);
+}
+
+.y-edit-table-add__btn:hover {
+  border-color: var(--primary-color, #3371ff);
+  color: var(--primary-color, #3371ff);
+}
+
+.y-edit-table-cell-error {
+  color: var(--yss-color-error-6, var(--ant-error-color, #ff4d4f));
+  font-size: 12px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.y-edit-table-editor.is-error :deep(.ant-input),
+.y-edit-table-editor.is-error :deep(.ant-select-selector),
+.y-edit-table-editor.is-error :deep(.ant-picker),
+.y-edit-table-editor.is-error :deep(.ant-input-number) {
+  border-color: var(--yss-color-error-6, var(--ant-error-color, #ff4d4f)) !important;
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--yss-color-error-6, var(--ant-error-color, #ff4d4f)) 20%, transparent);
+}
+
+/* 空状态高度与行高联动 */
+:deep(.vxe-table--empty-block) {
+  min-height: var(--rowHeight) !important;
+}
+
+/* 与旧组件库对齐的 vxe 自定义区域主题色（使用主题变量） */
+:deep(.vxe-table-custom--checkbox-option.is--checked),
+:deep(.vxe-table-custom--checkbox-option.is--indeterminate) {
+  color: var(--primary-color, #3371ff);
+}
+
+:deep(.vxe-table-custom--checkbox-option.is--checked) .vxe-checkbox--icon,
+:deep(.vxe-table-custom--checkbox-option.is--indeterminate) .vxe-checkbox--icon {
+  color: var(--primary-color, #3371ff);
+}
+
+/* vxe 自定义弹层按钮描边颜色 */
+:deep(.vxe-custom--wrapper) .vxe-button.is--circle {
+  border-color: var(--primary-color, #3371ff);
+  border-radius: 3px;
+}
+
+:deep(.yss-custom-vxe-table .vxe-table--header-inner-wrapper) {
+  /* 仅保持背景色；高度交给 vxe 自动计算，避免分组表头被压扁 */
+  background-color: var(--ant-table-header-bg, rgb(245 248 255));
+}
+
+:deep(.vxe-cell--valid-error-tip) {
+  display: none;
+}
+
+/* 自定义表头文字颜色 */
+:deep(.vxe-table .vxe-table--header-wrapper) {
+  color: var(--text-color, #11192a);
+}
+
+/* 自定义表格内容文字颜色 */
+:deep(.vxe-table--render-default) {
+  color: var(--text-color, #323847);
+}
+
+/* ==========================================================
+ * 暗色模式适配 (Dark Mode)
+ * dumi / yss-ui 通用暗色属性：[data-prefers-color='dark']
+ * 恢复 vxe-table 自带的暗色变量替代本组件强行指定的亮色
+ * ========================================================== */
+:root[data-prefers-color="dark"] .y-edit-table-wrapper :deep(.yss-custom-vxe-table .vxe-table--header-inner-wrapper) {
+  background-color: var(--vxe-ui-table-header-background-color);
+}
+
+:root[data-prefers-color="dark"] .y-edit-table-wrapper :deep(.vxe-table .vxe-table--header-wrapper) {
+  color: var(--vxe-ui-table-header-font-color);
+}
+
+:root[data-prefers-color="dark"] .y-edit-table-wrapper :deep(.vxe-table--render-default) {
+  color: var(--vxe-ui-font-color);
+}

@@ -27,6 +27,7 @@ const conditionBuilder: YssConditionBuilderLocale = {
   remove: '删除条件',
   addChild: '添加子级条件',
   childGroup: '子级条件',
+  addCondition: '添加条件',
 };
 
 export default conditionBuilder;

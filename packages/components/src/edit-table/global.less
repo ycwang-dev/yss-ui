@@ -1,0 +1,82 @@
+/* 全局：为 vxe-ui 绑定主题主色，解决部分内部节点与 Teleport 弹层不继承 scoped 变量的问题 */
+:root {
+  --vxe-ui-font-primary-color: var(--primary-color, #3371ff);
+  --vxe-ui-toolbar-custom-active-background-color: color-mix(in srgb, var(--primary-color, #3371ff) 12%, transparent);
+  --vxe-ui-table-row-hover-background-color: color-mix(in srgb, var(--primary-color, #3371ff) 8%, transparent);
+  --vxe-ui-table-row-current-background-color: color-mix(in srgb, var(--primary-color, #3371ff) 14%, transparent);
+  --vxe-ui-table-row-checkbox-checked-background-color: color-mix(
+    in srgb,
+    var(--primary-color, #3371ff) 12%,
+    transparent
+  );
+  --vxe-ui-table-row-radio-checked-background-color: color-mix(in srgb, var(--primary-color, #3371ff) 12%, transparent);
+  --vxe-ui-table-row-hover-current-background-color: color-mix(in srgb, var(--primary-color, #3371ff) 18%, transparent);
+  --vxe-ui-table-row-hover-checkbox-checked-background-color: color-mix(
+    in srgb,
+    var(--primary-color, #3371ff) 16%,
+    transparent
+  );
+  --vxe-ui-table-row-hover-radio-checked-background-color: color-mix(
+    in srgb,
+    var(--primary-color, #3371ff) 16%,
+    transparent
+  );
+}
+
+.vxe-table-custom-modal-wrapper,
+.vxe-table-custom-drawer-wrapper {
+  --vxe-ui-font-primary-color: var(--primary-color, #3371ff);
+  --vxe-ui-toolbar-custom-active-background-color: color-mix(in srgb, var(--primary-color, #3371ff) 12%, transparent);
+  --vxe-ui-table-row-hover-background-color: color-mix(in srgb, var(--primary-color, #3371ff) 8%, transparent);
+  --vxe-ui-table-row-current-background-color: color-mix(in srgb, var(--primary-color, #3371ff) 14%, transparent);
+  --vxe-ui-table-row-checkbox-checked-background-color: color-mix(
+    in srgb,
+    var(--primary-color, #3371ff) 12%,
+    transparent
+  );
+  --vxe-ui-table-row-radio-checked-background-color: color-mix(in srgb, var(--primary-color, #3371ff) 12%, transparent);
+  --vxe-ui-table-row-hover-current-background-color: color-mix(in srgb, var(--primary-color, #3371ff) 18%, transparent);
+  --vxe-ui-table-row-hover-checkbox-checked-background-color: color-mix(
+    in srgb,
+    var(--primary-color, #3371ff) 16%,
+    transparent
+  );
+  --vxe-ui-table-row-hover-radio-checked-background-color: color-mix(
+    in srgb,
+    var(--primary-color, #3371ff) 16%,
+    transparent
+  );
+}
+
+/* 通过全局非 scoped 设置 tooltip 的颜色搭配，与原始 JS 的硬覆盖保持一致并在暗色下重置 */
+.y-edit-table-error-tooltip {
+  .ant-tooltip-inner {
+    background-color: var(--bg-color-container, #fff);
+    color: var(--yss-color-error-6, var(--ant-error-color, #ff4d4f));
+  }
+
+  .ant-tooltip-arrow-content {
+    background-color: var(--bg-color-container, #fff);
+  }
+
+  .ant-tooltip-arrow::before,
+  .ant-tooltip-arrow::after {
+    background: var(--bg-color-container, #fff);
+  }
+}
+
+:root[data-prefers-color="dark"] .y-edit-table-error-tooltip {
+  .ant-tooltip-inner {
+    background-color: var(--ant-tooltip-bg, rgb(0 0 0 / 85%));
+    color: var(--yss-color-error-6, var(--ant-error-color, #ff4d4f));
+  }
+
+  .ant-tooltip-arrow-content {
+    background-color: var(--ant-tooltip-bg, rgb(0 0 0 / 85%));
+  }
+
+  .ant-tooltip-arrow::before,
+  .ant-tooltip-arrow::after {
+    background: var(--ant-tooltip-bg, rgb(0 0 0 / 85%));
+  }
+}

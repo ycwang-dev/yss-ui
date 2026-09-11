@@ -113,6 +113,7 @@ export interface YssConditionBuilderLocale {
   remove: string;
   addChild: string;
   childGroup: string;
+  addCondition?: string;
 }
 
 export interface YssTreeLocale {

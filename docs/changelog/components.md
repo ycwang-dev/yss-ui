@@ -11,6 +11,24 @@ toc: content
 YSS UI 组件库（`@yss-ui/components`）的版本更新记录。
 
 ---
+## v1.6.3
+
+`2026-09-11`
+
+### ♻️ Refactor
+
+- **YEditTable**: 主 SFC 从 895 行深度瘦身至 137 行（≤ 150 行）。拆分独立单元格/编辑器/列/分页子组件（`EditTableCell.vue`、`EditCellEditor.vue`、`EditTablePagination.vue`、`EditTableColumn.vue`）与逻辑 Hook（`useEditTableContext`、`useCellFormatter`、`useErrorTooltip`）；抽离独立样式 `style.less` 与 `global.less`，全面消除硬编码颜色，保持所有公开 Props、Events、Slots 及 Expose 100% 向后兼容。
+- **YConditionBuilder**: 主 SFC 从 878 行瘦身至 125 行（≤ 150 行）。拆分子组件 `ConditionLeaf.vue`，彻底消除 `vue/no-mutating-props` 隐式属性篡改警告；拆分 `useConditionBuilderValidation`、`useConditionBuilderState`、`useConditionBuilderContext` 状态与校验 Hooks；清理大段注释死代码并实现 Less 样式 Token 收敛。
+
+### 🌐 Locale
+
+- **ConditionBuilder**: 对齐 `zh-CN`、`en-US`、`zh-TW` 三语字典，补齐 `addCondition` 词条。
+
+### 🧪 Test & Quality
+
+- **EditTable & ConditionBuilder Tests**: 为 `YEditTable` 补充单元测试套件（覆盖数据渲染、行内编辑、添加删除行、分页事件与实例公开方法）；优化 `YConditionBuilder` 测试断言；修复初始化顺序与国际化镜像，单测、覆盖率门禁、ESLint 与 Vue-TSC 类型检查全数通过。
+
+---
 ## v1.6.2
 
 `2026-09-11`
