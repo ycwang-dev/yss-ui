@@ -11,6 +11,15 @@ toc: content
 YSS UI 组件库（`@yss-ui/components`）的版本更新记录。
 
 ---
+## v1.6.2
+
+`2026-09-11`
+
+### ♻️ Refactor
+
+- **YssForm / AuthorityButton**: 删除从未进入公开导出面的死代码。`packages/components/src/form/`（`YssForm`）与 `AuthorityButton.vue` 未出现在 `index.ts` / `install.ts`；权限能力继续由 `YButton.permissionCode` 与公开导出的 `AuthorityDropdown` 承接。公开组件 API 不变。
+
+---
 ## v1.6.1
 
 `2026-09-10`

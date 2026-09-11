@@ -125,8 +125,9 @@ toc: content
 
 | 目录 | 现状 | 结论 |
 | --- | --- | --- |
-| `packages/components/src/form` | 含旧 `index.vue` 与 `types.ts`，未从组件入口导出，也无当前文档/Skill 引用 | 内部孤儿候选；本轮不擅自导出或建公开文档 |
 | `packages/components/src/trade-calendar-board` | 空目录，未导出、未引用 | 内部残留目录；本轮不改变公共面 |
+
+`packages/components/src/form`（未导出的 `YssForm`）与 `packages/components/src/authority/AuthorityButton.vue` 已删除，避免长期保持「源码在、导出无」状态。权限 UX 继续由 `YButton.permissionCode` 与 `AuthorityDropdown` 承接。
 
 ## 遗留项与改进项
 
