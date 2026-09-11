@@ -7,7 +7,7 @@ import 'vxe-pc-ui/lib/style.css';
 import 'ant-design-vue/dist/reset.css';
 import './table/global.less';
 
-// 统一导出名：YButton/YForm/YTable
+// 统一导出名：YButton/YFormily/YTable
 export { default as AuthorityDropdown } from './authority/AuthorityDropdown.vue';
 export { default as YButton } from './button/index.vue';
 export { default as YEcharts } from './echarts/index.vue';
