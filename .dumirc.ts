@@ -200,6 +200,9 @@ export default defineConfig({
             { title: 'YTable Usage', link: '/skills/ytable-usage' },
             { title: 'YEditTable Usage', link: '/skills/yedit-table-usage' },
             { title: 'YTree Usage', link: '/skills/ytree-usage' },
+            { title: 'YSheet Usage', link: '/skills/ysheet-usage' },
+            { title: 'YConditionBuilder Usage', link: '/skills/ycondition-builder-usage' },
+            { title: 'YFileImport Usage', link: '/skills/yfile-import-usage' },
             { title: 'Prototype Page Acceptance', link: '/skills/prototype-page-acceptance' },
             { title: 'API Integration', link: '/skills/api-integration' },
             { title: 'File Export Download', link: '/skills/file-export-download' },
@@ -209,6 +212,8 @@ export default defineConfig({
             { title: 'Java Backend Commit', link: '/skills/java-backend-commit' },
             { title: 'useTableHeight', link: '/skills/use-table-height' },
             { title: 'useTreeHeight', link: '/skills/use-tree-height' },
+            { title: 'useUrlState', link: '/skills/use-url-state' },
+            { title: 'usePollingTask', link: '/skills/use-polling-task' },
           ],
         },
         {

@@ -105,10 +105,15 @@ reminders:
 - skill-development: .agents/skills/skill-development/SKILL.md
 - sync-internal-dev: .agents/skills/sync-internal-dev/SKILL.md
 - theme-token-usage: .agents/skills/theme-token-usage/SKILL.md
+- use-polling-task: .agents/skills/use-polling-task/SKILL.md
 - use-table-height: .agents/skills/use-table-height/SKILL.md
 - use-tree-height: .agents/skills/use-tree-height/SKILL.md
+- use-url-state: .agents/skills/use-url-state/SKILL.md
 - vue3-best-practices: .agents/skills/vue3-best-practices/SKILL.md
+- ycondition-builder-usage: .agents/skills/ycondition-builder-usage/SKILL.md
 - yedit-table-usage: .agents/skills/yedit-table-usage/SKILL.md
+- yfile-import-usage: .agents/skills/yfile-import-usage/SKILL.md
+- ysheet-usage: .agents/skills/ysheet-usage/SKILL.md
 - yss-create-microapp: .agents/skills/yss-create-microapp/SKILL.md
 - yss-formily: .agents/skills/yss-formily/SKILL.md
 - yss-ui-business-page-generation: .agents/skills/yss-ui-business-page-generation/SKILL.md

@@ -23,7 +23,7 @@ AI 生成 YSS UI 业务页面不准确的根因之一，是模型不知道组件
 
 > **三者协作关系**：`Skills` 管“怎么写才对（规范与模式）”，`MCP` 管“API 到底长什么样（数据与源码）”，`llms-full.txt` 负责离线兜底。
 
-## 技能清单（33 个 Skills）
+## 技能清单（39 个 Skills）
 
 ### 1. 业务页面与骨架
 - `yss-ui-business-page-generation`：Vue3 YSS UI 业务页面生成主入口（CRUD、列表、表单、详情、左树右表）；
@@ -45,13 +45,18 @@ AI 生成 YSS UI 业务页面不准确的根因之一，是模型不知道组件
 - `formily-mode-slot-detail`：新增/编辑/查看三态切换、只读态 Descriptions 渲染与自定义插槽；
 - `formily-step-flow`：分步表单与复杂流程录入（跨步状态保留、独立校验、最终聚合提交）。
 
-### 4. 树形组件
+### 4. 树形与高价值业务组件
 - `ytree-usage`：YTree 组件用法（字段映射 `fieldNames`、搜索过滤、受控选中、节点操作）；
 - `use-tree-height`：YTree 自适应高度与独立滚动计算。
+- `ysheet-usage`：YSheet 协同表格（optionalDependencies、`@yss-ui/components/sheet` 子路径、extraPresets）；
+- `ycondition-builder-usage`：YConditionBuilder 嵌套 AND/OR 条件树、远程字段值和严格校验。
 
 ### 5. API 与数据流
 - `api-integration`：Orval API 接口集成（mutator 统一错误契约、加载状态、长整型精度）；
-- `file-export-download`：文件导出、报表下载、模板下载与 Blob 流处理（`handleBlobResponse`）。
+- `file-export-download`：文件导出、报表下载、模板下载与 Blob 流处理（`handleBlobResponse`）；
+- `yfile-import-usage`：YFileImport 两步导入弹窗（`nextStep.onSuccess`、`importResult`、loadings）；
+- `use-url-state`：当前路由 URL query 读写、history 无感更新与分享链接恢复；
+- `use-polling-task`：页面级静默轮询调度（`isCurrent`、`pauseWhenHidden`、动态间隔）。
 
 ### 6. 主题与工程规范
 - `theme-token-usage`：主题 Token 规范（主色、状态色、透明色派生，严禁硬编码色值）；

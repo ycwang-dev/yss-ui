@@ -13,6 +13,7 @@ trigger: always_on
 - commit-linting: .agents/skills/commit-linting/SKILL.md
 - component-development: .agents/skills/component-development/SKILL.md
 - component-selection-imports: .agents/skills/component-selection-imports/SKILL.md
+- component-testing: .agents/skills/component-testing/SKILL.md
 - documentation: .agents/skills/documentation/SKILL.md
 - file-export-download: .agents/skills/file-export-download/SKILL.md
 - formily-foundation: .agents/skills/formily-foundation/SKILL.md
@@ -20,6 +21,7 @@ trigger: always_on
 - formily-mode-slot-detail: .agents/skills/formily-mode-slot-detail/SKILL.md
 - formily-step-flow: .agents/skills/formily-step-flow/SKILL.md
 - frontend-commit: .agents/skills/frontend-commit/SKILL.md
+- i18n-locale-management: .agents/skills/i18n-locale-management/SKILL.md
 - java-backend-commit: .agents/skills/java-backend-commit/SKILL.md
 - page-form-module: .agents/skills/page-form-module/SKILL.md
 - page-list-module: .agents/skills/page-list-module/SKILL.md
@@ -28,11 +30,18 @@ trigger: always_on
 - prototype-page-acceptance: .agents/skills/prototype-page-acceptance/SKILL.md
 - release-management: .agents/skills/release-management/SKILL.md
 - release-workflow: .agents/skills/release-workflow/SKILL.md
+- skill-development: .agents/skills/skill-development/SKILL.md
+- sync-internal-dev: .agents/skills/sync-internal-dev/SKILL.md
 - theme-token-usage: .agents/skills/theme-token-usage/SKILL.md
+- use-polling-task: .agents/skills/use-polling-task/SKILL.md
 - use-table-height: .agents/skills/use-table-height/SKILL.md
 - use-tree-height: .agents/skills/use-tree-height/SKILL.md
+- use-url-state: .agents/skills/use-url-state/SKILL.md
 - vue3-best-practices: .agents/skills/vue3-best-practices/SKILL.md
+- ycondition-builder-usage: .agents/skills/ycondition-builder-usage/SKILL.md
 - yedit-table-usage: .agents/skills/yedit-table-usage/SKILL.md
+- yfile-import-usage: .agents/skills/yfile-import-usage/SKILL.md
+- ysheet-usage: .agents/skills/ysheet-usage/SKILL.md
 - yss-create-microapp: .agents/skills/yss-create-microapp/SKILL.md
 - yss-formily: .agents/skills/yss-formily/SKILL.md
 - yss-ui-business-page-generation: .agents/skills/yss-ui-business-page-generation/SKILL.md

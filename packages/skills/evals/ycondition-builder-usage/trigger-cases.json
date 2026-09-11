@@ -1,0 +1,36 @@
+{
+  "skill": "ycondition-builder-usage",
+  "purpose": "触发行为规约：YConditionBuilder 条件树 / AND-OR / BETWEEN 的确定性词法路由。",
+  "cases": [
+    {
+      "id": "condition-builder",
+      "prompt": "用 YConditionBuilder 做规则条件树",
+      "should_trigger": true,
+      "assert": "绑定 ConditionGroup，提供 loadFields/loadValues。"
+    },
+    {
+      "id": "nested-and-or",
+      "prompt": "嵌套 AND/OR 条件构建器 BETWEEN 怎么配",
+      "should_trigger": true,
+      "assert": "操作符 kind 决定输入形态，BETWEEN 使用双值。"
+    },
+    {
+      "id": "strict-validate",
+      "prompt": "YConditionBuilder validate 严格校验空值",
+      "should_trigger": true,
+      "assert": "strictMode 与 validate()/@validate 提交校验。"
+    },
+    {
+      "id": "near-miss-formily",
+      "prompt": "查询表单栅格布局怎么排",
+      "should_trigger": false,
+      "assert": "普通查询表单归 formily-foundation，不触发本 skill。"
+    },
+    {
+      "id": "near-miss-table-filter",
+      "prompt": "表格列头筛选字典翻译",
+      "should_trigger": false,
+      "assert": "表格筛选归 ytable-usage，不触发本 skill。"
+    }
+  ]
+}
