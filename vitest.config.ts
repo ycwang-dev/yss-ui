@@ -26,10 +26,10 @@ export default defineConfig({
       reporter: ['text', 'json-summary'],
       reportsDirectory: 'coverage',
       thresholds: {
-        statements: 30,
-        branches: 60,
-        functions: 45,
-        lines: 30,
+        statements: 45,
+        branches: 62,
+        functions: 48,
+        lines: 45,
       },
     },
     /** 这些脚本使用 Node.js 原生 test runner，由各自的 package script 执行。 */
