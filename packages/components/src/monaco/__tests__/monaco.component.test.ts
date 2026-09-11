@@ -54,6 +54,15 @@ vi.mock('monaco-editor/esm/vs/editor/editor.api', () => ({
   ...monacoApiMock,
 }));
 
+vi.mock('monaco-editor/esm/vs/basic-languages/sql/sql.js', () => ({
+  language: {
+    keywords: ['SELECT', 'FROM', 'WHERE'],
+    builtinFunctions: ['COUNT', 'SUM'],
+    operators: ['=', '<>'],
+    builtinVariables: [],
+  },
+}));
+
 vi.mock('../hooks/useMonacoLoader', () => ({
   useMonacoLoader: () => ({
     ensureMonaco: async () => monacoApiMock,

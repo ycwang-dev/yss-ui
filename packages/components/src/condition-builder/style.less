@@ -3,9 +3,9 @@
     position: relative;
 
     &:not(.is-root) {
-      border: 1px solid #f6f6f6;
+      border: 1px solid var(--border-color-split, #f0f0f0);
       border-radius: 6px;
-      background: #fafafa;
+      background: var(--bg-color-container, #fafafa);
       margin: 6px 0;
       padding: 8px 12px;
       margin-left: 32px;
@@ -99,13 +99,13 @@
       font-size: 12px;
       font-weight: 600;
       cursor: pointer;
-      border: 2px solid #fff; // 白色边框，让按钮从连接线上突出
-      background: #fff;
+      border: 2px solid var(--bg-color-container, #fff);
+      background: var(--bg-color-container, #fff);
       color: var(--primary-color, #3371ff);
       transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
       box-shadow: 0 2px 8px rgb(0 0 0 / 15%);
       position: relative;
-      z-index: 20; // 确保按钮在连接线之上
+      z-index: 20;
       overflow: hidden;
 
       &:hover {
@@ -120,25 +120,25 @@
 
       &.logic-and {
         background: var(--primary-color, #3371ff);
-        color: #fff;
-        border-color: #fff;
-        box-shadow: 0 2px 8px rgb(22 119 255 / 30%);
+        color: var(--text-color-inverse, #fff);
+        border-color: var(--bg-color-container, #fff);
+        box-shadow: 0 2px 8px color-mix(in srgb, var(--primary-color, #3371ff) 30%, transparent);
 
         &:hover {
           background: var(--primary-color, #3371ff);
-          box-shadow: 0 6px 16px rgb(22 119 255 / 40%);
+          box-shadow: 0 6px 16px color-mix(in srgb, var(--primary-color, #3371ff) 40%, transparent);
         }
       }
 
       &.logic-or {
         background: var(--warning-color, #faad14);
-        color: #fff;
-        border-color: #fff;
-        box-shadow: 0 2px 8px rgb(250 173 20 / 30%);
+        color: var(--text-color-inverse, #fff);
+        border-color: var(--bg-color-container, #fff);
+        box-shadow: 0 2px 8px color-mix(in srgb, var(--warning-color, #faad14) 30%, transparent);
 
         &:hover {
-          background: #ffc53d;
-          box-shadow: 0 6px 16px rgb(250 173 20 / 40%);
+          background: var(--warning-color-hover, #ffc53d);
+          box-shadow: 0 6px 16px color-mix(in srgb, var(--warning-color, #faad14) 40%, transparent);
         }
       }
     }
@@ -215,53 +215,53 @@
 
         &.add-btn {
           color: var(--success-color, #52c41a);
-          background: rgb(82 196 26 / 8%);
-          border: 1px solid rgb(82 196 26 / 20%);
+          background: color-mix(in srgb, var(--success-color, #52c41a) 8%, transparent);
+          border: 1px solid color-mix(in srgb, var(--success-color, #52c41a) 20%, transparent);
           border-radius: 4px;
           font-weight: 500;
           transition: all 0.2s cubic-bezier(0.645, 0.045, 0.355, 1);
 
           &:hover {
-            color: #fff;
+            color: var(--text-color-inverse, #fff);
             background: var(--success-color, #52c41a);
             border-color: var(--success-color, #52c41a);
             transform: translateY(-1px);
-            box-shadow: 0 2px 8px rgb(82 196 26 / 30%);
+            box-shadow: 0 2px 8px color-mix(in srgb, var(--success-color, #52c41a) 30%, transparent);
           }
         }
 
         &.remove-btn {
           color: var(--error-color, #ff4d4f);
-          background: rgb(255 77 79 / 8%);
-          border: 1px solid rgb(255 77 79 / 20%);
+          background: color-mix(in srgb, var(--error-color, #ff4d4f) 8%, transparent);
+          border: 1px solid color-mix(in srgb, var(--error-color, #ff4d4f) 20%, transparent);
           border-radius: 4px;
           font-weight: 500;
           transition: all 0.2s cubic-bezier(0.645, 0.045, 0.355, 1);
 
           &:hover {
-            color: #fff;
+            color: var(--text-color-inverse, #fff);
             background: var(--error-color, #ff4d4f);
             border-color: var(--error-color, #ff4d4f);
             transform: translateY(-1px);
-            box-shadow: 0 2px 8px rgb(255 77 79 / 30%);
+            box-shadow: 0 2px 8px color-mix(in srgb, var(--error-color, #ff4d4f) 30%, transparent);
           }
         }
 
         &.group-btn {
           color: var(--primary-color, #3371ff);
-          background: rgb(51 113 255 / 8%);
-          border: 1px solid rgb(51 113 255 / 20%);
+          background: color-mix(in srgb, var(--primary-color, #3371ff) 8%, transparent);
+          border: 1px solid color-mix(in srgb, var(--primary-color, #3371ff) 20%, transparent);
           border-radius: 4px;
           font-weight: 500;
           padding: 4px 12px;
           transition: all 0.2s cubic-bezier(0.645, 0.045, 0.355, 1);
 
           &:hover {
-            color: #fff;
+            color: var(--text-color-inverse, #fff);
             background: var(--primary-color, #3371ff);
             border-color: var(--primary-color, #3371ff);
             transform: translateY(-1px);
-            box-shadow: 0 2px 8px rgb(51 113 255 / 30%);
+            box-shadow: 0 2px 8px color-mix(in srgb, var(--primary-color, #3371ff) 30%, transparent);
           }
         }
       }
@@ -296,9 +296,9 @@
       height: 24px;
       padding: 0;
       border-radius: 50%;
-      background: #fff;
+      background: var(--bg-color-container, #fff);
       color: var(--error-color, #ff4d4f);
-      border: 1px solid rgb(255 77 79 / 35%);
+      border: 1px solid color-mix(in srgb, var(--error-color, #ff4d4f) 35%, transparent);
       cursor: pointer;
       display: flex;
       align-items: center;
@@ -313,20 +313,20 @@
 
       &:hover {
         background: var(--error-color, #ff4d4f);
-        color: #fff;
+        color: var(--text-color-inverse, #fff);
         border-color: var(--error-color, #ff4d4f);
         transform: scale(1.05);
-        box-shadow: 0 4px 12px rgb(255 77 79 / 25%);
+        box-shadow: 0 4px 12px color-mix(in srgb, var(--error-color, #ff4d4f) 25%, transparent);
       }
 
       &:active {
         transform: scale(0.98);
-        box-shadow: 0 2px 6px rgb(255 77 79 / 35%);
+        box-shadow: 0 2px 6px color-mix(in srgb, var(--error-color, #ff4d4f) 35%, transparent);
       }
 
       &:focus-visible {
         outline: none;
-        box-shadow: 0 0 0 3px rgb(255 77 79 / 25%);
+        box-shadow: 0 0 0 3px color-mix(in srgb, var(--error-color, #ff4d4f) 25%, transparent);
       }
 
       svg {
@@ -343,13 +343,13 @@
     align-items: center;
     gap: 8px;
     width: 100%;
-    flex: 2; // 继承value-input的flex比例
-    min-width: 240px; // 增加最小宽度以容纳两个更宽的输入框
+    flex: 2;
+    min-width: 240px;
 
     .between-input {
-      flex: 1; // 让两个输入框平分可用空间
-      min-width: 100px; // 增加最小宽度，确保输入体验良好
-      max-width: none; // 移除最大宽度限制，允许自适应
+      flex: 1;
+      min-width: 100px;
+      max-width: none;
     }
 
     .between-separator {
@@ -359,7 +359,7 @@
       flex-shrink: 0;
       margin: 0 4px;
       font-weight: 500;
-      user-select: none; // 防止选中文字
+      user-select: none;
     }
   }
 
@@ -373,7 +373,7 @@
       &:focus,
       &:focus-within {
         border-color: var(--error-color, #ff4d4f) !important;
-        box-shadow: 0 0 0 2px rgb(255 77 79 / 20%) !important;
+        box-shadow: 0 0 0 2px color-mix(in srgb, var(--error-color, #ff4d4f) 20%, transparent) !important;
       }
     }
   }
@@ -427,7 +427,7 @@
 
             &:hover {
               background: var(--success-color, #52c41a);
-              color: #fff;
+              color: var(--text-color-inverse, #fff);
               border-color: var(--success-color, #52c41a);
             }
           }
@@ -439,7 +439,7 @@
 
             &:hover {
               background: var(--error-color, #ff4d4f);
-              color: #fff;
+              color: var(--text-color-inverse, #fff);
               border-color: var(--error-color, #ff4d4f);
             }
           }
@@ -451,7 +451,7 @@
 
             &:hover {
               background: var(--primary-color, #3371ff);
-              color: #fff;
+              color: var(--text-color-inverse, #fff);
               border-color: var(--primary-color, #3371ff);
             }
           }
