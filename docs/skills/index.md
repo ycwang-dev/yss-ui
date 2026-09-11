@@ -65,6 +65,9 @@ pnpm sync:skills:ides
 - [YTable Usage](./ytable-usage.md)：YTable 列配置、分页、操作列和气泡确认规范。
 - [YEditTable Usage](./yedit-table-usage.md)：可编辑表格、行内编辑、添加行、下拉可输入/多选和校验规范。
 - [YTree Usage](./ytree-usage.md)：YTree 搜索、节点操作、受控选中和树表联动规范。
+- [YSheet Usage](./ysheet-usage.md)：YSheet 协同表格、optionalDependencies 与 Univer Preset 子路径规范。
+- [YConditionBuilder Usage](./ycondition-builder-usage.md)：条件树、AND/OR、远程字段值和严格校验规范。
+- [YFileImport Usage](./yfile-import-usage.md)：文件导入弹窗两步流程、nextStep.onSuccess 与 importResult 规范。
 - [Prototype Page Acceptance](./prototype-page-acceptance.md)：按原型截图或老项目还原页面时的验收清单。
 - [API Integration](./api-integration.md)：Orval API 集成与类型安全。
 - [File Export Download](./file-export-download.md)：Orval Blob 导出、responseType 兜底、响应头文件名和下载处理规范。
@@ -72,6 +75,8 @@ pnpm sync:skills:ides
 - [I18n Locale Management](./i18n-locale-management.md)：国际化多语言字典模块化设计、命名分层与 Vite 自动化装配规范。
 - [Use Table Height](./use-table-height.md)：YTable 高度自适配。
 - [Use Tree Height](./use-tree-height.md)：YTree 高度自适配。
+- [Use Url State](./use-url-state.md)：当前路由 URL query 同步与清理。
+- [Use Polling Task](./use-polling-task.md)：页面级静默轮询调度与失效保护。
 - [Frontend Commit](./frontend-commit.md)：前端项目规范提交，覆盖原子拆分、commitlint 校验与安全提交。
 - [Java Backend Commit](./java-backend-commit.md)：Java 后端项目规范提交，覆盖模块 scope、迁移风险与验证提交。
 

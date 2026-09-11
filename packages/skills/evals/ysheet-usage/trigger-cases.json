@@ -1,0 +1,36 @@
+{
+  "skill": "ysheet-usage",
+  "purpose": "触发行为规约：YSheet 协同表格 / Univer 工作簿（optionalDependencies、extraPresets）的确定性词法路由。",
+  "cases": [
+    {
+      "id": "ysheet-workbook",
+      "prompt": "用 YSheet 做协同表格工作簿",
+      "should_trigger": true,
+      "assert": "从主入口异步导入 YSheet，绑定 IWorkbookData 与明确高度。"
+    },
+    {
+      "id": "univer-extra-presets",
+      "prompt": "YSheet extraPresets 筛选和数据校验怎么开",
+      "should_trigger": true,
+      "assert": "Preset 从 @yss-ui/components/sheet 导入，并配套 extraLocales。"
+    },
+    {
+      "id": "optional-deps",
+      "prompt": "YSheet optionalDependencies Univer 没装上白屏",
+      "should_trigger": true,
+      "assert": "解释可选依赖边界，不让业务直接依赖 @univerjs。"
+    },
+    {
+      "id": "near-miss-ytable",
+      "prompt": "YTable 远程分页操作列",
+      "should_trigger": false,
+      "assert": "业务列表表格归 ytable-usage，不触发本 skill。"
+    },
+    {
+      "id": "near-miss-export-excel",
+      "prompt": "实现导出 Excel 报表",
+      "should_trigger": false,
+      "assert": "导出文件流归 file-export-download，不触发本 skill。"
+    }
+  ]
+}

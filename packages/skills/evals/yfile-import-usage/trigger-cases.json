@@ -1,0 +1,36 @@
+{
+  "skill": "yfile-import-usage",
+  "purpose": "触发行为规约：YFileImport 导入弹窗两步流程的确定性词法路由。",
+  "cases": [
+    {
+      "id": "import-dialog",
+      "prompt": "用 YFileImport 做文件导入弹窗",
+      "should_trigger": true,
+      "assert": "受控弹窗 + 选择文件步骤。"
+    },
+    {
+      "id": "next-step-onsuccess",
+      "prompt": "YFileImport nextStep onSuccess 进入结果步",
+      "should_trigger": true,
+      "assert": "预检成功后调用 onSuccess，才能进入结果确认。"
+    },
+    {
+      "id": "import-result-keys",
+      "prompt": "导入弹窗 importResult successkey failkey 怎么控制按钮",
+      "should_trigger": true,
+      "assert": "successkey/failkey 控制确认导入与失败数据按钮。"
+    },
+    {
+      "id": "near-miss-export",
+      "prompt": "实现导出 Excel 报表",
+      "should_trigger": false,
+      "assert": "导出下载归 file-export-download，不触发本 skill。"
+    },
+    {
+      "id": "near-miss-blob",
+      "prompt": "接口返回 blob 文件流怎么下载",
+      "should_trigger": false,
+      "assert": "Blob 下载归 file-export-download，不触发本 skill。"
+    }
+  ]
+}

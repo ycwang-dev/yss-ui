@@ -10,6 +10,24 @@ toc: content
 
 YSS AI Skills（`@yss-ui/skills`）的版本更新记录。
 
+## v1.4.1
+
+`2026-09-11`
+
+### ✨ Features
+
+- **ysheet-usage**: 新增 YSheet 协同表格 Skill，固化 optionalDependencies、主入口异步组件与 `@yss-ui/components/sheet` Preset 子路径，避免 AI 从 `@univerjs/*` 幻觉导入或漏配 `extraPresets`/`extraLocales`。
+- **ycondition-builder-usage**: 新增 YConditionBuilder 条件树 Skill，规范 `ConditionGroup`、`loadFields`/`loadValues`、操作符 `kind`、`strictMode` 与 `disabled`，明确 `readonly`/`segments`/`getValue('legacy')` 不可用。
+- **yfile-import-usage**: 新增 YFileImport 两步导入弹窗 Skill，强调 `nextStep.onSuccess`、`importResult.successkey/failkey`、`loadings` 字符串标识，并与导出下载 Skill 分流。
+- **use-url-state**: 新增 `useUrlState` Skill，规范当前路由 URL query 的 history 无感更新、`setState` 删 key 语义和 `router`/`push` 选择。
+- **use-polling-task**: 新增 `usePollingTask` Skill，规范静默轮询调度、`isCurrent` 失效保护、`pauseWhenHidden` 与页面 loading 解耦。
+
+### 🔧 Build
+
+- **Skills Metadata**: 官方 Skill 数量更新为 39；为上述 5 个 Skill 补充 trigger eval 正例与相邻 near-miss。
+
+---
+
 ## v1.4.0
 
 `2026-09-05`

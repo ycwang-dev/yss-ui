@@ -1,0 +1,36 @@
+{
+  "skill": "use-polling-task",
+  "purpose": "触发行为规约：usePollingTask 静默轮询调度的确定性词法路由。",
+  "cases": [
+    {
+      "id": "silent-polling",
+      "prompt": "用 usePollingTask 做页面静默轮询",
+      "should_trigger": true,
+      "assert": "只调度生命周期，不接管 loading/data。"
+    },
+    {
+      "id": "task-status",
+      "prompt": "任务状态轮询 pauseWhenHidden isCurrent",
+      "should_trigger": true,
+      "assert": "隐藏暂停 + 写入前 isCurrent 防过期回写。"
+    },
+    {
+      "id": "start-stop-interval",
+      "prompt": "usePollingTask start stop restart 动态间隔",
+      "should_trigger": true,
+      "assert": "启停与 setInterval，0 会停止轮询。"
+    },
+    {
+      "id": "near-miss-loading",
+      "prompt": "用 useLoading 包住请求显示表格 loading",
+      "should_trigger": false,
+      "assert": "单次请求 loading 不归本 skill。"
+    },
+    {
+      "id": "near-miss-orval",
+      "prompt": "mutator 的响应契约和错误提示怎么处理",
+      "should_trigger": false,
+      "assert": "接口契约归 api-integration，不触发本 skill。"
+    }
+  ]
+}

@@ -1,0 +1,36 @@
+{
+  "skill": "use-url-state",
+  "purpose": "触发行为规约：useUrlState URL query 同步的确定性词法路由。",
+  "cases": [
+    {
+      "id": "url-query-sync",
+      "prompt": "用 useUrlState 把筛选同步到 URL query",
+      "should_trigger": true,
+      "assert": "setState 合并写入当前路由 query。"
+    },
+    {
+      "id": "share-link",
+      "prompt": "分享链接恢复地址栏 query 参数",
+      "should_trigger": true,
+      "assert": "从 URL query 读取并恢复页面条件。"
+    },
+    {
+      "id": "history-replace",
+      "prompt": "useUrlState history replace 无感更新地址栏",
+      "should_trigger": true,
+      "assert": "默认 history+replace，不触发路由重建。"
+    },
+    {
+      "id": "near-miss-list-module",
+      "prompt": "标准列表页查询重置加远程分页",
+      "should_trigger": false,
+      "assert": "列表闭环归 page-list-module，不触发本 skill。"
+    },
+    {
+      "id": "near-miss-table",
+      "prompt": "YTable 远程分页操作列",
+      "should_trigger": false,
+      "assert": "表格功能归 ytable-usage，不触发本 skill。"
+    }
+  ]
+}
