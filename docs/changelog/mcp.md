@@ -10,6 +10,14 @@ toc: content
 
 YSS MCP 文档服务（`@yss-ui/mcp`）的版本更新记录。
 
+## v0.2.2
+
+`2026-09-11`
+
+### 📝 Documentation
+
+- **索引同步**: 重建并发布文档索引（组件 API / Demo / Skills / 代码生成规则）。
+
 ## v0.2.1
 
 `2026-09-10`
