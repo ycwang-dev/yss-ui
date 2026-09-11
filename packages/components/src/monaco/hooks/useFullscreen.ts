@@ -19,9 +19,20 @@ export const useFullscreen = (
   onLayout: () => void,
   onStatusChange?: (isFullscreen: boolean) => void,
   zIndex = 10000,
-  transitionOptions: boolean | FullscreenTransitionOptions = { duration: 220, easing: 'cubic-bezier(0.22, 1, 0.36, 1)' }
+  transitionOptions: boolean | FullscreenTransitionOptions = {
+    duration: 220,
+    easing: 'cubic-bezier(0.22, 1, 0.36, 1)',
+  },
+  tFn?: (key: string) => string
 ) => {
-  const { t } = useLocale('monaco');
+  let t = tFn;
+  if (!t) {
+    try {
+      t = useLocale('monaco').t;
+    } catch {
+      t = (k: string) => (k === 'exitFullscreenHint' ? '按 ESC 退出全屏' : k);
+    }
+  }
   let isFullscreen = false;
   let isTransitioning = false;
   let escHandler: ((e: KeyboardEvent) => void) | null = null;

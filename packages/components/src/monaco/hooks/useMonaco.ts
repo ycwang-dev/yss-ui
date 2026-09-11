@@ -13,6 +13,7 @@ import { useSqlProviders } from './useSqlProviders';
 import { useLogViewer } from './useLogViewer';
 import { useDisableFindWidgetTooltips } from './useDisableFindWidgetTooltips';
 import { copyToClipboard } from '@yss-ui/utils';
+import { useLocale } from '../../locale/useLocale';
 
 /**
  * useMonaco - 负责按需加载与实例管理
@@ -23,10 +24,12 @@ export const useMonaco = (
   props: YMonacoProps,
   emit: (evt: string, ...args: any[]) => void
 ) => {
+  const { t } = useLocale('monaco');
   let monaco: MonacoApi | null = null;
   let editor: any = null;
   const addLocalizedAction = useLocalizedActions(() => editor);
   let model: any = null;
+  let isDisposed = false;
   const state = reactive({ isCreating: false, isFullscreen: false });
   let currentSqlSchema: SqlSchema | null = (props as any).sqlSchema ?? null;
   // 全屏控制 - 使用独立 hook
@@ -164,21 +167,32 @@ export const useMonaco = (
    * 创建 Monaco 实例
    */
   const create = async () => {
-    if (state.isCreating) return;
+    if (state.isCreating || isDisposed) return;
     state.isCreating = true;
     try {
       const m = await ensureMonaco();
+      if (isDisposed) return;
       monaco = m;
       // 先注册常用贡献，避免命令未找到
       await ensureContributions();
+      if (isDisposed) return;
       await ensureLanguageContribution(m, props.language ?? 'javascript');
+      if (isDisposed) return;
       await nextTick();
+      if (isDisposed) return;
       const el = containerRef.value;
-      if (!el) return;
+      if (!el || isDisposed) return;
       const modelLanguage = normalizeMonacoLanguage(props.language ?? 'javascript');
       model = m.editor.createModel(props.modelValue ?? '', modelLanguage);
       const options = { ...buildOptions(), model, theme: resolveMonacoTheme(props.theme, modelLanguage) };
       editor = m.editor.create(el, options);
+      if (isDisposed || !editor) {
+        editor?.dispose?.();
+        model?.dispose?.();
+        editor = null;
+        model = null;
+        return;
+      }
 
       // 语言的按需补充提示（非内置语言）
       tryLoadLanguageCompletion(m, modelLanguage);
@@ -188,9 +202,17 @@ export const useMonaco = (
         await registerSqlProviders();
       }
 
+      if (isDisposed || !editor) {
+        editor?.dispose?.();
+        model?.dispose?.();
+        editor = null;
+        model = null;
+        return;
+      }
+
       // 值变化
-      editor.onDidChangeModelContent(() => {
-        const val = editor.getValue();
+      editor.onDidChangeModelContent?.(() => {
+        const val = editor?.getValue?.();
         emit('update:modelValue', val);
         emit('change', val);
         // 处于全屏时，父级 v-model 更新可能触发 Vue 重新打补丁覆盖内联高度，这里下一帧强制重算
@@ -202,13 +224,13 @@ export const useMonaco = (
       });
 
       // 选中文本与 blur
-      editor.onDidChangeCursorSelection((event: any) => {
+      editor.onDidChangeCursorSelection?.((event: any) => {
         const selection = event.selection;
-        const mdl = editor.getModel();
-        const selectedText = mdl?.getValueInRange(selection) ?? '';
+        const mdl = editor?.getModel?.();
+        const selectedText = mdl?.getValueInRange?.(selection) ?? '';
         emit('selectedText', selectedText, selection);
       });
-      editor.onDidBlurEditorWidget(() => {
+      editor.onDidBlurEditorWidget?.(() => {
         emit('blur', { editor, monaco });
       });
 
@@ -220,7 +242,8 @@ export const useMonaco = (
         () => layout(),
         fs => (state.isFullscreen = fs),
         props.fullscreenZIndex ?? 10000,
-        props.fullscreenTransition ?? true
+        props.fullscreenTransition ?? true,
+        t
       );
       const { addFullscreenActions, addSqlContextActions } = useActions(
         () => getMonaco() as any,
@@ -239,6 +262,7 @@ export const useMonaco = (
       bindNativeContextMenuBridge();
       // 初始化后自动格式化一次（默认 SQL）
       await formatOnMountIfNeeded();
+      if (isDisposed || !editor) return;
       // 初次创建后强制一次布局，兜底容器尺寸未就绪导致的 0 高问题
       editor.layout?.();
       // 日志模式：初始化滚动检测与行数控制
@@ -256,6 +280,7 @@ export const useMonaco = (
    * 销毁 Monaco 实例
    */
   const dispose = () => {
+    isDisposed = true;
     editor?.dispose?.();
     model?.dispose?.();
     editor = null;
