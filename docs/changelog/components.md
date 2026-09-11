@@ -19,6 +19,10 @@ YSS UI 组件库（`@yss-ui/components`）的版本更新记录。
 
 - **YssForm / AuthorityButton**: 删除从未进入公开导出面的死代码。`packages/components/src/form/`（`YssForm`）与 `AuthorityButton.vue` 未出现在 `index.ts` / `install.ts`；权限能力继续由 `YButton.permissionCode` 与公开导出的 `AuthorityDropdown` 承接。公开组件 API 不变。
 
+### 🧪 Test & Quality
+
+- **Component Vitest Coverage**: 按使用频率与公开规范全面补齐 8 个无单测核心组件（`YTree`、`YCron`、`YButton`、`YCard`、`AuthorityDropdown`、`YEcharts`、`YMonaco`、`YSheet`）的组件级交互与回归测试；全量覆盖率（Statements / Lines）由 ~33% 跃升至 57.75%，Vitest 覆盖率门禁阈值由 30/60/45/30 稳步上调至 45/62/48/45（Statements/Branches/Functions/Lines），夯实防退化屏障。
+
 ---
 ## v1.6.1
 
