@@ -91,12 +91,14 @@ const getSafePopupContainer = (): HTMLElement => {
  * @param getOptions 获取当前单元格候选项。
  * @param updateCell 更新单元格值。
  * @param scheduleValidateRow 调度当前行校验。
+ * @param onCellFocus 单元格获得焦点时的回调。
  * @returns 编辑器渲染辅助方法。
  */
 export function useEditors(
   getOptions: (col: any, row: any) => any[],
   updateCell: (row: any, key: string, val: any) => void,
-  scheduleValidateRow: (row: any, field?: string) => Promise<void>
+  scheduleValidateRow: (row: any, field?: string) => Promise<void>,
+  onCellFocus?: (col: YEditTableColumn, row: any) => void
 ) {
   const resolveEditor = (col: YEditTableColumn, row: any) => {
     const name = resolveEditComponentName(col, row);
@@ -209,6 +211,10 @@ export function useEditors(
     const componentName = resolveEditComponentName(col, row);
     const update = (val: any) => updateCell(row, col.field as string, val);
     const validate = () => scheduleValidateRow(row, col.field as string);
+    const handleFocus = () => {
+      onCellFocus?.(col, row);
+    };
+
     if (
       componentName === 'form-item-select' ||
       componentName === 'form-item-time' ||
@@ -225,6 +231,7 @@ export function useEditors(
         },
         // change 仅用于触发校验
         change: validate,
+        focus: handleFocus,
       } as Record<string, any>;
     }
     if (componentName === 'form-item-switch' || componentName === 'form-item-checkbox') {
@@ -236,6 +243,7 @@ export function useEditors(
         },
         // change 仅用于触发校验
         change: validate,
+        focus: handleFocus,
       } as Record<string, any>;
     }
     return {
@@ -245,6 +253,7 @@ export function useEditors(
       },
       change: validate,
       input: validate,
+      focus: handleFocus,
     } as Record<string, any>;
   };
 

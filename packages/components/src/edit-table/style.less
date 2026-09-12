@@ -74,20 +74,22 @@
   color: var(--primary-color, #3371ff);
 }
 
-.y-edit-table-cell-error {
-  color: var(--yss-color-error-6, var(--ant-error-color, #ff4d4f));
+:deep(.y-edit-table-cell-error) {
+  color: var(--yss-color-error-6, var(--ant-error-color, #ff4d4f)) !important;
   font-size: 12px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
-.y-edit-table-editor.is-error :deep(.ant-input),
-.y-edit-table-editor.is-error :deep(.ant-select-selector),
-.y-edit-table-editor.is-error :deep(.ant-picker),
-.y-edit-table-editor.is-error :deep(.ant-input-number) {
-  border-color: var(--yss-color-error-6, var(--ant-error-color, #ff4d4f)) !important;
-  box-shadow: 0 0 0 2px color-mix(in srgb, var(--yss-color-error-6, var(--ant-error-color, #ff4d4f)) 20%, transparent);
+:deep(.y-edit-table-editor.is-error) {
+  .ant-input,
+  .ant-select-selector,
+  .ant-picker,
+  .ant-input-number {
+    border-color: var(--yss-color-error-6, var(--ant-error-color, #ff4d4f)) !important;
+    box-shadow: 0 0 0 2px color-mix(in srgb, var(--yss-color-error-6, var(--ant-error-color, #ff4d4f)) 20%, transparent) !important;
+  }
 }
 
 /* 空状态高度与行高联动 */

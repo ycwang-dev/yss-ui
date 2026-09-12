@@ -60,3 +60,13 @@ defineProps<{
     </div>
   </template>
 </template>
+
+<style scoped lang="less">
+.y-edit-table-cell-error {
+  color: var(--yss-color-error-6, var(--ant-error-color, #ff4d4f)) !important;
+  font-size: 12px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+</style>

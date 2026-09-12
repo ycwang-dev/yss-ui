@@ -28,3 +28,15 @@ defineProps<{
     </Tooltip>
   </div>
 </template>
+
+<style scoped lang="less">
+.y-edit-table-editor.is-error {
+  :deep(.ant-input),
+  :deep(.ant-select-selector),
+  :deep(.ant-picker),
+  :deep(.ant-input-number) {
+    border-color: var(--yss-color-error-6, var(--ant-error-color, #ff4d4f)) !important;
+    box-shadow: 0 0 0 2px color-mix(in srgb, var(--yss-color-error-6, var(--ant-error-color, #ff4d4f)) 20%, transparent) !important;
+  }
+}
+</style>

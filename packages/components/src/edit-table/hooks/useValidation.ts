@@ -1,7 +1,7 @@
-import { computed, nextTick, ref, watch, useAttrs } from 'vue';
+import { computed, getCurrentInstance, nextTick, ref, watch, useAttrs } from 'vue';
 
 export function useValidation(props: any, tableRef: any) {
-  const attrs = useAttrs();
+  const attrs = getCurrentInstance() ? useAttrs() : {};
   const errorMsgList = ref<Record<string, Map<string, string>>>({});
   const isTriggerValidate = ref(false);
   const touchedMap = ref<Record<string, Set<string>>>({});
@@ -51,6 +51,42 @@ export function useValidation(props: any, tableRef: any) {
       return;
     }
     activeErrorCell.value = { rowId: getRowId(row), field: key };
+  };
+
+  /**
+   * 清除当前激活的错误气泡。
+   */
+  const clearActiveErrorCell = () => {
+    activeErrorCell.value = null;
+  };
+
+  let isProgrammaticScrolling = false;
+  let programmaticScrollTimer: ReturnType<typeof setTimeout> | null = null;
+
+  /**
+   * 标记当前正在进行程序化自动滚动，在此期间跳过滚动关闭气泡逻辑。
+   *
+   * @param duration 保护持续时长（毫秒），默认 300ms。
+   */
+  const markProgrammaticScrolling = (duration = 300) => {
+    isProgrammaticScrolling = true;
+    if (programmaticScrollTimer) {
+      clearTimeout(programmaticScrollTimer);
+    }
+    programmaticScrollTimer = setTimeout(() => {
+      isProgrammaticScrolling = false;
+      programmaticScrollTimer = null;
+    }, duration);
+  };
+
+  /**
+   * 监听表格滚动事件，若非程序化滚动则自动收起当前悬浮的校验气泡。
+   */
+  const handleTableScroll = () => {
+    if (isProgrammaticScrolling) return;
+    if (activeErrorCell.value) {
+      clearActiveErrorCell();
+    }
   };
 
   const isEmptyValue = (v: any) => v === '' || v === null || v === undefined;
@@ -110,6 +146,9 @@ export function useValidation(props: any, tableRef: any) {
 
   const handleEditClosed = (params: any) => {
     updateTableValid(params?.row);
+    if (activeErrorCell.value) {
+      clearActiveErrorCell();
+    }
   };
   const scheduleValidateRow = async (row: any, field?: string) => {
     await updateTableValid(row);
@@ -177,6 +216,10 @@ export function useValidation(props: any, tableRef: any) {
     getCellError,
     handleEditClosed,
     isActiveErrorCell,
+    setActiveErrorCell,
+    clearActiveErrorCell,
+    markProgrammaticScrolling,
+    handleTableScroll,
     scheduleValidateRow,
     validate,
     showTooltipContent,

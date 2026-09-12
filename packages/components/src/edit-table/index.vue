@@ -34,6 +34,7 @@ const {
   handleFilterChange,
   handleEditClosed,
   handleRowDragend,
+  handleTableScroll,
   mergedTableProps,
   wrapperStyleVars,
   innerPagination,
@@ -62,6 +63,7 @@ defineExpose({
       @edit-closed="handleEditClosed"
       @row-dragend="handleRowDragend"
       @filter-change="handleFilterChange"
+      @scroll="handleTableScroll"
     >
       <vxe-column
         v-if="rowDragable && showDragHandle && dragHandlePlacement === 'left'"

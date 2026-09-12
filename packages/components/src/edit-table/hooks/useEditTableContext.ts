@@ -42,6 +42,9 @@ export function useEditTableContext(
     getCellError,
     handleEditClosed,
     isActiveErrorCell,
+    setActiveErrorCell,
+    markProgrammaticScrolling,
+    handleTableScroll,
     scheduleValidateRow,
     validate: validateInternal,
     showTooltipContent,
@@ -72,7 +75,18 @@ export function useEditTableContext(
     emit('updateRow', { row, key, value });
   };
 
-  const { resolveEditor, editorProps, editorEvents } = useEditors(getOptions, updateCell, scheduleValidateRow);
+  const handleCellFocus = (col: any, row: any) => {
+    if (getCellError(col, row)) {
+      setActiveErrorCell(row, col?.field);
+    }
+  };
+
+  const { resolveEditor, editorProps, editorEvents } = useEditors(
+    getOptions,
+    updateCell,
+    scheduleValidateRow,
+    handleCellFocus
+  );
   const { getErrorTooltipProps } = useErrorTooltip(props, getCellError, shouldShowError, isActiveErrorCell);
 
   const { dragHandleFixedComputed, handleRowDragend } = useRowDrag(props, tableRef, emit);
@@ -97,7 +111,12 @@ export function useEditTableContext(
       const { row, field } = res.firstError;
       await nextTick();
       try {
+        markProgrammaticScrolling(400);
         tableRef.value?.scrollToRow?.(row);
+        const colObj = tableRef.value?.getColumnByField?.(field);
+        if (colObj) {
+          tableRef.value?.scrollToColumn?.(colObj);
+        }
         tableRef.value?.setEditCell?.(row, field);
       } catch (e) {
         // ignore
@@ -135,6 +154,7 @@ export function useEditTableContext(
     editorProps,
     editorEvents,
     getErrorTooltipProps,
+    handleTableScroll,
     validate,
     getTableInstance,
   };

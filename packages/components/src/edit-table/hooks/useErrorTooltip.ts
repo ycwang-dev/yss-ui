@@ -113,8 +113,10 @@ export function useErrorTooltip(
       tooltipProps.open = false;
     } else if (mode === 'always') {
       tooltipProps.open = hasError;
-    } else if (mode === 'active' && field && hasError && isActiveErrorCell(row, field)) {
-      tooltipProps.open = true;
+    } else if (mode === 'hover') {
+      tooltipProps.open = hasError ? undefined : false;
+    } else if (mode === 'active') {
+      tooltipProps.open = Boolean(field && hasError && isActiveErrorCell(row, field));
     }
 
     return tooltipProps;
