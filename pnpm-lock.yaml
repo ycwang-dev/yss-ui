@@ -241,30 +241,9 @@ importers:
       dayjs:
         specifier: ">=1.11.0"
         version: 1.11.19
-      diff:
-        specifier: ^8.0.3
-        version: 8.0.3
-      echarts:
-        specifier: ^6.0.0
-        version: 6.0.0
-      monaco-editor:
-        specifier: 0.54.0
-        version: 0.54.0
-      monaco-editor-nls:
-        specifier: ^3.1.0
-        version: 3.1.0
-      prettier:
-        specifier: ^3.8.3
-        version: 3.8.3
-      prettier-plugin-nginx:
-        specifier: ^1.0.3
-        version: 1.0.3
       sortablejs:
         specifier: ^1.15.6
         version: 1.15.7
-      sql-formatter:
-        specifier: ^15.7.2
-        version: 15.7.2
       vxe-pc-ui:
         specifier: 4.14.32
         version: 4.14.32(vue@3.5.29)
@@ -290,6 +269,24 @@ importers:
       "@univerjs/presets":
         specifier: 0.25.0
         version: 0.25.0(@types/react@18.3.28)(react-dom@18.3.1)(react@18.3.1)(rxjs@7.8.2)
+      diff:
+        specifier: ^8.0.3
+        version: 8.0.3
+      echarts:
+        specifier: ^6.0.0
+        version: 6.0.0
+      monaco-editor:
+        specifier: 0.54.0
+        version: 0.54.0
+      monaco-editor-nls:
+        specifier: ^3.1.0
+        version: 3.1.0
+      prettier:
+        specifier: ^3.8.3
+        version: 3.8.3
+      prettier-plugin-nginx:
+        specifier: ^1.0.3
+        version: 1.0.3
       react:
         specifier: ^18.3.1
         version: 18.3.1
@@ -299,6 +296,9 @@ importers:
       rxjs:
         specifier: ^7.8.1
         version: 7.8.2
+      sql-formatter:
+        specifier: ^15.7.2
+        version: 15.7.2
     devDependencies:
       "@vitejs/plugin-vue":
         specifier: ^5.0.5
@@ -12305,7 +12305,9 @@ packages:
     resolution:
       { integrity: sha512-qejHi7bcSD4hQAZE0tNAawRK1ZtafHDmMTMkrrIGgSLl7hTnQHmKCeB45xAcbfTqK2zowkM3j3bHt/4b/ARbYQ== }
     engines: { node: ">=0.3.1" }
+    requiresBuild: true
     dev: false
+    optional: true
 
   /diffie-hellman@5.0.3:
     resolution:
@@ -12327,7 +12329,9 @@ packages:
   /discontinuous-range@1.0.0:
     resolution:
       { integrity: sha512-c68LpLbO+7kP/b1Hr1qs8/BJ09F5khZGTxqxZuhzxpmwJKOgRFHJWIb9/KmqnqHhLdO55aOxFH/EGBvUQbL/RQ== }
+    requiresBuild: true
     dev: false
+    optional: true
 
   /doctrine@2.1.0:
     resolution:
@@ -17822,7 +17826,9 @@ packages:
   /moo@0.5.3:
     resolution:
       { integrity: sha512-m2fmM2dDm7GZQsY7KK2cme8agi+AAljILjQnof7p1ZMDe6dQ4bdnSMx0cPppudoeNv5hEFQirN6u+O4fDE0IWA== }
+    requiresBuild: true
     dev: false
+    optional: true
 
   /mri@1.2.0:
     resolution:
@@ -17915,12 +17921,14 @@ packages:
     resolution:
       { integrity: sha512-+Mc8UaAebFzgV+KpI5n7DasuuQCHA89dmwm7JXw3TV43ukfNQ9DnBH3Mdb2g/I4Fdxc26pwimBWvjIw0UAILSQ== }
     hasBin: true
+    requiresBuild: true
     dependencies:
       commander: 2.20.3
       moo: 0.5.3
       railroad-diagrams: 1.0.0
       randexp: 0.4.6
     dev: false
+    optional: true
 
   /needle@3.3.1:
     resolution:
@@ -19416,7 +19424,9 @@ packages:
   /prettier-plugin-nginx@1.0.3:
     resolution:
       { integrity: sha512-vV5q85s8XnV6NEgvz1gVLfZhmxAxY03MyOYj2ApBpjFkbs00lRsRkTmqO9L39ADuD18z1RRCcfZ3eVxKhI/nqg== }
+    requiresBuild: true
     dev: false
+    optional: true
 
   /prettier-plugin-organize-imports@3.2.4(prettier@3.8.1)(typescript@5.9.3):
     resolution:
@@ -19462,7 +19472,9 @@ packages:
       { integrity: sha512-7igPTM53cGHMW8xWuVTydi2KO233VFiTNyF5hLJqpilHfmn8C8gPf+PS7dUT64YcXFbiMGZxS9pCSxL/Dxm/Jw== }
     engines: { node: ">=14" }
     hasBin: true
+    requiresBuild: true
     dev: false
+    optional: true
 
   /pretty-error@4.0.0:
     resolution:
@@ -19705,7 +19717,9 @@ packages:
   /railroad-diagrams@1.0.0:
     resolution:
       { integrity: sha512-cz93DjNeLY0idrCNOH6PviZGRN9GJhsdm9hpn1YCS879fj4W+x5IFJhhkRZcwVgMmFF7R82UA/7Oh+R8lLZg6A== }
+    requiresBuild: true
     dev: false
+    optional: true
 
   /ramda@0.28.0:
     resolution:
@@ -19721,10 +19735,12 @@ packages:
     resolution:
       { integrity: sha512-80WNmd9DA0tmZrw9qQa62GPPWfuXJknrmVmLcxvq4uZBdYqb1wYoKTmnlGUchvVWe0XiLupYkBoXVOxz3C8DYQ== }
     engines: { node: ">=0.12" }
+    requiresBuild: true
     dependencies:
       discontinuous-range: 1.0.0
       ret: 0.1.15
     dev: false
+    optional: true
 
   /randombytes@2.1.0:
     resolution:
@@ -20583,7 +20599,9 @@ packages:
     resolution:
       { integrity: sha512-TTlYpa+OL+vMMNG24xSlQGEJ3B/RzEfUlLct7b5G/ytav+wPrplCpVMFuwzXbkecJrb6IYo1iFb0S9v37754mg== }
     engines: { node: ">=0.12" }
+    requiresBuild: true
     dev: false
+    optional: true
 
   /reusify@1.1.0:
     resolution:
@@ -21455,10 +21473,12 @@ packages:
     resolution:
       { integrity: sha512-b0BGoM81KFRVSpZFwPpIPU5gng4YD8DI/taLD96NXCFRf5af3FzSE4aSwjKmxcyTmf/MfPu91j75883nRrWDBw== }
     hasBin: true
+    requiresBuild: true
     dependencies:
       argparse: 2.0.1
       nearley: 2.20.1
     dev: false
+    optional: true
 
   /stable-hash-x@0.2.0:
     resolution:
