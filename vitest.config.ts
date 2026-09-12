@@ -9,6 +9,8 @@ export default defineConfig({
     alias: {
       '@yss-ui/components/lite': resolve(__dirname, 'packages/components/src/lite.ts'),
       '@yss-ui/components/sheet': resolve(__dirname, 'packages/components/src/sheet/index.ts'),
+      '@yss-ui/components/monaco': resolve(__dirname, 'packages/components/src/monaco/index.ts'),
+      '@yss-ui/components/echarts': resolve(__dirname, 'packages/components/src/echarts/index.ts'),
       '@yss-ui/components': resolve(__dirname, 'packages/components/src'),
       '@yss-ui/utils': resolve(__dirname, 'packages/utils/src'),
       '@yss-ui/hooks': resolve(__dirname, 'packages/hooks/src'),

@@ -10,6 +10,16 @@ toc: content
 
 YSS UI 组件库（`@yss-ui/components`）的版本更新记录。
 
+## v1.6.6
+
+`2026-09-12`
+
+### ⚡ Performance & Optimization
+
+- **Monaco & ECharts**: 重型依赖解耦与官方子路径化。拆分官方子路径入口 `@yss-ui/components/monaco` 与 `@yss-ui/components/echarts`；主入口/lite 入口与全局安装全面切换为 `defineAsyncComponent` 异步按需加载，Monaco 核心样式改为异步按需动态注入；将 `monaco-editor`、`echarts`、`prettier`、`sql-formatter` 等迁移至 `optionalDependencies`，使轻量微应用在升级组件库后首屏不再被强行绑架打包 6MB~10MB 重型依赖，同时存量项目老代码保持 100% 语法向后兼容 (#13)。
+
+---
+
 ## v1.6.5
 
 `2026-09-12`

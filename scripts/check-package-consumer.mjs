@@ -207,6 +207,8 @@ const [hooks, utils, theme] = await Promise.all([
 assert.match(import.meta.resolve('@yss-ui/components'), /index\.mjs$/);
 assert.match(import.meta.resolve('@yss-ui/components/lite'), /lite\.mjs$/);
 assert.match(import.meta.resolve('@yss-ui/components/sheet'), /sheet\.mjs$/);
+assert.match(import.meta.resolve('@yss-ui/components/monaco'), /monaco\.mjs$/);
+assert.match(import.meta.resolve('@yss-ui/components/echarts'), /echarts\.mjs$/);
 const locale = await import('@yss-ui/components/locale');
 for (const language of ['zh-CN', 'zh-TW', 'en-US']) {
   const pack = (await import('@yss-ui/components/locale/' + language)).default;
@@ -223,6 +225,8 @@ assert.ok(Object.keys(theme).length > 0);
 assert.match(require.resolve('@yss-ui/components'), /index\.cjs$/);
 assert.match(require.resolve('@yss-ui/components/lite'), /lite\.cjs$/);
 assert.match(require.resolve('@yss-ui/components/sheet'), /sheet\.cjs$/);
+assert.match(require.resolve('@yss-ui/components/monaco'), /monaco\.cjs$/);
+assert.match(require.resolve('@yss-ui/components/echarts'), /echarts\.cjs$/);
 assert.equal(typeof require('@yss-ui/hooks').useLoading, 'function');
 assert.ok(Object.keys(require('@yss-ui/utils')).length > 0);
 assert.ok(Object.keys(require('@yss-ui/theme')).length > 0);
@@ -236,6 +240,8 @@ import componentsPlugin, {
 } from '@yss-ui/components';
 import { YTable } from '@yss-ui/components/lite';
 import { YSheet, type YSheetProps } from '@yss-ui/components/sheet';
+import { YMonaco, YMonacoDiff, type YMonacoProps } from '@yss-ui/components/monaco';
+import { YEcharts, type YEchartsProps } from '@yss-ui/components/echarts';
 import { YConfigProvider, setGlobalLocale, useLocale, type YssLocale } from '@yss-ui/components/locale';
 import zhTW from '@yss-ui/components/locale/zh-TW';
 const locale: YssLocale = zhTW;
@@ -247,22 +253,26 @@ import * as theme from '@yss-ui/theme';
 
 const fileImportProps: YFileImportProps = { modelValue: false, multiple: true };
 const sheetProps: YSheetProps = { modelValue: null, locale: 'zh-CN' };
+const monacoProps: YMonacoProps = { modelValue: 'select 1;' };
+const echartsProps: YEchartsProps = { options: {} };
 
-void [componentsPlugin, YButton, YFileImport, YTable, YSheet, useLoading, utils, theme, fileImportProps, sheetProps];
+void [componentsPlugin, YButton, YFileImport, YTable, YSheet, YMonaco, YMonacoDiff, YEcharts, useLoading, utils, theme, fileImportProps, sheetProps, monacoProps, echartsProps];
 `;
 
   const browserSource = `
 import componentsPlugin, { YButton, YFileImport } from '@yss-ui/components';
 import { YTable } from '@yss-ui/components/lite';
 import { YSheet } from '@yss-ui/components/sheet';
+import { YMonaco, YMonacoDiff } from '@yss-ui/components/monaco';
+import { YEcharts } from '@yss-ui/components/echarts';
 import { useLoading } from '@yss-ui/hooks';
 import * as utils from '@yss-ui/utils';
 import * as theme from '@yss-ui/theme';
 
 const registrations = new Map();
 componentsPlugin.install({ component: (name, component) => registrations.set(name, component), use() {} });
-if (!registrations.has('YssFormily') || !registrations.has('YDropdown') || !registrations.has('YSheet')) throw new Error('历史全局别名丢失');
-globalThis.yssLegacyConsumer = [componentsPlugin, YButton, YFileImport, YTable, YSheet, useLoading, utils, theme];
+if (!registrations.has('YssFormily') || !registrations.has('YDropdown') || !registrations.has('YSheet') || !registrations.has('YMonaco') || !registrations.has('YEcharts')) throw new Error('历史全局别名丢失');
+globalThis.yssLegacyConsumer = [componentsPlugin, YButton, YFileImport, YTable, YSheet, YMonaco, YMonacoDiff, YEcharts, useLoading, utils, theme];
 `;
 
   const rootSource = `
@@ -324,10 +334,10 @@ export default {
 
   const installSource = `
 import { createApp } from 'vue';
-import UI, { AuthorityDropdown, YButton, YTable, YFormily, YSheet } from '@yss-ui/components';
+import UI, { AuthorityDropdown, YButton, YTable, YFormily, YSheet, YMonaco, YMonacoDiff, YEcharts } from '@yss-ui/components';
 const app = createApp({ render: () => null });
 app.use(UI);
-for (const [name, component] of Object.entries({ YButton, YTable, YFormily, YssFormily: YFormily, YDropdown: AuthorityDropdown, YSheet })) {
+for (const [name, component] of Object.entries({ YButton, YTable, YFormily, YssFormily: YFormily, YDropdown: AuthorityDropdown, YSheet, YMonaco, YMonacoDiff, YEcharts })) {
   if (app.component(name) !== component) throw new Error('全量安装兼容性失败: ' + name);
 }
 globalThis.yssInstallVerified = true;

@@ -3,13 +3,12 @@
 // 命名导出
 export { default as AuthorityDropdown } from './authority/AuthorityDropdown.vue';
 export { default as YButton } from './button/index.vue';
-export { default as YEcharts } from './echarts/index.vue';
+export { YEcharts } from './echarts/main-exports';
 export { default as YEditTable } from './edit-table/index.vue';
 export { default as YFileImport } from './file-import/index.vue';
 export { default as YFormily } from './formily/index.vue';
 export { default as YssFormily } from './formily/index.vue'; // 历史兼容别名
-export { default as YMonacoDiff } from './monaco/DiffEditor.vue';
-export { default as YMonaco } from './monaco/index.vue';
+export { YMonaco, YMonacoDiff } from './monaco/main-exports';
 export { default as YCard } from './card/index.vue';
 export { default as YTable } from './table/index.vue';
 export { default as YConditionBuilder } from './condition-builder/index.vue';
@@ -40,6 +39,7 @@ export type {
 
 // 类型导出
 export type * from './button/types';
+export type * from './echarts/types';
 export type * from './edit-table/types';
 export type * from './card/types';
 export type * from './table/types';
@@ -48,5 +48,6 @@ export type * from './tree/types';
 export type * from './split-pane/types';
 export type * from './formily/types';
 export type * from './cron/types';
+export type * from './monaco/types';
 export type * from './month-calendar/types';
 export type * from './locale/types';

@@ -10,13 +10,10 @@ import './table/global.less';
 // 统一导出名：YButton/YFormily/YTable
 export { default as AuthorityDropdown } from './authority/AuthorityDropdown.vue';
 export { default as YButton } from './button/index.vue';
-export { default as YEcharts } from './echarts/index.vue';
 export { default as YEditTable } from './edit-table/index.vue';
 export { default as YFileImport } from './file-import/index.vue';
 export { default as YFormily } from './formily/index.vue';
 export { default as YssFormily } from './formily/index.vue'; // 历史兼容别名
-export { default as YMonacoDiff } from './monaco/DiffEditor.vue';
-export { default as YMonaco } from './monaco/index.vue';
 export { default as YCard } from './card/index.vue';
 export { default as YTable } from './table/index.vue';
 export { default as YConditionBuilder } from './condition-builder/index.vue';
@@ -33,7 +30,9 @@ export {
   formatTemplate,
   syncVxeLanguage,
 } from './locale';
-// YSheet 异步导出：未使用电子表格时不强制加载 @univerjs
+// 重型组件异步导出：仅在实际挂载渲染时动态加载对应引擎，避免拖慢首包或注入不必要依赖
+export { YEcharts } from './echarts/main-exports';
+export { YMonaco, YMonacoDiff } from './monaco/main-exports';
 export { YSheet, LocaleType } from './sheet/main-exports';
 export type {
   IUniverSheetsCorePresetConfig,

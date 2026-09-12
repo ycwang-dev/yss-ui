@@ -99,6 +99,17 @@ import '@yss-ui/components/style.css';
 
 `lite` 入口与主入口完全共享底层组件与国际化单例，但彻底剥离了隐式全局 CSS 挂载，能够彻底规避微前端样式污染。
 
+### 重型依赖解耦与官方子路径（Monaco / ECharts / Univer）
+
+为了解决微前端首屏资源过大（Monaco+ECharts+Univer 容易占用 8MB~10MB 体积）的痛点，`@yss-ui/components` 现已实现重型依赖彻底解耦：
+
+1. **主入口/lite 入口向后兼容**：业务升级后代码写法完全不变，继续从 `@yss-ui/components` 或 `@yss-ui/components/lite` 引入 `YMonaco`、`YEcharts`、`YSheet`。重型组件在内部已转为异步组件按需加载，**未渲染对应组件的页面不会在首屏打包其庞大依赖及 Monaco 核心样式（首屏可降低 6MB~10MB）**。
+2. **官方独立子路径（推荐独立模块使用）**：
+   - `@yss-ui/components/monaco`：导出 `YMonaco`, `YMonacoDiff`, `ensureMonacoCss` 及相关类型；
+   - `@yss-ui/components/echarts`：导出 `YEcharts` 及相关类型；
+   - `@yss-ui/components/sheet`：导出 `YSheet` 及 Univer 深度配置。
+3. **依赖可选化（optionalDependencies）**：微应用如果不需要 Monaco 或 ECharts，构建打包器不会因为缺失它们而阻塞轻量页面。
+
 组件库本地开发使用 `pnpm --filter @yss-ui/components dev`，单一监听流程依次更新传统产物和新根入口。可通过 `YSS_KEEP_CONSUMER=true pnpm test:package-consumer` 保留真实打包消费项目，再执行 `python3 scripts/check-package-consumer-browser.py <控制台输出的消费项目目录>` 验证页面渲染与全量安装。
 
 ## 使用 Utils 和 Hooks

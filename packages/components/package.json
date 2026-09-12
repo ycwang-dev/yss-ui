@@ -21,6 +21,16 @@
       "import": "./dist/sheet.mjs",
       "require": "./dist/sheet.cjs"
     },
+    "./monaco": {
+      "types": "./dist/monaco/index.d.ts",
+      "import": "./dist/monaco.mjs",
+      "require": "./dist/monaco.cjs"
+    },
+    "./echarts": {
+      "types": "./dist/echarts/index.d.ts",
+      "import": "./dist/echarts.mjs",
+      "require": "./dist/echarts.cjs"
+    },
     "./locale": {
       "types": "./dist/locale/index.d.ts",
       "import": "./dist/locale/index.mjs",
@@ -65,14 +75,7 @@
     "@yss-ui/hooks": "workspace:^",
     "@yss-ui/theme": "workspace:^",
     "@yss-ui/utils": "workspace:^",
-    "diff": "^8.0.3",
-    "echarts": "^6.0.0",
-    "sql-formatter": "^15.7.2",
     "sortablejs": "^1.15.6",
-    "monaco-editor": "0.54.0",
-    "monaco-editor-nls": "^3.1.0",
-    "prettier": "^3.8.3",
-    "prettier-plugin-nginx": "^1.0.3",
     "vxe-pc-ui": "4.14.32",
     "vxe-table": "4.19.10",
     "xe-utils": "^3.7.9"
@@ -83,9 +86,16 @@
     "@univerjs/preset-sheets-data-validation": "0.25.0",
     "@univerjs/preset-sheets-drawing": "0.25.0",
     "@univerjs/preset-sheets-filter": "0.25.0",
+    "diff": "^8.0.3",
+    "echarts": "^6.0.0",
+    "monaco-editor": "0.54.0",
+    "monaco-editor-nls": "^3.1.0",
+    "prettier": "^3.8.3",
+    "prettier-plugin-nginx": "^1.0.3",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "rxjs": "^7.8.1"
+    "rxjs": "^7.8.1",
+    "sql-formatter": "^15.7.2"
   },
   "peerDependencies": {
     "dayjs": ">=1.11.0",
@@ -100,9 +110,16 @@
     "@univerjs/preset-sheets-filter": "0.25.0",
     "@vitejs/plugin-vue": "^5.0.5",
     "ant-design-vue": "^4.0.7",
+    "diff": "^8.0.3",
+    "echarts": "^6.0.0",
+    "monaco-editor": "0.54.0",
+    "monaco-editor-nls": "^3.1.0",
+    "prettier": "^3.8.3",
+    "prettier-plugin-nginx": "^1.0.3",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "rxjs": "^7.8.1",
+    "sql-formatter": "^15.7.2",
     "vite": "^5.4.10",
     "vite-plugin-dts": "^3.9.1",
     "vue": "^3.3.8"

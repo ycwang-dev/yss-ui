@@ -10,6 +10,16 @@ toc: content
 
 YSS AI Skills（`@yss-ui/skills`）的版本更新记录。
 
+## v1.4.3
+
+`2026-09-12`
+
+### 💄 Improvements
+
+- **component-selection-imports**: 规范 Monaco / ECharts / Sheet 等重型依赖按需消费方式，支持从官方子路径或主入口异步导入，杜绝未使用的重型模块及其 CSS 被打包到业务页面中。
+
+---
+
 ## v1.4.2
 
 `2026-09-12`

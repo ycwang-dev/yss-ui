@@ -1,11 +1,10 @@
 import AuthorityDropdown from './authority/AuthorityDropdown.vue';
 import YButton from './button/index.vue';
-import YEcharts from './echarts/index.vue';
+import { YEcharts } from './echarts/main-exports';
 import YEditTable from './edit-table/index.vue';
 import YFileImport from './file-import/index.vue';
 import YFormily from './formily/index.vue';
-import YMonacoDiff from './monaco/DiffEditor.vue';
-import YMonaco from './monaco/index.vue';
+import { YMonaco, YMonacoDiff } from './monaco/main-exports';
 import YCard from './card/index.vue';
 import YTable from './table/index.vue';
 import YConditionBuilder from './condition-builder/index.vue';
@@ -25,15 +24,11 @@ const components = [
   YFormily,
   AuthorityDropdown,
   YFileImport,
-  YEcharts,
-  YMonaco,
-  YMonacoDiff,
   YCard,
   YConditionBuilder,
   YTree,
   YSplitPane,
   YCron,
-  YSheet,
   YMonthCalendar,
   YConfigProvider,
 ];
@@ -51,12 +46,15 @@ export const install = (app: any): void => {
     // 忽略：若用户未安装 vxe-pc-ui，将在运行时提示
   }
   components.forEach(component => {
-    app.component(component.name || component.__name || 'YSheet', component);
+    app.component(component.name || component.__name, component);
   });
-  // 注册别名组件，便于业务层使用简化名称
+  // 注册别名组件与异步重型组件，避免未使用的项目同步加载巨型依赖
   app.component('YssFormily', YFormily); // 历史兼容全局别名
   app.component('YDropdown', AuthorityDropdown); // AuthorityDropdown 的简化别名
   app.component('YSheet', YSheet);
+  app.component('YMonaco', YMonaco);
+  app.component('YMonacoDiff', YMonacoDiff);
+  app.component('YEcharts', YEcharts);
 };
 
 export default {

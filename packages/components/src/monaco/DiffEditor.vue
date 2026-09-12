@@ -1,12 +1,11 @@
 <script setup lang="ts">
-// 统一由上层或宿主项目引入 Monaco CSS，避免重复引入导致样式覆盖
 import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue';
+import { ensureMonacoCss } from './utils/loadMonacoCss';
 import { useDiffEditor } from './hooks/useDiffEditor';
 import { useToolbar } from './hooks/useToolbar';
 import { CheckOutlined, CompressOutlined, CopyOutlined, DownloadOutlined, ExpandOutlined } from '@ant-design/icons-vue';
 import { Tooltip as ATooltip } from 'ant-design-vue';
-import 'monaco-editor/min/vs/editor/editor.main.css'; // 关键：引入 Monaco 核心样式
-import type { YMonacoDiffExpose, YMonacoDiffProps, YMonacoToolbarTooltipTexts } from './type';
+import type { YMonacoDiffExpose, YMonacoDiffProps, YMonacoToolbarTooltipTexts } from './types';
 import { useLocale } from '../locale/useLocale';
 
 defineOptions({ name: 'YMonacoDiff' });
@@ -152,6 +151,7 @@ onMounted(async () => {
       attributeFilter: ['data-prefers-color'],
     });
   }
+  await ensureMonacoCss();
   await create();
   if (!props.theme) {
     setTheme(siteTheme.value);
