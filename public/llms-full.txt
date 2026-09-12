@@ -152,6 +152,8 @@ YSS UI 是基于 Vue 3、Ant Design Vue 与 VXE-Table 的企业级中后台组�
 
 - use-table-height: https://iamyancong.github.io/yss-ui/skills/use-table-height — 指导 YTable、YEditTable、左树右表、分页列表、工具栏表格和弹窗/抽屉内表格使用 @yss-ui/hooks 的 useTableHeight 实现稳定自适应高度；当需要避免双滚动条、底部空白、容器撑开闪烁，或需要计入分页、工具栏、添加按钮偏移时使用。
 - use-tree-height: https://iamyancong.github.io/yss-ui/skills/use-tree-height — 指导 YTree、左树右表、组织树、分类树、树搜索和 Tab/抽屉内树区域使用 @yss-ui/hooks 的 useTreeHeight 实现自适应高度；当树区域需要独立滚动、容器切换后高度不正确或需要扣除 YTree 内置搜索高度时使用。
+- use-url-state: https://iamyancong.github.io/yss-ui/skills/use-url-state — 指导使用 @yss-ui/hooks 的 useUrlState 管理当前路由 URL query 的读取、合并写入、按 key 清理和清空；覆盖 history 无感更新、replace/push、router 策略和分享链接恢复，不把 vue-router query 手写拼接或当成完整状态库。
+- use-polling-task: https://iamyancong.github.io/yss-ui/skills/use-polling-task — 指导使用 @yss-ui/hooks 的 usePollingTask 做页面级静默轮询、任务状态轮询和动态间隔调度；覆盖 start/stop/restart/runNow、pauseWhenHidden、generation/isCurrent、AbortSignal，禁止把它当成请求 loading/data/error Hook 或直接绑定页面主 loading。
 
 ### app
 
@@ -165,6 +167,9 @@ YSS UI 是基于 Vue 3、Ant Design Vue 与 VXE-Table 的企业级中后台组�
 - ytable-usage: https://iamyancong.github.io/yss-ui/skills/ytable-usage — 指导 YSS UI 业务列表页、CRUD 表格、远程分页、操作列、气泡确认、列筛选、字典翻译、行拖拽、工具栏和自定义插槽正确使用 @yss-ui/components 的 YTable；当需要配置 YTableColumn、YTableActionConfig、pagination、filter-change 或表格实例方法时使用。
 - yedit-table-usage: https://iamyancong.github.io/yss-ui/skills/yedit-table-usage — 指导 YSS UI 业务页面使用 @yss-ui/components 的 YEditTable 实现可编辑表格、行内编辑、添加/删除行、下拉多选与可创建 tags、行级候选联动、表头筛选、校验和查看态；当需求出现编辑表格、明细行、扩展属性、可编辑列或 YEditTableColumn 时使用。
 - ytree-usage: https://iamyancong.github.io/yss-ui/skills/ytree-usage — 指导 YSS UI 左树右表、组织树、分类树、目录树和节点管理页使用 @yss-ui/components 的 YTree，覆盖 fieldNames 字段映射、搜索过滤、受控选中、节点动作、删除确认、虚拟滚动和自适应高度；当生成或修改树形筛选、左树右表、树搜索或树节点操作时使用。
+- ysheet-usage: https://iamyancong.github.io/yss-ui/skills/ysheet-usage — 指导 YSS UI 协同表格、类 Excel 工作簿、Univer 电子表格使用 @yss-ui/components 的 YSheet；覆盖 optionalDependencies、@yss-ui/components/sheet 子路径、extraPresets/extraPlugins/extraLocales、IWorkbookData、只读与 Facade save/reload，避免把 Univer 运行时从主入口同步导入。
+- ycondition-builder-usage: https://iamyancong.github.io/yss-ui/skills/ycondition-builder-usage — 指导规则配置、数据质量条件、嵌套 AND/OR 条件树使用 @yss-ui/components 的 YConditionBuilder；覆盖 ConditionGroup/ConditionLeaf、loadFields/loadValues、getOperators、BETWEEN/IN、strictMode 校验和 disabled，禁止把 readonly 或未消费的 segments 当成可用 API。
+- yfile-import-usage: https://iamyancong.github.io/yss-ui/skills/yfile-import-usage — 指导 YSS UI 文件导入弹窗、两步导入流程使用 @yss-ui/components 的 YFileImport；覆盖选择文件、nextStep.onSuccess、importResult、loadings、downloadTemplate 事件和结果插槽，避免与导出下载或普通 Upload 混淆。
 - prototype-page-acceptance: https://iamyancong.github.io/yss-ui/skills/prototype-page-acceptance — 当用户提供原型截图、老项目路径、旧页面截图或要求按既有页面复刻业务页面时，指导先提取视觉和交互验收清单，开发后用截图/运行结果逐项对照，避免只实现字段而忽略布局、按钮、表格高度和控件类型。
 - api-integration: https://iamyancong.github.io/yss-ui/skills/api-integration — 指导在 Vue3 业务列表、表单、详情和操作 Hook 中集成 Orval API，覆盖真实生成产物选择、mutator 响应契约、错误提示、加载状态、请求选项和长整型精度；当页面对接查询、新增、编辑、删除、详情或文件流接口时使用。
 - file-export-download: https://iamyancong.github.io/yss-ui/skills/file-export-download — 指导 Vue3 YSS UI 微应用实现文件导出、报表下载、模板下载和附件下载，覆盖 OpenAPI binary 响应、Orval 生成方法检查、responseType blob 兜底、Blob 响应类型、Content-Disposition 文件名、handleBlobResponse、loading 与错误处理；当需求出现导出、下载、Excel、CSV、PDF、ZIP、Blob 或文件流时使用。
@@ -5275,6 +5280,191 @@ const handleVisibleChange = async (visible: boolean) => {
 
 ---
 
+#### use-url-state
+
+# useUrlState 使用
+
+## 触发条件
+
+- 需要把筛选条件、Tab、关键字同步到地址栏 URL query，或从分享链接恢复这些参数。
+- 需要 `useUrlState` 的 `setState`、`clearKeys`、`clearState`，或在 `history` / `router`、`replace` / `push` 之间选择。
+
+## 不适用场景
+
+- 只要标准列表查询重置、远程分页、YTable 工具栏，不涉及地址栏：使用 `../page-list-module/SKILL.md`。
+- 跨页面全局状态、Pinia/provide 共享数据，而不是当前路由 query。
+- 需要改 path/hash 或跳到另一条路由。本 Hook 只动当前 query。
+
+## 实施流程
+
+1. 当前会话可用 yss-ui MCP 时，先用 `get_component_docs` 查询 `useUrlState`；需要示例再 `get_demo`。
+2. MCP 不可用或无结果时读取最新 `llms-full.txt`；仍不一致则以 `packages/hooks/src/useUrlState` 为准。
+3. 默认 `history + replace` 无感写 URL。需要路由守卫/导航语义时再 `strategy: 'router'`；需要浏览器回退栈时再 `mode: 'push'`。
+4. 用 `state` 读字符串视图，用 `setState` 合并补丁；重置用 `clearKeys` 或 `clearState`。
+
+## 硬约束（禁止/必须）
+
+- 从 `@yss-ui/hooks` 导入 `useUrlState`。真实签名：`useUrlState(options?)`，返回 `{ state, setState, clearKeys, clearState }`。
+- 默认 `mode: 'replace'`、`strategy: 'history'`。`history` 走 `pushState/replaceState`，不触发 vue-router 导航重建；无 router 注入时也能工作。SSR/无 `window` 时会把 `history` 降为 `router`。
+- `state` 是 `ComputedRef<Record<string, string>>`。重复 query key 取最后一个。`setState` 会把值 `String(...)`；读的时候不要当成 number/boolean 原样回来。
+- `setState(patch)` 合并写入。`null`、`undefined`、`''` 会**删除**该 key，不是写成空字符串。
+- `clearKeys(['a', 'b'])` 只删列出的 key；`clearState()` 清空当前路由全部 query。列表“重置”优先 `clearState({ mode: 'replace' })`，不要误删 path。
+- 只改当前 `path + hash` 上的 query。禁止用它替换 `router.push({ path: '/other' })`。
+- 需要触发守卫、滚动行为或依赖 `onBeforeRouteUpdate` 时传 `strategy: 'router'`；默认 `history` 不会走这些导航语义。
+- 单次调用可覆盖 `mode`/`strategy`：`setState(patch, { mode: 'push', strategy: 'router' })`。
+- 不要手写 `URLSearchParams` + `history.replaceState` 并行操作同一套 query，避免和 Hook 内部状态分叉。
+
+## 标准代码骨架
+
+```vue
+<script setup lang="ts">
+import { computed } from 'vue';
+import { useUrlState } from '@yss-ui/hooks';
+
+const { state, setState, clearKeys, clearState } = useUrlState();
+
+const keyword = computed(() => state.value.keyword || '');
+const tab = computed(() => state.value.tab || 'all');
+
+/** 合并写入；空字符串会删除 key。 */
+const handleKeywordChange = async (value: string) => {
+  await setState({ keyword: value });
+};
+
+const handleTabChange = async (value: string) => {
+  await setState({ tab: value });
+};
+
+const handleClearKeyword = async () => {
+  await clearKeys(['keyword']);
+};
+
+const handleReset = async () => {
+  await clearState({ mode: 'replace' });
+};
+</script>
+
+<template>
+  <div>
+    <span>{{ keyword }} / {{ tab }}</span>
+  </div>
+</template>
+```
+
+需要回退栈时：`useUrlState({ mode: 'push' })`。需要 vue-router 导航语义时：`useUrlState({ strategy: 'router' })`。
+
+## 交付检查清单
+
+- [ ] 导入和返回值与真实签名一致，没有臆造 `getQuery`/`removeQuery`。
+- [ ] 业务按字符串消费 `state`；空值删除 key 的行为符合预期。
+- [ ] 重置用 `clearKeys`/`clearState`，没有改 path/hash。
+- [ ] `history`/`router`、`replace`/`push` 的选择与是否需要守卫、回退栈一致。
+
+## 失败兜底策略
+
+- URL 变了但页面没反应：`history` 不走路由导航；依赖守卫时改 `strategy: 'router'`。
+- 数字/布尔写进去读出来不对：先 `String` 再自己 parse，不要假设 Hook 保类型。
+- 想清空某个筛选却变成 `?keyword=`：传 `'' | null | undefined` 让它删 key，不要写空字符串占位（空字符串同样删除；若看到残留，检查是否走了别的手写 query 代码）。
+- 与 `router.replace({ query })` 抢状态：统一只通过 `useUrlState` 写 query。
+
+---
+
+#### use-polling-task
+
+# usePollingTask 使用
+
+## 触发条件
+
+- 页面需要静默轮询、任务状态轮询、动态切换间隔，或手动查询与轮询并存。
+- 需要 `usePollingTask` 的 `start/stop/restart/runNow`、`pauseWhenHidden`、`isCurrent()` 或 `AbortSignal`。
+
+## 不适用场景
+
+- 只要给一次请求包 `loading`：使用 `useLoading`。
+- 只要单请求的 `data/error/cache/重试`：用 `vue-hooks-plus/useRequest` 或项目现有请求 Hook，不要用轮询调度顶替。
+- 表格高度、树高度问题：使用 `../use-table-height/SKILL.md` 或 `../use-tree-height/SKILL.md`。
+
+## 实施流程
+
+1. 当前会话可用 yss-ui MCP 时，先用 `get_component_docs` 查询 `usePollingTask`；需要启停、动态间隔、错误策略或可见性暂停时再 `get_demo`。
+2. MCP 不可用或无结果时读取最新 `llms-full.txt`；仍不一致则以 `packages/hooks/src/usePollingTask` 为准。
+3. 把“静默刷新”和“带 loading 的手动查询”拆成两个函数。轮询 task 只更新数据，不打页面主 loading。
+4. 在 task 里写入结果前调用 `isCurrent()`；请求库支持时把 `signal` 传下去。
+
+## 硬约束（禁止/必须）
+
+- 从 `@yss-ui/hooks` 导入 `usePollingTask`。真实签名：`usePollingTask(task, options?)`。
+- `task` 收到 `{ generation, signal?, isCurrent }`。Hook **不**返回 `data`，也**不**接管业务 loading。
+- 返回值只有：`isActive`、`isRunning`、`currentInterval`、`generation`、`start`、`stop`、`restart`、`runNow`、`setInterval`。禁止臆造 `pause`/`resume`/`data`。
+- 调度方式是“本轮 `await` 结束后再 `setTimeout`”，不是 `setInterval`。`isRunning === true` 时不会并发下一轮。`concurrent` 只允许 `false`。
+- 默认 `interval: 0`（不轮询）、`autoStart: false`、`immediate: false`、`pauseWhenHidden: true`、`continueOnError: true`、`resumeMode: 'immediate'`。
+- `interval <= 0` 时 `start()` 直接返回；`setInterval(0)` 会停止轮询。`interval` 支持 `number` 或 `Ref<number>`。
+- **`isRunning` 不是页面 loading**。静默轮询不要把 `isRunning` 绑到表格/页面主 loading。
+- 每次 `start/stop/restart` 都会推进 `generation`。写入数据前必须 `if (!isCurrent()) return;`，防止慢请求回写。
+- `pauseWhenHidden: true` 时，隐藏标签页会停后续调度；已经开始的一轮若调用方不处理 `signal`，仍可能跑完。回到前台默认立即补一轮（`resumeMode: 'immediate'`），也可 `'next-interval'`。
+- `start()`：启动新链（已在跑则 no-op）。`restart()`：先停再启。`runNow()`：立刻跑一轮，未启动则先启动。
+- Orval/mutator 已经提示的 API 错误，不要在 `onError` 里再 `message.error`。`continueOnError: false` 会在 task throw 后停掉轮询链。
+- 组件卸载会 `stop` 并移除 `visibilitychange` 监听，不必手写对称销毁，除非还有额外定时器。
+
+## 标准代码骨架
+
+```vue
+<script setup lang="ts">
+import { onMounted, ref } from 'vue';
+import { usePollingTask, type PollingContext } from '@yss-ui/hooks';
+
+const rows = ref<unknown[]>([]);
+const pollingInterval = ref(3000);
+
+/** 静默刷新；写入前检查 isCurrent。 */
+const refreshSilently = async ({ signal, isCurrent }: PollingContext) => {
+  const response = await fetch('/api/list', { signal });
+  const payload = await response.json();
+  if (!isCurrent()) return;
+  rows.value = payload;
+};
+
+const { start, stop, restart, runNow, isActive } = usePollingTask(refreshSilently, {
+  interval: pollingInterval,
+  pauseWhenHidden: true,
+});
+
+/** 手动查询可保留自己的 loading，不要复用 isRunning。 */
+const handleSearch = async () => {
+  stop();
+  await refreshSilently({ generation: 0, isCurrent: () => true });
+  await restart({ immediate: false });
+};
+
+onMounted(() => {
+  void start();
+});
+</script>
+
+<template>
+  <div>{{ isActive ? 'polling' : 'idle' }}</div>
+</template>
+```
+
+`fetch('/api/list')` 仅作调度示意；真实 Orval 方法按 `../api-integration/SKILL.md` 选择，并把 `signal` 放到请求库支持的位置。
+
+## 交付检查清单
+
+- [ ] task 写入前调用 `isCurrent()`；能传的请求都传了 `signal`。
+- [ ] 页面主 loading 没有绑定 `isRunning`。
+- [ ] 手动查询 `stop → 带 loading 的请求 → restart`，与静默 task 分离。
+- [ ] `interval`、`pauseWhenHidden`、`continueOnError`、`resumeMode` 与产品行为一致；`0` 会停轮询。
+- [ ] `onError` 没有重复 API `message.error`。
+
+## 失败兜底策略
+
+- 旧数据覆盖新数据：查是否漏了 `isCurrent()`，以及是否在 `restart` 后仍写闭包里的旧引用。
+- 切走标签页回来连打多轮：确认只有一套 Hook，且隐藏时没有另写 `setInterval`。
+- 请求失败后轮询消失：看是不是 `continueOnError: false` 或 `interval` 被设成 `0`。
+- 想展示 loading：用 `useLoading` 包手动查询，不要把轮询 Hook 改造成请求状态机。
+
+---
+
 ### app
 
 #### yss-ui-business-page-generation
@@ -6713,6 +6903,367 @@ const handleTreeAction = ({ key, node }: { key: string; node: TreeNode }) => {
 - 点击删除立即调用 API 时，移出节点动作菜单，改为节点附近或页面操作区 `Popconfirm`。
 - 传入 `height` 但节点未裁剪时，先核对展开后可见节点数、`itemHeight` 和阈值，不盲目强制 `virtual=true`。
 - 节点 API 失败后让 mutator reject 中断右表刷新等后续流程，不重复错误提示。
+
+---
+
+#### ysheet-usage
+
+# YSheet 使用
+
+## 触发条件
+
+- 生成或修改协同表格、类 Excel 工作簿、Univer Sheet、筛选/数据校验 Preset 或只读电子表格。
+- 需要配置 `YSheet` 的 `extraPresets`、`extraPlugins`、`extraLocales`、`config`、`IWorkbookData` 或 `save/reload`。
+
+## 不适用场景
+
+- 业务主列表、远程分页、操作列：使用 `../ytable-usage/SKILL.md`。
+- 行内编辑明细表：使用 `../yedit-table-usage/SKILL.md`。
+- 只要导出 Excel/CSV 文件流：使用 `../file-export-download/SKILL.md`。
+
+## 实施流程
+
+1. 当前会话可用 yss-ui MCP 时，先用 `get_component_docs` 查询 `YSheet` 的 Props、Events、Expose 与子路径导出；需要只读、筛选或数据校验时再用 `get_demo`。
+2. MCP 不可用、调用失败或校正后仍无结果时，才读取最新 `llms-full.txt`；文档与当前依赖不一致时，以 `packages/components/src/sheet` 源码和 `package.json` 的 `exports`/`optionalDependencies` 为准。
+3. 先确认只要核心表格还是要筛选/校验/绘图 Preset，再选择导入入口。
+4. 给容器明确高度，用 `v-model` 绑定工作簿，需要持久化时调用 `save()`。
+
+## 硬约束（禁止/必须）
+
+- 基础用法从 `@yss-ui/components` 导入 `YSheet`（异步组件，未使用时不加载 Univer）。`LocaleType`、`IWorkbookData`、`YSheetProps`、`YSheetExpose` 也可从主入口导入。
+- Univer Preset 运行时对象必须从 `@yss-ui/components/sheet` 导入，禁止业务代码直接 `import ... from '@univerjs/...'`，也禁止从主入口臆造 `UniverSheetsFilterPreset` 等符号。
+- `@univerjs/*`、`react`、`react-dom`、`rxjs` 是 `@yss-ui/components` 的 **optionalDependencies**。安装组件库时会尝试拉取；未使用 YSheet 的项目缺包不应阻断安装。使用 YSheet 时保证私服能装到这些可选依赖，**不要**再让业务 `pnpm add` 一套 Univer 包，也**不要**把它们写进业务 `dependencies` 当普通必装项。
+- Univer 扩展边界只有 `config`、`extraPresets`、`extraPlugins`、`extraLocales`。未声明的顶层属性不会透传给 Univer。
+- `config` 是 `Partial<IUniverSheetsCorePresetConfig>`，与默认值合并且 `config` 优先。默认 `{ header: true, toolbar: true, footer: {}, contextMenu: true, formulaBar: true }`。`footer` 不能为 `true`，只能是 `false` 或对象。
+- 必须给 YSheet 明确高度（数字会转成 `px`，字符串原样使用）；父级没有高度时不要只靠默认 `'100%'`。
+- 没有公开插槽。禁止臆造 `#toolbar`、`#cell` 等插槽。
+- 禁止直接改 `IWorkbookData` 对象来“刷新单元格”；运行时改数走 Univer Facade，持久化走 `save()`（会 `update:modelValue`）。
+- `readonly` 会拦截键盘编辑、粘贴、拖拽、双击和右键入口；复制/撤销等修饰键组合仍允许。
+- 语言缺省继承 `YConfigProvider`。核心包已注册简体/繁体/英文，切换调用 Facade `setLocale`，不重建工作簿。用户输入、工作表名、公式和数据不自动翻译。额外 Preset/插件必须经 `extraLocales` 提供对应词典。
+- 组件卸载会自动 `dispose()`；不要在业务层再抄一套销毁逻辑，除非拿到了外部 `getUniverAPI()` 实例且自行创建了额外资源。
+
+## 标准代码骨架
+
+```vue
+<script setup lang="ts">
+import { ref } from 'vue';
+import { YSheet, type IWorkbookData } from '@yss-ui/components';
+
+const sheetRef = ref<{ save: () => IWorkbookData | null } | null>(null);
+const workbookData = ref<IWorkbookData | null>(null);
+
+/** 把当前工作簿快照写回 v-model。 */
+const handleSave = () => {
+  const snapshot = sheetRef.value?.save();
+  if (snapshot) {
+    workbookData.value = snapshot;
+  }
+};
+</script>
+
+<template>
+  <YSheet
+    ref="sheetRef"
+    v-model="workbookData"
+    height="620px"
+    locale="zh-CN"
+    @error="() => undefined"
+  />
+</template>
+```
+
+启用筛选和数据校验时，改为从子路径导入 Preset 与语言包：
+
+```typescript
+import {
+  LocaleType,
+  UniverPresetSheetsDataValidationZhCN,
+  UniverPresetSheetsFilterZhCN,
+  UniverSheetsDataValidationPreset,
+  UniverSheetsFilterPreset,
+  YSheet,
+} from '@yss-ui/components/sheet';
+
+const extraPresets = [UniverSheetsFilterPreset(), UniverSheetsDataValidationPreset()];
+const extraLocales = {
+  [LocaleType.ZH_CN]: [UniverPresetSheetsFilterZhCN, UniverPresetSheetsDataValidationZhCN],
+};
+```
+
+```vue
+<YSheet
+  v-model="workbookData"
+  height="560px"
+  :readonly="readonly"
+  :config="{ header: false, toolbar: true, formulaBar: true, footer: { sheetBar: true } }"
+  :extra-presets="extraPresets"
+  :extra-locales="extraLocales"
+/>
+```
+
+子路径当前还可导出 `UniverSheetsDrawingPreset` / `UniverPresetSheetsDrawingZhCN`。`extraPlugins` 接受插件类或 `[插件类, 配置]`。
+
+## 交付检查清单
+
+- [ ] 基础 `YSheet` 从 `@yss-ui/components` 导入；Preset/插件运行时从 `@yss-ui/components/sheet` 导入。
+- [ ] 未从 `@univerjs/*` 直接导入，也未要求业务重复安装 optionalDependencies。
+- [ ] 只使用 `config/extraPresets/extraPlugins/extraLocales` 扩展 Univer，没有虚构顶层 Props 或插槽。
+- [ ] 容器有明确高度；持久化走 `save()`，没有原地改工作簿 JSON。
+- [ ] 额外 Preset 已配套 `extraLocales`，`footer` 未写成 `true`。
+
+## 失败兜底策略
+
+- 页面能装组件库但 YSheet 白屏/加载失败：先确认 optionalDependencies 是否安装成功，而不是改成从主入口同步 import Univer。
+- 需要筛选/校验却没有 UI：检查是否从 `@yss-ui/components/sheet` 引入对应 Preset，并传入 `extraPresets` + `extraLocales`。
+- 高度为 0 或不渲染：给父容器或 `height` 明确像素/`%` 值。
+- 改了 `workbookData` 字段但画布不变：改为 `reload(data)` 或 Facade API，不要假设深层对象变异会自动刷新。
+
+---
+
+#### ycondition-builder-usage
+
+# YConditionBuilder 使用
+
+## 触发条件
+
+- 生成或修改条件构建器、规则表达式、数据质量筛选条件、嵌套 AND/OR 条件树。
+- 需要配置 `YConditionBuilder` 的 `loadFields`、`loadValues`、`getOperators`、`operatorOptions`、`BETWEEN`/`IN` 或 `validate()`。
+
+## 不适用场景
+
+- 普通查询表单字段、级联 Select：使用 `../yss-formily/SKILL.md` 或 `../formily-foundation/SKILL.md`。
+- YTable 列头筛选、字典翻译：使用 `../ytable-usage/SKILL.md`。
+- YConditionBuilder 不是 Formily 内置 `x-component`，不要写进 Schema 组件表。
+
+## 实施流程
+
+1. 当前会话可用 yss-ui MCP 时，先用 `get_component_docs` 查询 `YConditionBuilder` 的 Props、Events、Expose 与 `ConditionGroup`；需要远程字段、联动操作符、BETWEEN 或校验时再 `get_demo`。
+2. MCP 不可用或无结果时，读取最新 `llms-full.txt`；仍不一致则以 `packages/components/src/condition-builder` 源码为准。
+3. 先定义根 `ConditionGroup`，再提供字段/操作符/值加载函数。
+4. 提交前调用 `validate()` 或监听 `@validate`；只读展示用 `disabled`。
+
+## 硬约束（禁止/必须）
+
+- 从 `@yss-ui/components` 导入 `YConditionBuilder` 和类型 `ConditionGroup`、`ConditionLeaf`、`OperatorOption`、`OptionItem`、`YConditionExpose`。
+- 根数据必须是 `type: 'GROUP'` 的 `ConditionGroup`（`logicalOp: 'AND' | 'OR'` + `children`），叶子是 `type: 'LEAF'`（`field/operator/value`）。禁止改成扁平 `{ field, op, val }[]` 还绑到 `v-model`。
+- `createEmptyGroup`、`DEFAULT_OPERATOR_OPTIONS` **不是**包的运行时导出；业务侧自己构造初始组和操作符列表，或省略 `operator-options` 使用组件内置项。
+- 字段和值候选必须走 `load-fields(q)`、`load-values({ q, field, operator, node })`。组件会显示 label、写入 value。
+- 静态操作符用 `operator-options`；按字段变化时用 `get-operators(field)`。每项必须带 `kind: 'none' | 'single' | 'between' | 'multiple'`，否则输入形态会落到 `single`。
+- `kind: 'between'` 时 `value` 是 `[start, end]`；`multiple` 是数组；`none`（如 `IS NULL`）不展示值输入。
+- `readonly` 已废弃且**当前不生效**。只读/禁用必须用 `disabled`。
+- `segments` / `SegmentSchema.render` 存在于类型，但运行时**不消费**。禁止按自定义分段、自定义控件去生成 UI。
+- `getValue('legacy')` 不会转换成另一套旧结构，与 `getValue()` 返回同一棵 `ConditionGroup`。新代码不要传 `legacy`。
+- `is-root`、`depth`、`remove` 事件只给内部递归节点用；业务入口保持默认，不要监听 `remove`。
+- 默认 `strict-mode` 为 `true`：字段、操作符、值（`kind !== 'none'`）都必填，`0` 视为有效值。允许空条件时显式 `:strict-mode="false"`。
+- `and-text` / `or-text` 可覆盖“且/或”展示；不传则走组件语言包。国际化项目不要在业务里写死中文操作符 label，用 `t()` 生成 `operator-options`。
+
+## 标准代码骨架
+
+```vue
+<script setup lang="ts">
+import { ref } from 'vue';
+import {
+  YConditionBuilder,
+  type ConditionGroup,
+  type OperatorOption,
+  type OptionItem,
+  type YConditionExpose,
+} from '@yss-ui/components';
+
+const conditionRef = ref<YConditionExpose | null>(null);
+const model = ref<ConditionGroup>({
+  id: 'root',
+  type: 'GROUP',
+  logicalOp: 'AND',
+  children: [],
+});
+
+const operatorOptions: OperatorOption[] = [
+  { label: '等于', value: 'EQ', kind: 'single' },
+  { label: '区间', value: 'BETWEEN', kind: 'between' },
+  { label: '包含', value: 'IN', kind: 'multiple' },
+  { label: '为空', value: 'IS NULL', kind: 'none' },
+];
+
+const fieldOptions: OptionItem[] = [
+  { label: '年龄', value: 'age' },
+  { label: '城市', value: 'city' },
+];
+
+/** 按关键字过滤字段。 */
+const loadFields = async (q: string): Promise<OptionItem[]> => {
+  const keyword = q.toLowerCase();
+  return fieldOptions.filter(
+    item => item.label.toLowerCase().includes(keyword) || item.value.toLowerCase().includes(keyword)
+  );
+};
+
+/** 按当前字段加载值候选。 */
+const loadValues = async (args: {
+  q: string;
+  field: unknown;
+  operator: string | undefined;
+}): Promise<OptionItem[]> => {
+  if (String(args.field) !== 'city') return [];
+  return [
+    { label: '北京', value: 'beijing' },
+    { label: '上海', value: 'shanghai' },
+  ];
+};
+
+/** 提交前校验整棵条件树。 */
+const handleSubmit = () => {
+  const valid = conditionRef.value?.validate() ?? false;
+  if (!valid) return;
+  const payload = conditionRef.value?.getValue();
+  return payload;
+};
+</script>
+
+<template>
+  <YConditionBuilder
+    ref="conditionRef"
+    v-model="model"
+    :max-depth="3"
+    :operator-options="operatorOptions"
+    :load-fields="loadFields"
+    :load-values="loadValues"
+    @validate="() => undefined"
+  />
+</template>
+```
+
+按字段动态操作符时传入 `:get-operators="getOperators"`，并在函数内返回带 `kind` 的 `OperatorOption[]`。
+
+## 交付检查清单
+
+- [ ] `v-model` 绑定的是 `ConditionGroup`，叶子含 `field/operator/value`。
+- [ ] `loadFields` / `loadValues` / `kind` 与真实输入形态一致；BETWEEN 未当成单值。
+- [ ] 只读用 `disabled`，没有依赖 `readonly` 或自定义 `segments`。
+- [ ] 提交走 `validate()` / `@validate`；`getValue()` 未假设 legacy 转换。
+- [ ] 没有把 YConditionBuilder 写进 Formily `x-component`。
+
+## 失败兜底策略
+
+- 下拉里没有字段：补 `load-fields`，不要把选项写进不存在的 `options` Prop。
+- 选了“区间”仍只有一个输入框：检查操作符 `kind` 是否为 `'between'`。
+- 点了只读仍能编辑：把 `readonly` 换成 `disabled`。
+- `validate()` 一直 false：先看 `strict-mode` 和空叶子；允许空值时关闭严格模式，而不是改数据结构。
+
+---
+
+#### yfile-import-usage
+
+# YFileImport 使用
+
+## 触发条件
+
+- 生成或修改文件导入弹窗、Excel/CSV 导入向导、两步导入（选择文件 → 结果确认）。
+- 需要配置 `YFileImport` 的 `nextStep`、`finalImport`、`importResult`、`loadings`、`fileTypeList` 或 `#result` 插槽。
+
+## 不适用场景
+
+- 导出报表、下载 Blob、解析 `Content-Disposition`：使用 `../file-export-download/SKILL.md`。
+- 只要一个普通附件 Upload 字段、没有导入向导弹窗。
+- 浏览器预览远程文件，不走导入确认流程。
+
+## 实施流程
+
+1. 当前会话可用 yss-ui MCP 时，先用 `get_component_docs` 查询 `YFileImport` 的 Props、Events、Slots、Expose；需要两步流程、失败数据或 Formily 按钮打开时再 `get_demo`。
+2. MCP 不可用或无结果时读取最新 `llms-full.txt`；仍不一致则以 `packages/components/src/file-import` 源码为准。
+3. 用 `v-model` 控制弹窗可见性；在 `nextStep` 里做预检，成功后调用 `onSuccess()` 进入结果步。
+4. 模板下载、失败数据下载走 `../file-export-download/SKILL.md` 的 Blob 链路，不要在导入组件里手写 `createObjectURL`。
+
+## 硬约束（禁止/必须）
+
+- 从 `@yss-ui/components` 导入 `YFileImport`；类型可导入 `YFileImportProps`、`FileImportTexts`、`ImportResult`。`FILE_IMPORT_LOADING_NAME`、`YFileImportEmit` **不是**公开运行时导出，loading 名用字符串字面量。
+- 组件内部 `beforeUpload` 恒为 `false`，不会按 `action` 自动上传。文件留在 `fileList` 里，由业务在 `nextStep` / `finalImport` 提交。
+- `drag`、`autoUpload` 只是历史兼容字段：上传区固定 `Upload.Dragger`，也不会自动上传。直传请用 `uploadProps.customRequest`。
+- 两步流程：`nextStep` 通过本地校验后才会 emit。载荷含 `fileList`、`close`、`loadingName: 'nextStep'` 和 **`onSuccess`**。必须在业务预检成功后调用 `onSuccess()`，否则不会进入结果步。文档事件表若漏了 `onSuccess`，以源码为准。
+- `loadings` 是字符串数组。合法标识：`'downloadTemplate'`、`'nextStep'`、`'finalImport'`、`'exportErrorData'`。往数组里加减这些名字来控制按钮 loading。
+- `importResult.successkey` 为真时结果步显示“确认导入”；`failkey` 为真时显示“下载失败数据”。数字字段 `success/fail/total` 只用于展示。打开弹窗会 `reset()` 回到选文件步，因此结果要在 `onSuccess` 之后再展示，不要指望默认 demo 值当真实导入结果。
+- `fileTypeList` 用来拼 `accept` 和扩展名校验（如 `xls` → `.xls`）。一旦传入 `accept`，组件不再做扩展名校验。
+- 浮层 `getContainer` 固定 `document.body`。Modal 扩展只走 `modalProps`，Upload 扩展只走 `uploadProps`。
+- 插槽：`#uploader`（`{ fileList, accept, multiple }`）、`#result`（`{ result }`）、`#footer-left`、`#footer-right`。文档与 Demo 用 kebab-case。
+- Expose：`open()` / `close()` / `reset()`。受控场景优先 `v-model`。
+- Formily 已注册 `YFileImport`，但导入弹窗应作为页面兄弟组件，用 Schema 按钮通过 scope 打开；不要把它当成普通表单项。
+- `downloadTemplate` / `exportErrorData` 只负责发出事件；真正落盘必须按导出 Skill 处理 Blob。Orval 错误由 mutator 提示，不要在这些 handler 里重复 `message.error`。
+
+## 标准代码骨架
+
+```vue
+<script setup lang="ts">
+import { ref } from 'vue';
+import { YButton, YFileImport, type ImportResult } from '@yss-ui/components';
+
+const visible = ref(false);
+const loadings = ref<string[]>([]);
+const importResult = ref<ImportResult>({
+  successkey: '',
+  failkey: '',
+  success: 0,
+  fail: 0,
+  total: 0,
+});
+
+const setLoading = (name: string, on: boolean) => {
+  loadings.value = on ? [...loadings.value, name] : loadings.value.filter(item => item !== name);
+};
+
+/** 预检通过后必须调用 onSuccess 才能进入结果步。 */
+const handleNextStep = async (payload: {
+  loadingName: string;
+  fileList: Array<{ originFileObj?: File }>;
+  onSuccess: () => void;
+}) => {
+  setLoading(payload.loadingName, true);
+  importResult.value = { successkey: 'ok', failkey: '', success: 2, fail: 0, total: 2 };
+  payload.onSuccess();
+  setLoading(payload.loadingName, false);
+};
+
+/** 确认导入；接口错误交给 mutator。 */
+const handleFinalImport = async (payload: { loadingName: string; close: () => void }) => {
+  setLoading(payload.loadingName, true);
+  payload.close();
+  setLoading(payload.loadingName, false);
+};
+
+/** 下载导入模板：实际 Blob 处理见 file-export-download。 */
+const handleDownloadTemplate = async (payload: { loadingName: string }) => {
+  setLoading(payload.loadingName, true);
+  setLoading(payload.loadingName, false);
+};
+</script>
+
+<template>
+  <YButton type="primary" @click="visible = true">导入</YButton>
+  <YFileImport
+    v-model="visible"
+    :file-type-list="['xls', 'xlsx', 'csv']"
+    :loadings="loadings"
+    :import-result="importResult"
+    @next-step="handleNextStep"
+    @final-import="handleFinalImport"
+    @download-template="handleDownloadTemplate"
+  />
+</template>
+```
+
+## 交付检查清单
+
+- [ ] `nextStep` 成功路径调用了 `onSuccess()`。
+- [ ] `loadings` 使用真实字符串标识；`importResult` 的 `successkey`/`failkey` 与按钮显隐一致。
+- [ ] 没有依赖 `autoUpload`/`action` 自动上传，也没有从包里导入内部常量。
+- [ ] 模板/失败数据下载走 Blob 工具，没有重复 `message.error`。
+- [ ] 插槽使用 kebab-case；Formily 场景是兄弟弹窗而不是表单字段。
+
+## 失败兜底策略
+
+- 点了下一步还停在选文件：检查是否调用 `onSuccess()`，以及 `fileTypeList`/`accept` 校验是否拦截。
+- 结果步没有确认按钮：给 `importResult.successkey` 非空值。
+- 选择文件后浏览器直接上传：不要传会触发默认上传的 `uploadProps`；保持组件拦截，自己在事件里提交。
+- 打开弹窗仍显示上次结果：这是 `modelValue` 变 `true` 时 `reset()` 的预期行为，先走完 `nextStep` 再展示结果。
 
 ---
 

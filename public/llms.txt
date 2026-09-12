@@ -91,6 +91,8 @@ YSS UI 是基于 Vue 3、Ant Design Vue 与 VXE-Table 的企业级中后台组�
 
 - use-table-height: https://iamyancong.github.io/yss-ui/skills/use-table-height — 指导 YTable、YEditTable、左树右表、分页列表、工具栏表格和弹窗/抽屉内表格使用 @yss-ui/hooks 的 useTableHeight 实现稳定自适应高度；当需要避免双滚动条、底部空白、容器撑开闪烁，或需要计入分页、工具栏、添加按钮偏移时使用。
 - use-tree-height: https://iamyancong.github.io/yss-ui/skills/use-tree-height — 指导 YTree、左树右表、组织树、分类树、树搜索和 Tab/抽屉内树区域使用 @yss-ui/hooks 的 useTreeHeight 实现自适应高度；当树区域需要独立滚动、容器切换后高度不正确或需要扣除 YTree 内置搜索高度时使用。
+- use-url-state: https://iamyancong.github.io/yss-ui/skills/use-url-state — 指导使用 @yss-ui/hooks 的 useUrlState 管理当前路由 URL query 的读取、合并写入、按 key 清理和清空；覆盖 history 无感更新、replace/push、router 策略和分享链接恢复，不把 vue-router query 手写拼接或当成完整状态库。
+- use-polling-task: https://iamyancong.github.io/yss-ui/skills/use-polling-task — 指导使用 @yss-ui/hooks 的 usePollingTask 做页面级静默轮询、任务状态轮询和动态间隔调度；覆盖 start/stop/restart/runNow、pauseWhenHidden、generation/isCurrent、AbortSignal，禁止把它当成请求 loading/data/error Hook 或直接绑定页面主 loading。
 
 ### app
 
@@ -104,6 +106,9 @@ YSS UI 是基于 Vue 3、Ant Design Vue 与 VXE-Table 的企业级中后台组�
 - ytable-usage: https://iamyancong.github.io/yss-ui/skills/ytable-usage — 指导 YSS UI 业务列表页、CRUD 表格、远程分页、操作列、气泡确认、列筛选、字典翻译、行拖拽、工具栏和自定义插槽正确使用 @yss-ui/components 的 YTable；当需要配置 YTableColumn、YTableActionConfig、pagination、filter-change 或表格实例方法时使用。
 - yedit-table-usage: https://iamyancong.github.io/yss-ui/skills/yedit-table-usage — 指导 YSS UI 业务页面使用 @yss-ui/components 的 YEditTable 实现可编辑表格、行内编辑、添加/删除行、下拉多选与可创建 tags、行级候选联动、表头筛选、校验和查看态；当需求出现编辑表格、明细行、扩展属性、可编辑列或 YEditTableColumn 时使用。
 - ytree-usage: https://iamyancong.github.io/yss-ui/skills/ytree-usage — 指导 YSS UI 左树右表、组织树、分类树、目录树和节点管理页使用 @yss-ui/components 的 YTree，覆盖 fieldNames 字段映射、搜索过滤、受控选中、节点动作、删除确认、虚拟滚动和自适应高度；当生成或修改树形筛选、左树右表、树搜索或树节点操作时使用。
+- ysheet-usage: https://iamyancong.github.io/yss-ui/skills/ysheet-usage — 指导 YSS UI 协同表格、类 Excel 工作簿、Univer 电子表格使用 @yss-ui/components 的 YSheet；覆盖 optionalDependencies、@yss-ui/components/sheet 子路径、extraPresets/extraPlugins/extraLocales、IWorkbookData、只读与 Facade save/reload，避免把 Univer 运行时从主入口同步导入。
+- ycondition-builder-usage: https://iamyancong.github.io/yss-ui/skills/ycondition-builder-usage — 指导规则配置、数据质量条件、嵌套 AND/OR 条件树使用 @yss-ui/components 的 YConditionBuilder；覆盖 ConditionGroup/ConditionLeaf、loadFields/loadValues、getOperators、BETWEEN/IN、strictMode 校验和 disabled，禁止把 readonly 或未消费的 segments 当成可用 API。
+- yfile-import-usage: https://iamyancong.github.io/yss-ui/skills/yfile-import-usage — 指导 YSS UI 文件导入弹窗、两步导入流程使用 @yss-ui/components 的 YFileImport；覆盖选择文件、nextStep.onSuccess、importResult、loadings、downloadTemplate 事件和结果插槽，避免与导出下载或普通 Upload 混淆。
 - prototype-page-acceptance: https://iamyancong.github.io/yss-ui/skills/prototype-page-acceptance — 当用户提供原型截图、老项目路径、旧页面截图或要求按既有页面复刻业务页面时，指导先提取视觉和交互验收清单，开发后用截图/运行结果逐项对照，避免只实现字段而忽略布局、按钮、表格高度和控件类型。
 - api-integration: https://iamyancong.github.io/yss-ui/skills/api-integration — 指导在 Vue3 业务列表、表单、详情和操作 Hook 中集成 Orval API，覆盖真实生成产物选择、mutator 响应契约、错误提示、加载状态、请求选项和长整型精度；当页面对接查询、新增、编辑、删除、详情或文件流接口时使用。
 - file-export-download: https://iamyancong.github.io/yss-ui/skills/file-export-download — 指导 Vue3 YSS UI 微应用实现文件导出、报表下载、模板下载和附件下载，覆盖 OpenAPI binary 响应、Orval 生成方法检查、responseType blob 兜底、Blob 响应类型、Content-Disposition 文件名、handleBlobResponse、loading 与错误处理；当需求出现导出、下载、Excel、CSV、PDF、ZIP、Blob 或文件流时使用。
