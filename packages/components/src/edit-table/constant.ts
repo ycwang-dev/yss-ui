@@ -122,6 +122,14 @@ export const editTableProps = {
   /** 工具栏/展开 */
   toolbarConfig: { type: Object as PropType<{ custom?: boolean }>, default: () => ({ custom: false }) },
   expandConfig: { type: Object as PropType<VxeTablePropTypes.ExpandConfig>, default: () => ({}) },
+  /** 横向虚拟滚动配置 (vxe-table v4.10.6+) */
+  virtualXConfig: { type: Object as PropType<VxeTablePropTypes.VirtualXConfig> },
+  /** 纵向虚拟滚动配置 (vxe-table v4.10.6+) */
+  virtualYConfig: { type: Object as PropType<VxeTablePropTypes.VirtualYConfig> },
+  /** @deprecated 请使用 virtualXConfig 替代 */
+  scrollX: { type: Object as PropType<VxeTablePropTypes.ScrollX> },
+  /** @deprecated 请使用 virtualYConfig 替代 */
+  scrollY: { type: Object as PropType<VxeTablePropTypes.ScrollY> },
   /** 分页 */
   pageable: { type: Boolean as PropType<boolean>, default: false },
   pagination: {

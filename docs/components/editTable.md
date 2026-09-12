@@ -159,8 +159,9 @@ vxe-table 4.19.x 新增或增强的原生配置也会继续透传，例如 `aggr
 - `columnConfig`：默认 `{ resizable:true, useKey:true }`。
 - `editConfig`：默认 `{ enabled: !disabled, trigger:'click', mode:'row', autoClear:true }`。
 - `tooltipConfig`：默认 `{ enterable:true, contentMethod: 内置文本清洗 }`，传入 `contentMethod` 可完全覆盖内置提示内容。
-- `rowDragConfig`：开启 `rowDragable` 时默认 `{ enabled:true, showIcon:true }`，会继续合并 `tableConfig.rowDragConfig` 与组件 `rowDragConfig`。
-- `scrollY`：~~已废弃~~，默认智能配置已被 `virtualYConfig` 替代。可传入 `tableConfig.virtualYConfig` 控制虚拟滚动。
+- `virtualXConfig`：默认智能开启横向虚拟滚动 `{ enabled: true, gt: 50 }`，列数超过 50 列时自动启用；支持通过直接 Props 或 `tableConfig.virtualXConfig` 传入。兼容废弃属性 `scrollX`。
+- `virtualYConfig`：默认智能开启纵向虚拟滚动 `{ enabled: true, gt: 100 }`，数据行超过 100 行时自动启用；支持通过直接 Props 或 `tableConfig.virtualYConfig` 传入。兼容废弃属性 `scrollY`。
+- `scrollX` / `scrollY`：~~已废弃~~，分别被 `virtualXConfig` 与 `virtualYConfig` 替代。直接传参或在 `tableConfig` 中设置均会平滑兼容映射。
 
 > 若同时使用组件顶层 vxe 属性与 `tableConfig`，顶层属性优先级更高；组件特有 props（如 `toolbarConfig`、`expandConfig`、`rowDragConfig`）会按组件语义继续合并或覆盖。
 

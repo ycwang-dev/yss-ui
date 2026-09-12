@@ -12,6 +12,9 @@ export function useXTableProps(props: any, showTooltipContent: (cfg: any) => str
       rowDragConfig: tableRowDragConfig,
       tooltipConfig: tableTooltipConfig,
       scrollY: tableScrollY,
+      scrollX: tableScrollX,
+      virtualXConfig: tableVirtualXConfig,
+      virtualYConfig: tableVirtualYConfig,
       ...rest
     } = cfg as any;
 
@@ -53,6 +56,16 @@ export function useXTableProps(props: any, showTooltipContent: (cfg: any) => str
       ...(tableTooltipConfig || {}),
     };
 
+    const resolvedVirtualXConfig = props.virtualXConfig ??
+      tableVirtualXConfig ??
+      props.scrollX ??
+      tableScrollX ?? { enabled: true, gt: 50 };
+
+    const resolvedVirtualYConfig = props.virtualYConfig ??
+      tableVirtualYConfig ??
+      props.scrollY ??
+      tableScrollY ?? { enabled: true, gt: 100 };
+
     return {
       ...rest,
       border: true,
@@ -67,7 +80,8 @@ export function useXTableProps(props: any, showTooltipContent: (cfg: any) => str
       columnConfig,
       editConfig,
       animat: (rest as any)?.animat ?? false,
-      virtualYConfig: tableScrollY ?? { enabled: true, gt: 100 },
+      virtualXConfig: resolvedVirtualXConfig,
+      virtualYConfig: resolvedVirtualYConfig,
       tooltipConfig,
       rowDragConfig,
     } as any;
