@@ -145,3 +145,8 @@ temp/
 
 # MCP 文档索引（pnpm mcp:index 生成，发布时 prepublishOnly 自动构建）
 packages/mcp/data/
+
+# Agent 会话草稿产物
+/findings.md
+/progress.md
+/task_plan.md
