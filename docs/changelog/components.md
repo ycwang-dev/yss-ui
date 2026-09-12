@@ -10,7 +10,21 @@ toc: content
 
 YSS UI 组件库（`@yss-ui/components`）的版本更新记录。
 
+## v1.6.5
+
+`2026-09-12`
+
+### ⚡ Performance & Optimization
+
+- **YEditTable**: 对齐 `YEditTable` 与 `YTable` 的虚拟滚动配置 API 与智能默认（`virtualXConfig` 默认 `{ enabled: true, gt: 50 }`，`virtualYConfig` 默认 `{ enabled: true, gt: 100 }`），支持直接 Props 或 `tableConfig` 透传，并保留对废弃 `scrollX`/`scrollY` 的平滑映射，消除宽表横向卡顿隐患 (#17)。
+- **Components Entry**: 治理根入口样式副作用，强化微前端与样式敏感工程优先通过 `@yss-ui/components/lite` 消费并在入口按需引入样式的规范引导 (#14)。
+
+### ♻️ Refactor & Types
+
+- **Types Standard**: 统一全库组件类型定义文件为 `types.ts`（规范 `table`、`edit-table`、`echarts`、`monaco`），保留 `type.ts` 作为向前兼容转发，对齐公开导出类型路径 (#5)。
+
 ---
+
 ## v1.6.4
 
 `2026-09-12`
