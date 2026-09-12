@@ -2641,8 +2641,9 @@ vxe-table 4.19.x 新增或增强的原生配置也会继续透传，例如 `aggr
 - `columnConfig`：默认 `{ resizable:true, useKey:true }`。
 - `editConfig`：默认 `{ enabled: !disabled, trigger:'click', mode:'row', autoClear:true }`。
 - `tooltipConfig`：默认 `{ enterable:true, contentMethod: 内置文本清洗 }`，传入 `contentMethod` 可完全覆盖内置提示内容。
-- `rowDragConfig`：开启 `rowDragable` 时默认 `{ enabled:true, showIcon:true }`，会继续合并 `tableConfig.rowDragConfig` 与组件 `rowDragConfig`。
-- `scrollY`：~~已废弃~~，默认智能配置已被 `virtualYConfig` 替代。可传入 `tableConfig.virtualYConfig` 控制虚拟滚动。
+- `virtualXConfig`：默认智能开启横向虚拟滚动 `{ enabled: true, gt: 50 }`，列数超过 50 列时自动启用；支持通过直接 Props 或 `tableConfig.virtualXConfig` 传入。兼容废弃属性 `scrollX`。
+- `virtualYConfig`：默认智能开启纵向虚拟滚动 `{ enabled: true, gt: 100 }`，数据行超过 100 行时自动启用；支持通过直接 Props 或 `tableConfig.virtualYConfig` 传入。兼容废弃属性 `scrollY`。
+- `scrollX` / `scrollY`：~~已废弃~~，分别被 `virtualXConfig` 与 `virtualYConfig` 替代。直接传参或在 `tableConfig` 中设置均会平滑兼容映射。
 
 > 若同时使用组件顶层 vxe 属性与 `tableConfig`，顶层属性优先级更高；组件特有 props（如 `toolbarConfig`、`expandConfig`、`rowDragConfig`）会按组件语义继续合并或覆盖。
 
@@ -5786,6 +5787,7 @@ box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary-color, #3371ff) 15%, tran
 - 当前公共导出包含 `YButton`、`YCard`、`YTable`、`YEditTable`、`YTree`、`YSplitPane`、`YFormily` 等；未导出 `YModal`、`YDrawer`、`YInput`、`YPopconfirm`，禁止臆造这些名称。
 - 当前未封装的 `Modal`、`Drawer`、`Popconfirm`、`Input` 等从 `ant-design-vue` 导入。删除操作使用按钮附近的 `Popconfirm`，不默认使用居中 `Modal.confirm`。
 - 业务层禁止导入 `@formily/antdv` 或 `@formily/antd*` UI 组件；使用 `YFormily` 提供的 Schema 与组件边界。
+- 样式敏感工程或微前端子应用中，优先使用 `@yss-ui/components/lite` 进行纯净消费并按需显式导入样式，防止根入口样式副作用污染全局。
 - 禁止因文档暂时不可达就把猜测的 `Y*` 组件改成 Ant Design Vue “先落地”。只能复用当前仓库已证明可用的导入，或明确报告待确认项。
 - 接口错误提示由 `mutator.ts` 的响应拦截器统一处理。API Hook 不得在 `success === false` 分支或 `catch` 内重复调用 `message.error`；`message` 只用于非 API 错误的本地交互反馈或成功提示。
 
@@ -6583,6 +6585,11 @@ onMounted(loadList);
 - `validate()` 真实返回 `Promise<{ valid: boolean; errorMsg: Map<string, string> }>`。组件 ref 未就绪时不得误判为校验成功。
 - 弹窗/抽屉内使用添加按钮时，高度 Hook 配置 `withAddButton: true`；如果同时分页或开启工具栏，一并开启对应偏移。
 - API 失败由 `mutator.ts` 统一提示并 reject。Hook 中不写 `success === false` 分支，不在 `else/catch` 重复 `message.error`；清理状态放在 `finally`。
+- **大表性能约束与反模式防护（Critical）**：
+  - **固定行高**：大数据量（行数 > 50 或列数 > 20）必须显式通过 `tableConfig: { cellConfig: { height: 36 } }` 设置固定行高，避免虚拟滚动动态估算引发重排与滚动抖动。
+  - **禁止每格嵌入 Formily**：严禁在单元格插槽中循环嵌套实例化 `<YFormily>` 或复杂双向响应式表单，必须使用组件内置轻量编辑器或行级激活。
+  - **虚拟滚动合理阈值**：组件默认启用 `virtualXConfig: { enabled: true, gt: 50 }` 与 `virtualYConfig: { enabled: true, gt: 100 }`，不可随意关闭；宽表可主动调低 `gt` 阈值。
+  - **分页优先**：超过 100 行且交互复杂时，优先采用 `pageable: true` 分页，而非全量挂载上千行可编辑 DOM。
 
 ## 标准代码骨架
 
@@ -8003,6 +8010,9 @@ fix(settlement): 修复重复回调导致结算流水重复入账的问题
   - **静态枚举选项**：`enum: [{ label: t('user.statusActive'), value: '1' }]`。
   - **表单校验规则文案**：`{ required: true, whitespace: true, message: t('user.nameRequired') }`。
   - **在组件中响应式消费**：在 SFC `<script setup>` 中通过 `const schema = computed(() => createFormSchema(t))` 绑定到 `<YFormily :schema="schema" />`，确保语言切换时表单项标题、占位符、枚举与校验文案即时联动。
+- **大表性能反模式警示（Critical）**：
+  - 严禁在大型表格（如超过 50 行的 `YEditTable` 或 `YTable`）中为每行每个单元格重复挂载独立的 `<YFormily>` 实例或全套 Reactive 字段模型；这会造成数百个 Formily 核心状态树在内存中双向监听，导致输入卡顿与滚动掉帧。
+  - 表格行内编辑应优先使用 `YEditTable` 内置的高性能组件体系（`form-item-input`, `form-item-select` 等），或采用“点击行时弹出 Drawer / Modal 挂载单个 YFormily 编辑”方案。
 
 ## 标准代码骨架
 
@@ -9057,6 +9067,7 @@ YSS UI 是一个基于 Vue 3、Ant Design Vue 与 VXE-Table 的企业级中后�
 
 - 安装与接入：本页 + [安装](/guide/installation)
 - 生产发布： [发版工作流](/guide/release-workflow) / [GitLab CI 集成](/guide/gitlab-ci-integration)
+- 性能与调优： [大表性能最佳实践手册](/guide/table-perf-handbook)
 - 存量系统接入： [JSP 项目接入](/guide/jsp)
 
 ## 安装
@@ -9126,6 +9137,22 @@ import { YEcharts } from '@yss-ui/components';
 旧隔离插件可能直接读取 `dist/index.mjs` 等内部文件，这些传统产物保留以兼容存量工具。标准包导入通过 package exports/module/main 进入优化后的根入口；新版模板在生产构建中仅为历史虚拟模块名保留兼容映射，不再改写根入口 import，开发模式继续复用依赖预构建优化。存量项目若用别名强制指向传统内部文件，仍按其别名加载，不能视为标准根入口消费。
 
 完整 `style.css` 仍有固定成本，不会根据 JavaScript 的 import 列表自动裁剪 CSS。验收必须同时检查完整页面资源、未使用的重型依赖、浏览器渲染与旧 API 兼容性，不能只比较入口文件大小。
+
+### 纯净模式与样式副作用隔离（微前端推荐）
+
+`@yss-ui/components` 根入口为了保证单体项目开箱即用，内置了基础样式副作用（`vxe-table/lib/style.css`、`vxe-pc-ui/lib/style.css` 等）。
+
+在 **微前端子应用** 或对全局样式污染高度敏感的场景下，推荐使用 `@yss-ui/components/lite` 纯净入口：
+
+```ts
+// 纯净组件导入，不注入顶层全局样式副作用
+import { YTable, YFormily, YButton } from '@yss-ui/components/lite';
+
+// 由业务工程按需在 main.ts 显式引入统一样式
+import '@yss-ui/components/style.css';
+```
+
+`lite` 入口与主入口完全共享底层组件与国际化单例，但彻底剥离了隐式全局 CSS 挂载，能够彻底规避微前端样式污染。
 
 组件库本地开发使用 `pnpm --filter @yss-ui/components dev`，单一监听流程依次更新传统产物和新根入口。可通过 `YSS_KEEP_CONSUMER=true pnpm test:package-consumer` 保留真实打包消费项目，再执行 `python3 scripts/check-package-consumer-browser.py <控制台输出的消费项目目录>` 验证页面渲染与全量安装。
 
