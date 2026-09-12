@@ -13,9 +13,9 @@ const ControlStub = defineComponent({
   name: 'ControlStub',
   inheritAttrs: false,
   setup:
-    (_, { slots }) =>
+    (_, { attrs, slots }) =>
     () =>
-      h('div', slots.default?.()),
+      h('div', attrs, slots.default?.()),
 });
 
 /** 创建一棵完整且可校验的标准条件树。 */
@@ -112,5 +112,34 @@ describe('YConditionBuilder 公开实例契约', () => {
     exposed.remove([1]);
     await nextTick();
     expect(exposed.getValue().children.length).toBe(1);
+  });
+
+  it('校验失败时对应控件标记 .is-error 样式类', async () => {
+    const invalidGroup: ConditionGroup = {
+      id: 'root',
+      type: 'GROUP',
+      logicalOp: 'AND',
+      children: [
+        {
+          id: 'invalid-leaf',
+          type: 'LEAF',
+          field: '',
+          operator: '',
+          value: '',
+        },
+      ],
+    };
+    const wrapper = mountConditionBuilder(invalidGroup);
+    await nextTick();
+
+    const exposed = wrapper.vm as unknown as YConditionExpose;
+    const isValid = exposed.validate();
+    expect(isValid).toBe(false);
+
+    await nextTick();
+    const errorField = wrapper.find('.field-select.is-error');
+    const errorOperator = wrapper.find('.operator-select.is-error');
+    expect(errorField.exists()).toBe(true);
+    expect(errorOperator.exists()).toBe(true);
   });
 });

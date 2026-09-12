@@ -43,8 +43,6 @@ describe('useConditionTree', () => {
       operatorResolver: async () => [],
     });
 
-    // console.log('DEBUG: root.value', JSON.stringify(root.value, null, 2));
-
     const secondChild = root.value.children[1] as ConditionGroup;
     const nestedLeaf = secondChild.children[0] as any;
 
