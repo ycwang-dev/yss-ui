@@ -49,9 +49,9 @@ export type {
 // 类型导出
 export type * from './button/types';
 export type * from './authority/types';
-export type * from './edit-table/type';
+export type * from './edit-table/types';
 export type * from './card/types';
-export type * from './table/type';
+export type * from './table/types';
 export type * from './condition-builder/types';
 export type * from './tree/types';
 export type * from './split-pane/types';
@@ -59,8 +59,8 @@ export type * from './formily/types';
 export type * from './cron/types';
 export type * from './month-calendar/types';
 export type * from './file-import/types';
-export type * from './echarts/type';
-export type * from './monaco/type';
+export type * from './echarts/types';
+export type * from './monaco/types';
 export type * from './locale/types';
 
 /** 全量安装独立成模块，使根入口具名导入可以裁剪安装依赖。 */

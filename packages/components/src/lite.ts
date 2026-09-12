@@ -40,9 +40,9 @@ export type {
 
 // 类型导出
 export type * from './button/types';
-export type * from './edit-table/type';
+export type * from './edit-table/types';
 export type * from './card/types';
-export type * from './table/type';
+export type * from './table/types';
 export type * from './condition-builder/types';
 export type * from './tree/types';
 export type * from './split-pane/types';

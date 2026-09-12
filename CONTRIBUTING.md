@@ -1,70 +1,62 @@
 ## YSS-UI 贡献指南
 
-本项目使用 Vue 3 + TypeScript + Vite，基于 vxe-table 4.16 封装。请在提交任何代码前先阅读并遵循以下规范。
+本项目使用 Vue 3 + TypeScript + Vite，基于 vxe-table 4.19+ 封装。请在提交任何代码前先阅读并遵循以下规范。
 
-### 架构与目录
-- 组件一律采用 compositon hooks 拆分：在 `packages/components/src/<component>/hooks/` 下组织单一职责的 hooks，组件 `.vue` 仅做组合与渲染。
-- 页面层按如下结构组织：
-```
-views/PageName/
-├── index.vue
-├── constant.ts
-├── type.ts
-├── mock.ts
-├── index.less
-├── components/
-└── hooks/
-```
-- 文档与示例：位于 `docs/components`；新增/修改配置项必须同步更新 API 表与 demos。
+### 架构与目录规范
+
+- **组件拆分标准**：
+  - **轻量组件（≤ 150 行）**：如 `YButton`、`YCard` 等单一视图或轻度封装组件，允许仅保持 `index.vue + types.ts`，避免过度拆分。
+  - **复杂组件（> 150 行）**：如 `YTable`、`YEditTable`、`YConditionBuilder` 等包含多状态或复杂业务交互的组件，必须严格按以下标准结构组织：
+    ```
+    ComponentName/
+    ├── index.vue          # 主组件（仅负责组合 logic 与视图渲染，≤ 150 行）
+    ├── constant.ts        # 常量、静态配置、纯函数
+    ├── types.ts           # TypeScript 类型定义与接口
+    ├── style.less         # 独立样式文件（不在 index.vue 中堆砌样式）
+    └── hooks/             # 业务逻辑 Composables
+        ├── useDataFetch.ts
+        └── useXTableProps.ts
+    ```
+- **类型文件命名**：
+  - 全库类型文件统一命名为 `types.ts`（禁止使用单数 `type.ts`；历史保留的 `type.ts` 仅用于向前兼容转发 `export * from './types'`）。
+- **文档与示例**：
+  - 文档位于 `docs/components/`，新增或修改组件 API 时必须同步更新 API 表与示例 demos。
+  - 页面命名及 demo 目录一律遵循 kebab-case 规范。
 
 ### TypeScript 与注释
-- TypeScript 必写，导出/公共 API 显式类型；允许局部可推断类型不重复标注。
-- 注释统一使用 JSDoc：`/** ... */`，禁止用 `//` 作为 API 注释。对 `defineProps/defineEmits` 字段、方法、hooks 的参数与返回添加 JSDoc，以便悬浮提示。
-- 命名语义化：函数为动词短语、变量为名词短语；避免 1-2 字母短名。
 
-### vxe-table 4.19 规范
-- props 透传由 `useXTableProps` 统一规范：
-  - `rowConfig/cellConfig/columnConfig/editConfig/rowDragConfig/scrollY/tooltipConfig` 聚合于此。
-  - `editConfig.autoClear=false`；`showOverflow/showHeaderOverflow` 的 `true` 解释为 `'tooltip'`；默认 `scrollY: { enabled: true, gt: 100 }`。
+- **TypeScript 严格类型**：必须显式标注导出与公开 API 类型，禁止 `any` 滥用。
+- **JSDoc 注释**：所有导出的方法、类、接口、Props 必须使用 JSDoc 格式 `/** ... */`（优先使用中文说明），禁止仅用 `//` 作为公开 API 注释。
+- **语义化命名**：函数使用动词短语、变量使用名词短语，避免晦涩缩写。
+
+### vxe-table 4.19+ 规范
+
+- **Props 透传与虚拟滚动**：
+  - 统一通过 `useXTableProps` / `useTableProps` 规范聚合。
+  - 虚拟滚动全面采用 `virtualXConfig`（默认 `{ enabled: true, gt: 50 }`）与 `virtualYConfig`（默认 `{ enabled: true, gt: 100/200 }`），废弃旧版 `scrollX`/`scrollY`（保留兼容解析）。
+  - 行高配置使用 `cellConfig.height`（代替废弃的 `rowConfig.height`）。
   - 开启行拖拽时必须设置 `row-config.drag: true`。
-- 事件使用 4.16 API：`edit-closed`、`row-dragend` 等。
-- Tooltip 文本通过 `tooltipConfig.contentMethod` 返回纯文本或 `null`。
+- **事件机制**：对齐 vxe-table 4.19+ 标准事件，如 `edit-closed`、`row-dragend` 等。
+- **Tooltip 提示**：Tooltip 统一通过 `tooltipConfig.contentMethod` 纯文本清洗，避免 DOM 注入异常。
 
-### 主题与依赖
-- 禁止硬编码颜色，统一使用 CSS 变量（如 `var(--primary-color)`）。
-- 弹层/下拉统一 `getPopupContainer: () => document.body`，避免被滚动容器裁剪。
-- Dumi demos 统一从 `@yss-ui/components` 导入，不引用源码路径。
+### 主题与微前端隔离
 
-### hooks 设计
-- 单一职责、输入输出清晰，必要时复用 `packages/components/src/table/hooks/` 中通用 hooks（如 `useVxeInstall`、`useActionConfig`）。
-- watch 指明依赖与 `deep` 语义；高频/异步可使用 `vue-hooks-plus` 的防抖/节流。
-- 错误/校验逻辑集中到 `useValidation`：行弱 ID、错误 Map、校验规则、`validate()` 暴露以及 tooltip 文本清洗。
+- **Token 优先**：严禁硬编码色值，必须使用 `@yss-ui/theme` 提供的动态 CSS 变量或 Ant Design Token。
+- **弹层挂载**：弹层/下拉统一配置 `getPopupContainer: () => document.body`，避免微前端子容器裁剪。
+- **样式按需隔离**：样式敏感项目或微前端子应用，推荐从 `@yss-ui/components/lite` 导入并显式引入 `@yss-ui/components/style.css`，避免全局样式污染。
 
-### 文档与示例同步要求
-- 新增或修改以下任一项，必须同步更新：
-  - Props/Emits/插槽/暴露方法：更新 `docs/components/<component>.md` 中的 API 表。
-  - 新增/更新示例到 `docs/components/demos/<component>/` 覆盖变更场景（基础、校验、字典转换、拖拽、分页、直编、大数据）。
-  - 如为破坏性改动，文档注明迁移说明与对照示例。
+### AI Skills 与发版门禁
 
-### 提交前检查
-- 运行 linter，修复类型与格式问题。
-- 自查：是否遵循 hooks 拆分、JSDoc 注释齐全、vxe 4.16 API 对齐、主题色未硬编码、文档与 demos 已同步。
-
-### 代码片段规范（示例）
-```ts
-/** 分页配置 */
-pagination: {
-  type: Object as PropType<{
-    current: number;
-    pageSize: number;
-    total?: number;
-    showSizeChanger?: boolean;
-    showQuickJumper?: boolean;
-    pageSizeOptions?: (number | string)[];
-    remote?: boolean;
-  }>,
-  default: () => ({ current: 1, pageSize: 20, total: 0, showSizeChanger: true, showQuickJumper: true, pageSizeOptions: ['10','20','50','100'], remote: false }),
-}
-```
-
-
+- **Skills 单一事实源**：`packages/skills/*` 是唯一源码。修改 Skills 必须执行：
+  ```bash
+  pnpm sync:skills-docs
+  pnpm validate:skills
+  ```
+- **发版前门禁检查**：
+  ```bash
+  node scripts/release-changed.js patch --dry
+  ```
+- **提交规范**：
+  - 遵循 Conventional Commits，格式：`<type>(<scope>): <subject>`。
+  - Scope 必须为合规枚举值（如 `components`, `hooks`, `utils`, `theme`, `docs`, `skills`, `release` 等）。
+  - 多 Issue 迭代时，遵循 **一 Issue 一原子 Commit** 原则。
