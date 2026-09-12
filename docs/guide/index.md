@@ -12,6 +12,7 @@ YSS UI 是一个基于 Vue 3、Ant Design Vue 与 VXE-Table 的企业级中后�
 
 - 安装与接入：本页 + [安装](/guide/installation)
 - 生产发布： [发版工作流](/guide/release-workflow) / [GitLab CI 集成](/guide/gitlab-ci-integration)
+- 性能与调优： [大表性能最佳实践手册](/guide/table-perf-handbook)
 - 存量系统接入： [JSP 项目接入](/guide/jsp)
 
 ## 安装

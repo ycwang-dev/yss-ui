@@ -37,6 +37,11 @@ description: 指导 YSS UI 业务页面使用 @yss-ui/components 的 YEditTable 
 - `validate()` 真实返回 `Promise<{ valid: boolean; errorMsg: Map<string, string> }>`。组件 ref 未就绪时不得误判为校验成功。
 - 弹窗/抽屉内使用添加按钮时，高度 Hook 配置 `withAddButton: true`；如果同时分页或开启工具栏，一并开启对应偏移。
 - API 失败由 `mutator.ts` 统一提示并 reject。Hook 中不写 `success === false` 分支，不在 `else/catch` 重复 `message.error`；清理状态放在 `finally`。
+- **大表性能约束与反模式防护（Critical）**：
+  - **固定行高**：大数据量（行数 > 50 或列数 > 20）必须显式通过 `tableConfig: { cellConfig: { height: 36 } }` 设置固定行高，避免虚拟滚动动态估算引发重排与滚动抖动。
+  - **禁止每格嵌入 Formily**：严禁在单元格插槽中循环嵌套实例化 `<YFormily>` 或复杂双向响应式表单，必须使用组件内置轻量编辑器或行级激活。
+  - **虚拟滚动合理阈值**：组件默认启用 `virtualXConfig: { enabled: true, gt: 50 }` 与 `virtualYConfig: { enabled: true, gt: 100 }`，不可随意关闭；宽表可主动调低 `gt` 阈值。
+  - **分页优先**：超过 100 行且交互复杂时，优先采用 `pageable: true` 分页，而非全量挂载上千行可编辑 DOM。
 
 ## 标准代码骨架
 

@@ -17,6 +17,8 @@ YSS AI Skills（`@yss-ui/skills`）的版本更新记录。
 ### 💄 Improvements
 
 - **component-selection-imports**: 强化样式敏感工程与微前端子应用的组件导入指引，明确推荐优先使用 `@yss-ui/components/lite` 纯净入口并按需显式导入样式，防止全局样式副作用污染。
+- **yedit-table-usage**: 补充大表性能约束与反模式防护（强制固定行高、严禁每格嵌入 Formily 表单、横纵双向虚拟滚动合理阈值与分页优先）。
+- **yss-formily**: 补充长列表与大表性能反模式警示，严禁在海量表格行中循环嵌套实例化 Formily 表单，明确推荐抽屉编辑或 YEditTable 内置轻量组件体系。
 
 ---
 

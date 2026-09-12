@@ -52,6 +52,9 @@ description: 指导在 YSS UI 业务页面中正确使用 @yss-ui/components 的
   - **静态枚举选项**：`enum: [{ label: t('user.statusActive'), value: '1' }]`。
   - **表单校验规则文案**：`{ required: true, whitespace: true, message: t('user.nameRequired') }`。
   - **在组件中响应式消费**：在 SFC `<script setup>` 中通过 `const schema = computed(() => createFormSchema(t))` 绑定到 `<YFormily :schema="schema" />`，确保语言切换时表单项标题、占位符、枚举与校验文案即时联动。
+- **大表性能反模式警示（Critical）**：
+  - 严禁在大型表格（如超过 50 行的 `YEditTable` 或 `YTable`）中为每行每个单元格重复挂载独立的 `<YFormily>` 实例或全套 Reactive 字段模型；这会造成数百个 Formily 核心状态树在内存中双向监听，导致输入卡顿与滚动掉帧。
+  - 表格行内编辑应优先使用 `YEditTable` 内置的高性能组件体系（`form-item-input`, `form-item-select` 等），或采用“点击行时弹出 Drawer / Modal 挂载单个 YFormily 编辑”方案。
 
 ## 标准代码骨架
 
