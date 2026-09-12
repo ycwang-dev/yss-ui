@@ -82,6 +82,22 @@ import { YEcharts } from '@yss-ui/components';
 
 完整 `style.css` 仍有固定成本，不会根据 JavaScript 的 import 列表自动裁剪 CSS。验收必须同时检查完整页面资源、未使用的重型依赖、浏览器渲染与旧 API 兼容性，不能只比较入口文件大小。
 
+### 纯净模式与样式副作用隔离（微前端推荐）
+
+`@yss-ui/components` 根入口为了保证单体项目开箱即用，内置了基础样式副作用（`vxe-table/lib/style.css`、`vxe-pc-ui/lib/style.css` 等）。
+
+在 **微前端子应用** 或对全局样式污染高度敏感的场景下，推荐使用 `@yss-ui/components/lite` 纯净入口：
+
+```ts
+// 纯净组件导入，不注入顶层全局样式副作用
+import { YTable, YFormily, YButton } from '@yss-ui/components/lite';
+
+// 由业务工程按需在 main.ts 显式引入统一样式
+import '@yss-ui/components/style.css';
+```
+
+`lite` 入口与主入口完全共享底层组件与国际化单例，但彻底剥离了隐式全局 CSS 挂载，能够彻底规避微前端样式污染。
+
 组件库本地开发使用 `pnpm --filter @yss-ui/components dev`，单一监听流程依次更新传统产物和新根入口。可通过 `YSS_KEEP_CONSUMER=true pnpm test:package-consumer` 保留真实打包消费项目，再执行 `python3 scripts/check-package-consumer-browser.py <控制台输出的消费项目目录>` 验证页面渲染与全量安装。
 
 ## 使用 Utils 和 Hooks

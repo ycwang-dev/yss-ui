@@ -10,6 +10,16 @@ toc: content
 
 YSS AI Skills（`@yss-ui/skills`）的版本更新记录。
 
+## v1.4.2
+
+`2026-09-12`
+
+### 💄 Improvements
+
+- **component-selection-imports**: 强化样式敏感工程与微前端子应用的组件导入指引，明确推荐优先使用 `@yss-ui/components/lite` 纯净入口并按需显式导入样式，防止全局样式副作用污染。
+
+---
+
 ## v1.4.1
 
 `2026-09-11`

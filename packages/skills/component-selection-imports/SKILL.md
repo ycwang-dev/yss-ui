@@ -30,6 +30,7 @@ description: 指导 YSS UI 业务页面、CRUD、列表页、表单页和组件�
 - 当前公共导出包含 `YButton`、`YCard`、`YTable`、`YEditTable`、`YTree`、`YSplitPane`、`YFormily` 等；未导出 `YModal`、`YDrawer`、`YInput`、`YPopconfirm`，禁止臆造这些名称。
 - 当前未封装的 `Modal`、`Drawer`、`Popconfirm`、`Input` 等从 `ant-design-vue` 导入。删除操作使用按钮附近的 `Popconfirm`，不默认使用居中 `Modal.confirm`。
 - 业务层禁止导入 `@formily/antdv` 或 `@formily/antd*` UI 组件；使用 `YFormily` 提供的 Schema 与组件边界。
+- 样式敏感工程或微前端子应用中，优先使用 `@yss-ui/components/lite` 进行纯净消费并按需显式导入样式，防止根入口样式副作用污染全局。
 - 禁止因文档暂时不可达就把猜测的 `Y*` 组件改成 Ant Design Vue “先落地”。只能复用当前仓库已证明可用的导入，或明确报告待确认项。
 - 接口错误提示由 `mutator.ts` 的响应拦截器统一处理。API Hook 不得在 `success === false` 分支或 `catch` 内重复调用 `message.error`；`message` 只用于非 API 错误的本地交互反馈或成功提示。
 
