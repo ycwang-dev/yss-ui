@@ -58,6 +58,13 @@
   ],
   "/changelog/skills": [
     {
+      "name": "cursoragent",
+      "email": "cursoragent@cursor.com",
+      "commits": 1,
+      "avatar": "https://github.com/cursoragent.png?size=64",
+      "url": "https://github.com/cursoragent"
+    },
+    {
       "name": "iamyancong",
       "email": "wangyancong@ysstech.com",
       "commits": 1,
@@ -517,6 +524,13 @@
   ],
   "/skills": [
     {
+      "name": "cursoragent",
+      "email": "cursoragent@cursor.com",
+      "commits": 1,
+      "avatar": "https://github.com/cursoragent.png?size=64",
+      "url": "https://github.com/cursoragent"
+    },
+    {
       "name": "iamyancong",
       "email": "wangyancong@ysstech.com",
       "commits": 1,
@@ -623,6 +637,15 @@
       "url": "https://github.com/iamyancong"
     }
   ],
+  "/skills/use-polling-task": [
+    {
+      "name": "cursoragent",
+      "email": "cursoragent@cursor.com",
+      "commits": 1,
+      "avatar": "https://github.com/cursoragent.png?size=64",
+      "url": "https://github.com/cursoragent"
+    }
+  ],
   "/skills/use-table-height": [
     {
       "name": "iamyancong",
@@ -641,6 +664,15 @@
       "url": "https://github.com/iamyancong"
     }
   ],
+  "/skills/use-url-state": [
+    {
+      "name": "cursoragent",
+      "email": "cursoragent@cursor.com",
+      "commits": 1,
+      "avatar": "https://github.com/cursoragent.png?size=64",
+      "url": "https://github.com/cursoragent"
+    }
+  ],
   "/skills/vue3-best-practices": [
     {
       "name": "iamyancong",
@@ -650,6 +682,15 @@
       "url": "https://github.com/iamyancong"
     }
   ],
+  "/skills/ycondition-builder-usage": [
+    {
+      "name": "cursoragent",
+      "email": "cursoragent@cursor.com",
+      "commits": 1,
+      "avatar": "https://github.com/cursoragent.png?size=64",
+      "url": "https://github.com/cursoragent"
+    }
+  ],
   "/skills/yedit-table-usage": [
     {
       "name": "iamyancong",
@@ -657,6 +698,24 @@
       "commits": 1,
       "avatar": "https://github.com/iamyancong.png?size=64",
       "url": "https://github.com/iamyancong"
+    }
+  ],
+  "/skills/yfile-import-usage": [
+    {
+      "name": "cursoragent",
+      "email": "cursoragent@cursor.com",
+      "commits": 1,
+      "avatar": "https://github.com/cursoragent.png?size=64",
+      "url": "https://github.com/cursoragent"
+    }
+  ],
+  "/skills/ysheet-usage": [
+    {
+      "name": "cursoragent",
+      "email": "cursoragent@cursor.com",
+      "commits": 1,
+      "avatar": "https://github.com/cursoragent.png?size=64",
+      "url": "https://github.com/cursoragent"
     }
   ],
   "/skills/yss-create-microapp": [

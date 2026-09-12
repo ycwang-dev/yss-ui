@@ -11,6 +11,19 @@ toc: content
 YSS UI 组件库（`@yss-ui/components`）的版本更新记录。
 
 ---
+## v1.6.4
+
+`2026-09-12`
+
+### 🐞 Bug Fixes
+
+- **YEditTable**: 修复单元格校验错误提示在表格容器滚动时的脱节与位置同步问题，确保在横向与纵向滚动时 tooltip 浮层能够平滑随单元格吸附定位并在超出可视区后正确销毁。
+
+### 🧪 Test & Quality
+
+- **YConditionBuilder**: 模块化收尾治理，规范化测试用例文件名（`debug.test.ts` -> `use-condition-tree.test.ts`），清理调试代码残留；补充组件级校验失败时对应控件标记 `.is-error` 错误状态的自动化回归测试，固化模块化拆分后的子树样式穿透效果。
+
+---
 ## v1.6.3
 
 `2026-09-11`
